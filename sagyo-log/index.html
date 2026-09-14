@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>作業時間ログ</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f2a33">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<style>
+  :root {
+    --paper: #f7f6f2; --ink: #1f2a33; --ink-soft: #5a6773;
+    --grid: #c9d6e0; --grid-strong: #8fa6b8; --today: #d99a2b; --edit: #fffbe6; --edit-line: #d99a2b;
+    --num: "Menlo", "Consolas", "Courier New", monospace;
+    --sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.5;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 24px 24px; }
+  .sheet { max-width: 960px; margin: 0 auto; padding: 12px; }
+  .titleblock { display: flex; align-items: center; gap: 12px; border: 2px solid var(--ink); background: #fff; padding: 8px 12px; }
+  .titleblock h1 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: .06em; }
+  .titleblock .clock { margin-left: auto; font-family: var(--num); font-size: 12px; color: var(--ink-soft); }
+  .tabs { display: flex; margin-top: 10px; border: 2px solid var(--ink); border-bottom: 0; background: #fff; }
+  .tabs button { flex: 1; border: 0; border-right: 1px solid var(--grid); border-radius: 0; padding: 10px 4px; background: #eef2f5; font-size: 14px; }
+  .tabs button:last-child { border-right: 0; }
+  .tabs button.on { background: #fff; font-weight: 600; box-shadow: inset 0 -3px 0 var(--ink); }
+  .tabs button:hover { background: #fff; color: var(--ink); }
+  .pane { display: none; border: 2px solid var(--ink); background: #fff; padding: 12px; }
+  .pane.on { display: block; }
+  button { font: inherit; padding: 8px 14px; border: 1px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; border-radius: 2px; }
+  button:hover { background: var(--ink); color: #fff; }
+  button.primary { background: var(--ink); color: #fff; }
+  button.sm { padding: 3px 8px; font-size: 12px; }
+  button.danger:hover { background: #a63d3a; border-color: #a63d3a; }
+  input, select, textarea { font: inherit; padding: 6px 8px; border: 1px solid var(--grid-strong); background: #fff; color: var(--ink); border-radius: 2px; max-width: 100%; }
+  input[type=date], input[type=time], input[type=number] { font-family: var(--num); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--today); outline-offset: 1px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: end; margin-bottom: 10px; }
+  .row label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--ink-soft); }
+  .row label > * { font-size: 14px; color: var(--ink); }
+  .grow { flex: 1; min-width: 160px; }
+  h2 { font-size: 13px; font-weight: 600; letter-spacing: .04em; margin: 14px 0 8px; color: var(--ink-soft); border-bottom: 1px dashed var(--grid-strong); padding-bottom: 3px; }
+  h2:first-child { margin-top: 0; }
+
+  /* タイマー */
+  .timer { border: 2px solid var(--edit-line); background: var(--edit); padding: 12px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+  .timer .t { font-family: var(--num); font-size: 34px; font-weight: 500; letter-spacing: .04em; min-width: 150px; }
+  .timer .p { flex: 1; min-width: 160px; }
+  .timer .p b { display: block; font-size: 15px; }
+  .timer .p span { font-size: 12px; color: var(--ink-soft); font-family: var(--num); }
+  .timer.idle { background: #fff; border-color: var(--grid-strong); }
+
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  th, td { border: 1px solid var(--grid); padding: 5px 7px; text-align: left; vertical-align: middle; }
+  th { background: #eef2f5; font-weight: 600; font-size: 12px; white-space: nowrap; }
+  td.num, th.num { text-align: right; font-family: var(--num); white-space: nowrap; }
+  td.date { font-family: var(--num); white-space: nowrap; font-size: 13px; }
+  tr.total td { font-weight: 600; background: #f7f9fb; border-top: 2px solid var(--ink); }
+  tr.editing td { background: var(--edit); }
+  .dot { display: inline-block; width: 9px; height: 9px; margin-right: 5px; vertical-align: middle; border: 1px solid rgba(0,0,0,.2); }
+  .empty { padding: 20px; text-align: center; color: var(--ink-soft); }
+  .tw { overflow-x: auto; }
+  .muted { color: var(--ink-soft); font-size: 12px; }
+  .cat { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .sw { width: 22px; height: 22px; border: 1px solid var(--ink); flex: none; }
+  .palette { display: inline-flex; gap: 3px; }
+  .pcell { width: 18px; height: 18px; padding: 0; border: 1px solid rgba(0,0,0,.25); border-radius: 0; }
+  .pcell.sel { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .proj { border: 1px solid var(--grid-strong); padding: 8px 10px; margin-bottom: 8px; }
+  .proj.done { opacity: .6; }
+  .kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .kpi div { border: 1px solid var(--grid-strong); padding: 8px 10px; }
+  .kpi small { display: block; color: var(--ink-soft); font-size: 11px; }
+  .kpi b { font-family: var(--num); font-size: 20px; font-weight: 500; }
+  @media (max-width: 600px) { .timer .t { font-size: 28px; } th, td { padding: 5px 5px; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="titleblock"><h1>作業時間ログ</h1><span class="clock" id="clock"></span></div>
+
+  <div class="tabs">
+    <button class="on" data-tab="rec">記録</button>
+    <button data-tab="list">一覧</button>
+    <button data-tab="sum">集計</button>
+    <button data-tab="set">設定</button>
+  </div>
+
+  <!-- 記録 -->
+  <div class="pane on" id="tab-rec">
+    <div class="timer idle" id="timer">
+      <div class="t" id="tDisp">00:00:00</div>
+      <div class="p"><b id="tProj">タイマー停止中</b><span id="tSince"></span></div>
+      <select id="tSelect"></select>
+      <button class="primary" id="btnTimer">開始</button>
+      <button id="btnTimerCancel" class="sm" style="display:none">取消</button>
+    </div>
+    <h2>手入力 <span class="muted" id="editHint"></span></h2>
+    <div class="row">
+      <label>日付 <input type="date" id="fDate"></label>
+      <label class="grow">案件 <select id="fProj"></select></label>
+      <label>開始 <input type="time" id="fStart"></label>
+      <label>終了 <input type="time" id="fEnd"></label>
+      <label>休憩(分) <input type="number" id="fBreak" min="0" step="5" value="0" style="width:80px"></label>
+      <label>実働 <b id="fDur" style="font-family:var(--num)">—</b></label>
+    </div>
+    <div class="row">
+      <label class="grow">内容 <input type="text" id="fNote" placeholder="例：平面図修正、A棟"></label>
+      <button class="primary" id="btnSave">記録する</button>
+      <button id="btnCancelEdit" style="display:none">編集をやめる</button>
+    </div>
+    <h2>今日の記録</h2>
+    <div class="tw" id="todayList"></div>
+  </div>
+
+  <!-- 一覧 -->
+  <div class="pane" id="tab-list">
+    <div class="row">
+      <label>月 <input type="month" id="lMonth"></label>
+      <label class="grow">案件 <select id="lProj"><option value="">すべて</option></select></label>
+      <button class="sm" id="btnListXlsx">この月をExcel出力</button>
+    </div>
+    <div class="tw" id="listTable"></div>
+  </div>
+
+  <!-- 集計 -->
+  <div class="pane" id="tab-sum">
+    <div class="row">
+      <label>月 <input type="month" id="sMonth"></label>
+      <button class="sm" id="btnSumXlsx">この月をExcel出力</button>
+    </div>
+    <div class="kpi" id="kpi"></div>
+    <h2>案件別</h2>
+    <div class="tw" id="sumTable"></div>
+    <h2>日別</h2>
+    <div class="tw" id="dayTable"></div>
+  </div>
+
+  <!-- 設定 -->
+  <div class="pane" id="tab-set">
+    <h2>案件</h2>
+    <div id="projList"></div>
+    <div class="row">
+      <label class="grow">工事名・案件名 <input type="text" id="pName"></label>
+      <label>発注元 <input type="text" id="pClient"></label>
+      <label>時間単価(円) <input type="number" id="pRate" min="0" step="100" style="width:110px"></label>
+      <button class="primary" id="btnProjAdd">案件を追加</button>
+    </div>
+    <h2>請求の丸め</h2>
+    <div class="row">
+      <label>時間の単位 <select id="rounding"><option value="0">丸めない（分単位）</option><option value="15">15分単位で切上げ</option><option value="30">30分単位で切上げ</option><option value="60">1時間単位で切上げ</option></select></label>
+      <label>丸める対象 <select id="roundMode"><option value="month">月の案件合計に対して</option><option value="entry">1件ごとに</option></select></label>
+    </div>
+    <p class="muted">単価は「時間単価」です。金額 ＝ 丸め後の時間 × 単価。固定額の案件は単価を空にし、金額は請求書側で扱ってください。</p>
+    <h2>控え</h2>
+    <div class="row">
+      <button id="btnExport">控えを保存 (JSON)</button>
+      <button id="btnImport">控えを読み込む</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none">
+    </div>
+    <p class="muted">記録はこのブラウザに自動保存されます。端末を替えるとき、ブラウザのデータ消去に備えるときは控えを保存してください。</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  const KEY = 'sagyo-log-v1';
+  const PALETTE = ['#8fb4d3','#9fcbb0','#e0c28f','#b9a8d6','#b3bfc9','#dea3a0','#e6d68a','#96c9d1','#c9a58f','#f0b9a2','#b0c49a','#a9aed6'];
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const pad = n => String(n).padStart(2, '0');
+  const fmtD = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const fmtT = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const jp = s => s.replace(/-/g, '/');
+  const WD = ['日','月','火','水','木','金','土'];
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const hm = min => `${Math.floor(min/60)}:${pad(min%60)}`;
+  const hDec = min => (min/60).toFixed(2);
+  const yen = n => n.toLocaleString('ja-JP') + '円';
+
+  const state = load() || { projects: [], entries: [], rounding: 15, roundMode: 'month', timer: null };
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; } }
+  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+  const proj = id => state.projects.find(p => p.id === id);
+  const pname = id => (proj(id) || {}).name || '（削除された案件）';
+  const pcolor = id => (proj(id) || {}).color || '#b3bfc9';
+  // 実働（分）＝終了−開始−休憩。日をまたぐ終了は翌日扱い
+  const durMin = e => { const [sh,sm] = e.start.split(':').map(Number), [eh,em] = e.end.split(':').map(Number);
+    let m = (eh*60+em) - (sh*60+sm); if (m < 0) m += 24*60; return Math.max(0, m - (parseInt(e.brk)||0)); };
+  const roundUp = min => state.rounding > 0 ? Math.ceil(min / state.rounding) * state.rounding : min;
+  let editId = null;
+
+  // ---------- タブ ----------
+  document.querySelector('.tabs').addEventListener('click', e => {
+    const b = e.target.closest('button[data-tab]'); if (!b) return;
+    document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'tab-' + b.dataset.tab));
+    renderAll();
+  });
+
+  // ---------- 案件セレクト ----------
+  function fillProjSelects() {
+    const active = state.projects.filter(p => !p.done);
+    const opts = active.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join('');
+    ['tSelect', 'fProj'].forEach(id => { const cur = $(id).value; $(id).innerHTML = opts || '<option value="">（設定で案件を追加）</option>'; if (cur) $(id).value = cur; });
+    $('lProj').innerHTML = '<option value="">すべて</option>' + state.projects.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  }
+
+  // ---------- タイマー ----------
+  function tick() {
+    const now = new Date(); $('clock').textContent = `${jp(fmtD(now))}(${WD[now.getDay()]}) ${fmtT(now)}`;
+    const t = state.timer;
+    $('timer').classList.toggle('idle', !t);
+    if (t) {
+      const sec = Math.floor((Date.now() - t.startedAt) / 1000);
+      $('tDisp').textContent = `${pad(Math.floor(sec/3600))}:${pad(Math.floor(sec%3600/60))}:${pad(sec%60)}`;
+      $('tProj').textContent = pname(t.projectId); $('tSince').textContent = `${fmtT(new Date(t.startedAt))} 開始`;
+      $('btnTimer').textContent = '停止して記録'; $('tSelect').style.display = 'none'; $('btnTimerCancel').style.display = '';
+    } else {
+      $('tDisp').textContent = '00:00:00'; $('tProj').textContent = 'タイマー停止中'; $('tSince').textContent = '';
+      $('btnTimer').textContent = '開始'; $('tSelect').style.display = ''; $('btnTimerCancel').style.display = 'none';
+    }
+  }
+  setInterval(tick, 1000);
+  $('btnTimer').addEventListener('click', () => {
+    if (!state.timer) {
+      const pid = $('tSelect').value; if (!pid) { alert('先に設定タブで案件を追加してください。'); return; }
+      state.timer = { projectId: pid, startedAt: Date.now() }; save(); tick(); return;
+    }
+    const t = state.timer, s = new Date(t.startedAt), e = new Date();
+    // 手入力欄に流し込んで、内容を書いてから保存できるようにする
+    editId = null; $('fDate').value = fmtD(s); $('fProj').value = t.projectId; $('fStart').value = fmtT(s); $('fEnd').value = fmtT(e); $('fBreak').value = 0; $('fNote').value = '';
+    state.timer = null; save(); tick(); updateDur(); $('fNote').focus();
+    $('editHint').textContent = '← タイマーの結果です。内容を書いて「記録する」';
+  });
+  $('btnTimerCancel').addEventListener('click', () => { if (confirm('タイマーを取り消しますか？（記録しません）')) { state.timer = null; save(); tick(); } });
+
+  // ---------- 手入力 ----------
+  function updateDur() {
+    const s = $('fStart').value, e = $('fEnd').value;
+    $('fDur').textContent = (s && e) ? hm(durMin({ start: s, end: e, brk: $('fBreak').value })) : '—';
+  }
+  ['fStart', 'fEnd', 'fBreak'].forEach(id => $(id).addEventListener('input', updateDur));
+  function resetForm() {
+    editId = null; $('fDate').value = fmtD(new Date()); $('fStart').value = ''; $('fEnd').value = ''; $('fBreak').value = 0; $('fNote').value = '';
+    $('editHint').textContent = ''; $('btnCancelEdit').style.display = 'none'; $('btnSave').textContent = '記録する'; updateDur();
+  }
+  $('btnSave').addEventListener('click', () => {
+    const e = { id: editId || uid(), date: $('fDate').value, projectId: $('fProj').value, start: $('fStart').value, end: $('fEnd').value, brk: parseInt($('fBreak').value) || 0, note: $('fNote').value.trim() };
+    if (!e.date || !e.projectId || !e.start || !e.end) { alert('日付・案件・開始・終了を入れてください。'); return; }
+    if (durMin(e) === 0) { alert('実働が0分です。開始・終了・休憩を確認してください。'); return; }
+    const i = state.entries.findIndex(x => x.id === e.id);
+    if (i >= 0) state.entries[i] = e; else state.entries.push(e);
+    save(); resetForm(); renderAll();
+  });
+  $('btnCancelEdit').addEventListener('click', resetForm);
+  function startEdit(id) {
+    const e = state.entries.find(x => x.id === id); if (!e) return;
+    editId = id; $('fDate').value = e.date; fillProjSelects(); $('fProj').value = e.projectId; $('fStart').value = e.start; $('fEnd').value = e.end; $('fBreak').value = e.brk; $('fNote').value = e.note;
+    $('editHint').textContent = '編集中'; $('btnCancelEdit').style.display = ''; $('btnSave').textContent = '更新する'; updateDur();
+    document.querySelector('[data-tab=rec]').click(); $('fNote').focus();
+  }
+  function entryRows(list, withDate) {
+    return list.map(e => `<tr class="${e.id===editId?'editing':''}">
+      ${withDate ? `<td class="date">${jp(e.date).slice(5)}(${WD[new Date(e.date).getDay()]})</td>` : ''}
+      <td><span class="dot" style="background:${pcolor(e.projectId)}"></span>${esc(pname(e.projectId))}</td>
+      <td class="num">${e.start}–${e.end}</td><td class="num">${e.brk||0}</td><td class="num">${hm(durMin(e))}</td>
+      <td>${esc(e.note)}</td>
+      <td style="white-space:nowrap"><button class="sm" data-edit="${e.id}">編集</button> <button class="sm danger" data-del="${e.id}">×</button></td></tr>`).join('');
+  }
+  const sortE = list => list.slice().sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start));
+  function renderToday() {
+    const list = sortE(state.entries.filter(e => e.date === fmtD(new Date())));
+    const tot = list.reduce((s, e) => s + durMin(e), 0);
+    $('todayList').innerHTML = list.length
+      ? `<table><tr><th>案件</th><th class="num">時刻</th><th class="num">休憩</th><th class="num">実働</th><th>内容</th><th></th></tr>${entryRows(list, false)}<tr class="total"><td colspan="3">合計</td><td class="num">${hm(tot)}</td><td colspan="2"></td></tr></table>`
+      : '<div class="empty">今日の記録はまだありません</div>';
+  }
+  document.body.addEventListener('click', e => {
+    const ed = e.target.closest('button[data-edit]'); if (ed) { startEdit(ed.dataset.edit); return; }
+    const dl = e.target.closest('button[data-del]');
+    if (dl) { const x = state.entries.find(v => v.id === dl.dataset.del); if (x && confirm(`${jp(x.date)} ${pname(x.projectId)} ${hm(durMin(x))} を削除しますか？`)) { state.entries = state.entries.filter(v => v.id !== x.id); if (editId === x.id) resetForm(); save(); renderAll(); } }
+  });
+
+  // ---------- 一覧 ----------
+  const monthOf = (id) => $(id).value || fmtD(new Date()).slice(0, 7);
+  function renderList() {
+    if (!$('lMonth').value) $('lMonth').value = fmtD(new Date()).slice(0, 7);
+    const m = monthOf('lMonth'), pid = $('lProj').value;
+    const list = sortE(state.entries.filter(e => e.date.startsWith(m) && (!pid || e.projectId === pid)));
+    const tot = list.reduce((s, e) => s + durMin(e), 0);
+    $('listTable').innerHTML = list.length
+      ? `<table><tr><th>日付</th><th>案件</th><th class="num">時刻</th><th class="num">休憩</th><th class="num">実働</th><th>内容</th><th></th></tr>${entryRows(list, true)}<tr class="total"><td colspan="4">合計 ${list.length}件</td><td class="num">${hm(tot)}</td><td colspan="2"></td></tr></table>`
+      : '<div class="empty">この条件の記録はありません</div>';
+  }
+  $('lMonth').addEventListener('change', renderList); $('lProj').addEventListener('change', renderList);
+
+  // ---------- 集計 ----------
+  function summarize(m) {
+    const list = state.entries.filter(e => e.date.startsWith(m));
+    const byP = {};
+    list.forEach(e => { const b = byP[e.projectId] || (byP[e.projectId] = { min: 0, rmin: 0, n: 0, days: new Set() });
+      const d = durMin(e); b.min += d; b.rmin += (state.roundMode === 'entry' ? roundUp(d) : d); b.n++; b.days.add(e.date); });
+    const rows = Object.entries(byP).map(([pid, b]) => {
+      const billed = state.roundMode === 'month' ? roundUp(b.min) : b.rmin; const p = proj(pid) || {};
+      return { pid, name: pname(pid), client: p.client || '', rate: p.rate ? +p.rate : null, min: b.min, billed, amount: p.rate ? Math.round(billed / 60 * p.rate) : null, n: b.n, days: b.days.size };
+    }).sort((a, b) => b.min - a.min);
+    const byD = {};
+    list.forEach(e => { byD[e.date] = (byD[e.date] || 0) + durMin(e); });
+    return { rows, byD, list };
+  }
+  function renderSum() {
+    if (!$('sMonth').value) $('sMonth').value = fmtD(new Date()).slice(0, 7);
+    const m = monthOf('sMonth'); const { rows, byD } = summarize(m);
+    const tmin = rows.reduce((s, r) => s + r.min, 0), tamt = rows.reduce((s, r) => s + (r.amount || 0), 0);
+    $('kpi').innerHTML = `<div><small>実働合計</small><b>${hm(tmin)}</b></div><div><small>作業日数</small><b>${Object.keys(byD).length}日</b></div><div><small>案件数</small><b>${rows.length}</b></div><div><small>金額合計（単価あり分）</small><b>${tamt.toLocaleString('ja-JP')}<span style="font-size:12px">円</span></b></div>`;
+    $('sumTable').innerHTML = rows.length
+      ? `<table><tr><th>案件</th><th>発注元</th><th class="num">件数</th><th class="num">日数</th><th class="num">実働</th><th class="num">請求時間</th><th class="num">単価</th><th class="num">金額</th></tr>` +
+        rows.map(r => `<tr><td><span class="dot" style="background:${pcolor(r.pid)}"></span>${esc(r.name)}</td><td>${esc(r.client)}</td><td class="num">${r.n}</td><td class="num">${r.days}</td><td class="num">${hm(r.min)}</td><td class="num">${hDec(r.billed)}h</td><td class="num">${r.rate != null ? r.rate.toLocaleString('ja-JP') : '—'}</td><td class="num">${r.amount != null ? r.amount.toLocaleString('ja-JP') : '—'}</td></tr>`).join('') +
+        `<tr class="total"><td colspan="4">合計</td><td class="num">${hm(tmin)}</td><td class="num">${hDec(rows.reduce((s,r)=>s+r.billed,0))}h</td><td></td><td class="num">${tamt.toLocaleString('ja-JP')}</td></tr></table>`
+      : '<div class="empty">この月の記録はありません</div>';
+    const ds = Object.keys(byD).sort();
+    $('dayTable').innerHTML = ds.length
+      ? `<table><tr><th>日付</th><th class="num">実働</th><th>内訳</th></tr>` + ds.map(d => {
+          const parts = {}; state.entries.filter(e => e.date === d).forEach(e => { parts[e.projectId] = (parts[e.projectId] || 0) + durMin(e); });
+          return `<tr><td class="date">${jp(d).slice(5)}(${WD[new Date(d).getDay()]})</td><td class="num">${hm(byD[d])}</td><td>${Object.entries(parts).map(([p, v]) => `<span class="dot" style="background:${pcolor(p)}"></span>${esc(pname(p))} ${hm(v)}`).join('　')}</td></tr>`; }).join('') + '</table>'
+      : '';
+  }
+  $('sMonth').addEventListener('change', renderSum);
+
+  // ---------- 設定 ----------
+  function renderProjects() {
+    $('projList').innerHTML = state.projects.length ? state.projects.map(p => `
+      <div class="proj ${p.done?'done':''}">
+        <div class="cat">
+          <span class="sw" style="background:${p.color}"></span>
+          <input type="text" data-pf="name" data-pid="${p.id}" value="${esc(p.name)}" style="flex:1;min-width:140px">
+          <input type="text" data-pf="client" data-pid="${p.id}" value="${esc(p.client||'')}" placeholder="発注元" style="width:120px">
+          <input type="number" data-pf="rate" data-pid="${p.id}" value="${p.rate||''}" placeholder="単価" style="width:90px">
+          <span class="palette">${PALETTE.map(c => `<button type="button" class="pcell${c===p.color?' sel':''}" data-pc="${c}" data-pid="${p.id}" style="background:${c}"></button>`).join('')}</span>
+          <label class="muted" style="display:inline-flex;gap:4px;align-items:center"><input type="checkbox" data-pf="done" data-pid="${p.id}" ${p.done?'checked':''}>完了</label>
+          <button type="button" class="sm danger" data-pdel="${p.id}">×</button>
+        </div>
+      </div>`).join('') : '<div class="empty">案件がまだありません。下の欄から追加してください</div>';
+    $('rounding').value = state.rounding; $('roundMode').value = state.roundMode;
+  }
+  $('btnProjAdd').addEventListener('click', () => {
+    const name = $('pName').value.trim(); if (!name) { alert('案件名を入れてください。'); return; }
+    const used = new Set(state.projects.map(p => p.color));
+    state.projects.push({ id: uid(), name, client: $('pClient').value.trim(), rate: $('pRate').value ? +$('pRate').value : '', color: PALETTE.find(c => !used.has(c)) || PALETTE[state.projects.length % 12], done: false });
+    $('pName').value = ''; $('pClient').value = ''; $('pRate').value = ''; save(); renderAll();
+  });
+  $('projList').addEventListener('input', e => {
+    const el = e.target; if (!el.dataset.pf) return; const p = proj(el.dataset.pid);
+    p[el.dataset.pf] = el.type === 'checkbox' ? el.checked : el.value; save();
+    if (el.type === 'checkbox') renderAll();
+  });
+  $('projList').addEventListener('click', e => {
+    const pc = e.target.closest('button[data-pc]'); if (pc) { proj(pc.dataset.pid).color = pc.dataset.pc; save(); renderAll(); return; }
+    const dl = e.target.closest('button[data-pdel]'); if (!dl) return;
+    const p = proj(dl.dataset.pdel); const n = state.entries.filter(x => x.projectId === p.id).length;
+    if (!confirm(`案件「${p.name}」を削除しますか？${n ? `\n記録 ${n}件は残りますが「削除された案件」と表示されます。` : ''}`)) return;
+    state.projects = state.projects.filter(x => x.id !== p.id); save(); renderAll();
+  });
+  $('rounding').addEventListener('change', e => { state.rounding = +e.target.value; save(); renderSum(); });
+  $('roundMode').addEventListener('change', e => { state.roundMode = e.target.value; save(); renderSum(); });
+
+  // ---------- 控え ----------
+  $('btnExport').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(state, null, 1)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `作業時間ログ_控え_${fmtD(new Date()).replace(/-/g,'')}.json`; a.click();
+  });
+  $('btnImport').addEventListener('click', () => $('importFile').click());
+  $('importFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try { const o = JSON.parse(await f.text()); if (!o.entries || !o.projects) throw new Error('形式が違います');
+      const add = confirm('OK：今の内容に「追加」して読み込む　／　キャンセル：今の内容を「置き換える」');
+      if (add) { o.projects.forEach(p => { if (!proj(p.id)) state.projects.push(p); }); o.entries.forEach(x => { if (!state.entries.find(y => y.id === x.id)) state.entries.push(x); }); }
+      else Object.assign(state, o, { timer: state.timer });
+      save(); renderAll();
+    } catch (err) { alert('読み込めませんでした：' + err.message); }
+    e.target.value = '';
+  });
+
+  // ---------- Excel ----------
+  async function exportMonth(m) {
+    if (typeof ExcelJS === 'undefined') { alert('Excel出力ライブラリを読み込めませんでした。インターネット接続を確認してください。'); return; }
+    const { rows, list } = summarize(m); if (!list.length) { alert('この月の記録はありません。'); return; }
+    const wb = new ExcelJS.Workbook();
+    const font = (o={}) => Object.assign({ name: 'Meiryo UI', size: 10 }, o);
+    const thin = { style: 'thin', color: { argb: 'FFB0BEC8' } }, border = { top: thin, left: thin, bottom: thin, right: thin };
+    const head = (ws, r, vals) => vals.forEach((v, i) => { const c = ws.getCell(r, i+1); c.value = v; c.font = font({ bold: true }); c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEEF2F5' } }; c.border = border; c.alignment = { horizontal: 'center' }; });
+    const label = `${m.slice(0,4)}年${+m.slice(5)}月`;
+    const rd = state.rounding ? `${state.rounding}分単位切上げ（${state.roundMode === 'month' ? '月合計' : '1件ごと'}）` : '丸めなし';
+
+    const s1 = wb.addWorksheet('集計', { pageSetup: { orientation: 'landscape', paperSize: 9, fitToPage: true, fitToWidth: 1, fitToHeight: 0 } });
+    s1.columns = [{ width: 28 }, { width: 16 }, { width: 7 }, { width: 7 }, { width: 10 }, { width: 11 }, { width: 10 }, { width: 12 }];
+    s1.getCell(1, 1).value = `作業時間集計　${label}`; s1.getCell(1, 1).font = font({ size: 13, bold: true });
+    s1.getCell(2, 1).value = `請求時間の丸め：${rd}　　作成日：${jp(fmtD(new Date()))}`; s1.getCell(2, 1).font = font({ size: 9 });
+    head(s1, 4, ['案件', '発注元', '件数', '日数', '実働(h)', '請求時間(h)', '単価(円)', '金額(円)']);
+    rows.forEach((r, i) => {
+      const vals = [r.name, r.client, r.n, r.days, +hDec(r.min), +hDec(r.billed), r.rate, r.amount];
+      vals.forEach((v, j) => { const c = s1.getCell(5 + i, j + 1); c.value = v; c.font = font(); c.border = border; if (j >= 2) c.alignment = { horizontal: 'right' }; if (j === 6 || j === 7) c.numFmt = '#,##0'; if (j === 4 || j === 5) c.numFmt = '0.00'; });
+      s1.getCell(5 + i, 1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + pcolor(r.pid).slice(1).toUpperCase() } };
+    });
+    const tr = 5 + rows.length;
+    [['合計', 1], [rows.reduce((s,r)=>s+r.n,0), 3], [+hDec(rows.reduce((s,r)=>s+r.min,0)), 5], [+hDec(rows.reduce((s,r)=>s+r.billed,0)), 6], [rows.reduce((s,r)=>s+(r.amount||0),0), 8]].forEach(([v, c]) => { const cell = s1.getCell(tr, c); cell.value = v; cell.font = font({ bold: true }); if (c === 8) cell.numFmt = '#,##0'; if (c === 5 || c === 6) cell.numFmt = '0.00'; });
+    for (let c = 1; c <= 8; c++) { const cell = s1.getCell(tr, c); cell.border = Object.assign({}, border, { top: { style: 'medium', color: { argb: 'FF1F2A33' } } }); }
+
+    const s2 = wb.addWorksheet('明細', { pageSetup: { orientation: 'portrait', paperSize: 9, fitToPage: true, fitToWidth: 1, fitToHeight: 0 }, views: [{ state: 'frozen', ySplit: 1 }] });
+    s2.columns = [{ width: 12 }, { width: 5 }, { width: 26 }, { width: 8 }, { width: 8 }, { width: 8 }, { width: 9 }, { width: 40 }];
+    head(s2, 1, ['日付', '曜', '案件', '開始', '終了', '休憩(分)', '実働(h)', '内容']);
+    sortE(list).forEach((e, i) => {
+      const vals = [jp(e.date), WD[new Date(e.date).getDay()], pname(e.projectId), e.start, e.end, e.brk || 0, +hDec(durMin(e)), e.note];
+      vals.forEach((v, j) => { const c = s2.getCell(2 + i, j + 1); c.value = v; c.font = font(); c.border = border; if (j === 6) c.numFmt = '0.00'; if (j >= 3 && j <= 6) c.alignment = { horizontal: 'right' }; });
+    });
+    s2.autoFilter = `A1:H${1 + list.length}`;
+    const buf = await wb.xlsx.writeBuffer();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    a.download = `作業時間_${m.replace('-', '')}.xlsx`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  $('btnListXlsx').addEventListener('click', () => exportMonth(monthOf('lMonth')));
+  $('btnSumXlsx').addEventListener('click', () => exportMonth(monthOf('sMonth')));
+
+  function renderAll() { fillProjSelects(); renderProjects(); renderToday(); renderList(); renderSum(); tick(); }
+  resetForm(); renderAll();
+})();
+</script>
+</body>
+</html>
