@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef2f4">
+<title>二次検定ドリル｜2級建築施工管理</title>
+<meta name="apple-mobile-web-app-title" content="二次ドリル">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<style>
+:root{
+  --paper:#eef2f4; --sheet:#fbfcfc; --ink:#1f3242; --ink2:#5a6b78;
+  --line:#d6dee3; --grid:#e3e9ed; --accent:#6f94ae; --accent-soft:#dfe9f0;
+  --ok:#7fb58f; --ok-soft:#e4f1e7; --ng:#d9927f; --ng-soft:#f7e6e0;
+  --warn:#d8b56a; --warn-soft:#f7efd9;
+  --mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+body{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;min-height:100vh}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+header{padding:14px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;max-width:720px;margin:0 auto}
+header h1{margin:0;font-size:17px;font-weight:700;letter-spacing:.04em}
+header h1 small{display:block;font-size:11px;font-weight:400;color:var(--ink2);letter-spacing:.08em}
+.countdown{text-align:right;font-size:11px;color:var(--ink2);line-height:1.2}
+.countdown b{display:block;font-family:var(--mono);font-size:24px;color:var(--ink);font-weight:600}
+nav{position:sticky;top:0;z-index:5;background:rgba(238,242,244,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav .tabs{display:flex;max-width:720px;margin:0 auto}
+nav button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:10px 4px;font:inherit;font-size:14px;color:var(--ink2);cursor:pointer}
+nav button.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:700}
+main{max-width:720px;margin:0 auto;padding:14px 12px 80px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:16px 14px;margin-bottom:14px;box-shadow:0 1px 0 rgba(31,50,66,.04)}
+.sheet h2{margin:0 0 10px;font-size:14px;color:var(--ink2);font-weight:600}
+.src{font-size:12px;color:var(--ink2);margin-bottom:8px;padding-left:10px;border-left:3px solid var(--accent)}
+.qtext{font-size:16px;line-height:2;word-break:break-all}
+.blank{display:inline-block;min-width:4.5em;padding:0 8px;margin:0 2px;border-bottom:2px solid var(--accent);background:var(--accent-soft);border-radius:3px;font-weight:600;cursor:pointer;line-height:1.7;text-align:center;font-family:inherit;font-size:inherit;color:var(--ink);border-top:0;border-left:0;border-right:0}
+.blank.cur{outline:2px solid var(--accent);outline-offset:2px}
+.blank.empty{color:var(--ink2);font-weight:400}
+.blank.ok{background:var(--ok-soft);border-bottom-color:var(--ok)}
+.blank.ng{background:var(--ng-soft);border-bottom-color:var(--ng);text-decoration:line-through}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.choices button,.btn{font:inherit;font-size:15px;padding:12px 10px;border:1px solid var(--line);background:var(--sheet);border-radius:6px;color:var(--ink);cursor:pointer;text-align:center}
+.choices button:active,.btn:active{background:var(--accent-soft)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.btn.wide{width:100%;margin-top:12px}
+.btn:disabled{opacity:.4}
+.row{display:flex;gap:8px;margin-top:12px}
+.row .btn{flex:1}
+.hint{font-size:13px;color:var(--ink2);margin-top:8px}
+.result{margin-top:12px;padding:12px;border-radius:6px;font-size:14px}
+.result.ok{background:var(--ok-soft)}
+.result.ng{background:var(--ng-soft)}
+.result .ans{font-weight:700}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{font:inherit;font-size:13px;padding:6px 12px;border-radius:20px;border:1px solid var(--line);background:var(--sheet);color:var(--ink2);cursor:pointer}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:8px}
+.prog{height:4px;background:var(--grid);border-radius:2px;overflow:hidden;margin-bottom:12px}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .25s}
+svg.gantt{width:100%;height:auto;display:block;font-family:var(--sans)}
+svg.gantt text{font-size:11px;fill:var(--ink)}
+svg.gantt .mono{font-family:var(--mono);fill:var(--ink2)}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 4px;text-align:right;white-space:nowrap}
+.tbl th{background:var(--accent-soft);font-weight:600;text-align:center}
+.tbl td:first-child,.tbl th:first-child{text-align:left}
+.tbl td.q{color:var(--accent);font-weight:700;text-align:center}
+.tbl tr.total td{background:#f3f6f8;font-weight:600}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stat div{padding:10px 4px;border:1px solid var(--line);border-radius:6px;background:var(--sheet)}
+.stat b{display:block;font-family:var(--mono);font-size:22px;font-weight:600}
+.stat span{font-size:11px;color:var(--ink2)}
+.weak{list-style:none;margin:8px 0 0;padding:0}
+.weak li{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.weak li .num{color:var(--ng);font-weight:600}
+label.f{display:block;font-size:13px;color:var(--ink2);margin-top:10px}
+input[type=text],textarea,select{width:100%;font:inherit;font-size:15px;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);margin-top:4px}
+textarea{min-height:110px;line-height:1.7}
+.custom-list{margin-top:10px;font-size:13px}
+.custom-list div{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+.custom-list button{background:none;border:0;color:var(--ng);font:inherit;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.empty{text-align:center;color:var(--ink2);padding:30px 10px;font-size:14px}
+.pt{margin-top:10px;font-size:13px;color:var(--ink2);border-top:1px dashed var(--line);padding-top:8px}
+
+.card{position:relative;min-height:190px;padding:18px 16px;border:1px solid var(--line);border-radius:6px;background:var(--sheet);cursor:pointer;box-shadow:0 1px 0 rgba(31,50,66,.04)}
+.card .cat{font-size:11px;color:var(--ink2);letter-spacing:.06em}
+.card .term{font-size:22px;font-weight:700;margin:6px 0 4px;line-height:1.4}
+.card .tap{position:absolute;right:14px;bottom:10px;font-size:11px;color:var(--accent)}
+.card h3{font-size:12px;color:var(--ink2);margin:12px 0 4px;font-weight:600;padding-left:8px;border-left:3px solid var(--accent)}
+.card p{margin:0;font-size:14px;line-height:1.75}
+.card ul{margin:0;padding-left:1.2em;font-size:14px;line-height:1.75}
+.termlist{list-style:none;margin:0;padding:0}
+.termlist li{padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.termlist li b{display:block}
+.termlist li span{font-size:13px;color:var(--ink2)}
+.chip.fl{font-size:11px;padding:3px 9px;margin-left:6px;vertical-align:middle}
+.chip.fl.on{background:var(--warn-soft);border-color:var(--warn);color:var(--ink)}
+.lawlist .ans{color:var(--accent);font-weight:700;border-bottom:2px solid var(--accent)}
+.last{opacity:.7}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>二次検定ドリル<small>2級建築施工管理技士｜法規・工程表</small></h1>
+  <div class="countdown">試験日 11/8 まで<b id="days">--</b>日</div>
+</header>
+<nav><div class="tabs">
+  <button data-tab="law" class="on">法規</button>
+  <button data-tab="sched">工程表</button>
+  <button data-tab="term">用語</button>
+  <button data-tab="sekou">施工</button>
+  <button data-tab="stats">記録</button>
+  <button data-tab="add">追加</button>
+</div></nav>
+<main id="app"></main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 初期データ：法規 穴埋め ================= */
+/* 条文は要旨。{{n}} が空欄。a=正答, c=選択肢 */
+const LAW_Q = [
+{id:'L01',law:'建設業法',art:'第19条の2（現場代理人の選任等に関する通知）',
+ text:'請負人は、請負契約の履行に関し工事現場に現場代理人を置く場合においては、当該現場代理人の権限に関する事項及び当該現場代理人の行為についての注文者の請負人に対する{{0}}の方法を、{{1}}により注文者に通知しなければならない。',
+ blanks:[{a:'意見の申出',c:['意見の申出','承諾','報告','協議']},{a:'書面',c:['書面','口頭','電話','掲示']}],
+ pt:'現場代理人に関する通知は「書面」。監理技術者等の通知も同様に書面が原則。'},
+{id:'L02',law:'建設業法',art:'第20条（建設工事の見積り等）',
+ text:'建設業者は、建設工事の請負契約を締結するに際して、工事内容に応じ、工事の種別ごとの{{0}}、労務費その他の経費の内訳並びに工事の{{1}}ごとの作業及びその準備に必要な日数を明らかにして、建設工事の見積りを行うよう努めなければならない。',
+ blanks:[{a:'材料費',c:['材料費','設計費','管理費','外注費']},{a:'工程',c:['工程','工種','職種','部位']}],
+ pt:'見積りは「材料費・労務費・経費の内訳」と「工程ごとの日数」を明らかにする努力義務。'},
+{id:'L03',law:'建設業法',art:'第22条（一括下請負の禁止）',
+ text:'建設業者は、その請け負った建設工事を、いかなる方法をもってするかを問わず、{{0}}して他人に請け負わせてはならない。ただし、建設工事が多数の者が利用する施設又は工作物に関する重要な建設工事で政令で定めるもの以外の建設工事である場合において、当該建設工事の元請負人があらかじめ発注者の{{1}}による承諾を得たときは、適用しない。',
+ blanks:[{a:'一括',c:['一括','分割','継続','無償']},{a:'書面',c:['書面','口頭','電子メール','署名']}],
+ pt:'一括下請負は原則禁止。民間工事（共同住宅の新築を除く）で発注者の「書面による承諾」があれば例外。'},
+{id:'L04',law:'建設業法',art:'第24条の3（下請代金の支払）',
+ text:'元請負人は、請負代金の出来形部分に対する支払又は工事完成後における支払を受けたときは、当該支払の対象となった建設工事を施工した下請負人に対して、当該元請負人が支払を受けた金額の出来形に対する割合及び当該下請負人が施工した出来形部分に相応する下請代金を、当該支払を受けた日から{{0}}以内で、かつ、できる限り短い期間内に支払わなければならない。',
+ blanks:[{a:'1月',c:['1月','20日','14日','50日']}],
+ pt:'下請代金の支払は「1月以内」。完成検査は「20日以内」と区別して覚える。'},
+{id:'L05',law:'建設業法',art:'第24条の4（検査及び引渡し）',
+ text:'元請負人は、下請負人からその請け負った建設工事が完成した旨の通知を受けたときは、当該通知を受けた日から{{0}}以内で、かつ、できる限り短い期間内に、その完成を確認するための{{1}}を完了しなければならない。',
+ blanks:[{a:'20日',c:['20日','14日','30日','1月']},{a:'検査',c:['検査','引渡し','支払','承認']}],
+ pt:'完成通知から「20日以内」に検査。検査後、下請負人が申し出れば直ちに引渡しを受ける。'},
+{id:'L06',law:'建設業法',art:'第24条の8（施工体制台帳及び施工体系図の作成等）',
+ text:'特定建設業者は、発注者から直接建設工事を請け負った場合において、当該建設工事を施工するために締結した下請契約の請負代金の額が政令で定める金額以上になるときは、当該建設工事について、下請負人の商号又は名称、当該下請負人に係る建設工事の内容及び{{0}}その他の国土交通省令で定める事項を記載した{{1}}を作成し、工事現場ごとに備え置かなければならない。',
+ blanks:[{a:'工期',c:['工期','請負代金の額','担当者名','工法']},{a:'施工体制台帳',c:['施工体制台帳','施工体系図','施工計画書','工事台帳']}],
+ pt:'台帳は「備え置く」、体系図は「見やすい場所に掲げる」。公共工事は金額にかかわらず作成義務。'},
+{id:'L07',law:'建設業法',art:'第24条の8 第4項（施工体系図）',
+ text:'特定建設業者は、各下請負人の施工の分担関係を表示した{{0}}を作成し、これを当該工事現場の{{1}}場所に掲げなければならない。',
+ blanks:[{a:'施工体系図',c:['施工体系図','施工体制台帳','工程表','組織図']},{a:'見やすい',c:['見やすい','安全な','出入口付近の','事務所内の']}],
+ pt:'施工体系図＝分担関係の表示、見やすい場所に掲示。'},
+{id:'L08',law:'建設業法',art:'第26条（主任技術者及び監理技術者の設置等）',
+ text:'建設業者は、その請け負った建設工事を施工するときは、当該建設工事に関し一定の実務の経験等を有する者で、当該工事現場における建設工事の施工の技術上の管理をつかさどるもの（{{0}}）を置かなければならない。公共性のある施設若しくは工作物又は多数の者が利用する施設若しくは工作物に関する重要な建設工事で政令で定めるものについては、主任技術者又は監理技術者は、工事現場ごとに、{{1}}の者でなければならない。',
+ blanks:[{a:'主任技術者',c:['主任技術者','監理技術者','現場代理人','安全管理者']},{a:'専任',c:['専任','常駐','兼任','専属']}],
+ pt:'重要な工事（請負4,000万円以上、建築一式8,000万円以上）は「専任」。'},
+{id:'L09',law:'建設業法',art:'第26条の4（主任技術者及び監理技術者の職務等）',
+ text:'主任技術者及び監理技術者は、工事現場における建設工事を適正に実施するため、当該建設工事の{{0}}の作成、{{1}}、品質管理その他の技術上の管理及び当該建設工事の施工に従事する者の技術上の{{2}}の職務を誠実に行わなければならない。',
+ blanks:[{a:'施工計画',c:['施工計画','工事請負契約書','施工体制台帳','安全衛生計画']},{a:'工程管理',c:['工程管理','原価管理','労務管理','安全管理']},{a:'指導監督',c:['指導監督','指揮命令','教育訓練','評価']}],
+ pt:'職務は「施工計画の作成・工程管理・品質管理・技術上の指導監督」。原価管理は入らない。'},
+{id:'L10',law:'建設業法',art:'第3条（建設業の許可）',
+ text:'建設業を営もうとする者は、二以上の都道府県の区域内に営業所を設けて営業をしようとする場合にあっては{{0}}の、一の都道府県の区域内にのみ営業所を設けて営業をしようとする場合にあっては当該営業所の所在地を管轄する{{1}}の許可を受けなければならない。許可は、{{2}}年ごとにその更新を受けなければ、その期間の経過によって、その効力を失う。',
+ blanks:[{a:'国土交通大臣',c:['国土交通大臣','厚生労働大臣','都道府県知事','市町村長']},{a:'都道府県知事',c:['都道府県知事','国土交通大臣','市町村長','労働基準監督署長']},{a:'5',c:['5','3','7','10']}],
+ pt:'大臣許可／知事許可の区分は「営業所の所在」。有効期間5年。'},
+{id:'L11',law:'建築基準法施行令',art:'第136条の2の20（仮囲い）',
+ text:'木造の建築物で高さが{{0}}m若しくは軒の高さが9mを超えるもの又は木造以外の建築物で{{1}}以上の階数を有するものについて、建築、修繕、模様替又は除却のための工事を行う場合においては、工事期間中工事現場の周囲にその地盤面からの高さが{{2}}m以上の板塀その他これに類する仮囲いを設けなければならない。',
+ blanks:[{a:'13',c:['13','9','10','15']},{a:'2',c:['2','3','4','5']},{a:'1.8',c:['1.8','1.5','2.0','2.5']}],
+ pt:'仮囲い：木造は高さ13m・軒高9m超、木造以外は2階以上、高さ1.8m以上。'},
+{id:'L12',law:'建築基準法施行令',art:'第136条の3（根切り工事、山留め工事等を行う場合の危害防止）',
+ text:'建築工事等において根切り工事、山留め工事、ウエル工事、ケーソン工事その他基礎工事を行う場合においては、あらかじめ、地下に埋設されたガス管、ケーブル、水道管及び下水道管の{{0}}による危害の発生を防止するための措置を講じなければならない。また、深さ{{1}}m以上の根切り工事を行なう場合においては、地盤が崩壊するおそれがないとき、及び周辺の状況により危害防止上支障がないときを除き、{{2}}を設けなければならない。',
+ blanks:[{a:'損壊',c:['損壊','移設','腐食','凍結']},{a:'1.5',c:['1.5','1.0','2.0','3.0']},{a:'山留め',c:['山留め','仮囲い','排水設備','防護棚']}],
+ pt:'根切り深さ1.5m以上で山留め。埋設物は損壊防止措置。'},
+{id:'L13',law:'建築基準法施行令',art:'第136条の5（落下物に対する防護）',
+ text:'建築工事等において工事現場の境界線からの水平距離が{{0}}m以内で、かつ、地盤面からの高さが{{1}}m以上の場所からくずその他飛散するおそれのある物を投下する場合においては、{{2}}を用いる等当該投下による危害を防止するための措置を講じなければならない。',
+ blanks:[{a:'5',c:['5','3','7','10']},{a:'3',c:['3','2','5','7']},{a:'ダストシュート',c:['ダストシュート','防護棚','安全ネット','養生シート']}],
+ pt:'投下は「5m以内・3m以上→ダストシュート」。次項の帆布は「5m以内・7m以上」。'},
+{id:'L14',law:'建築基準法施行令',art:'第136条の5 第2項（落下物に対する防護）',
+ text:'建築工事等を行う場合において、建築のための工事をする部分が工事現場の境界線からの水平距離が5m以内で、かつ、地盤面から高さが{{0}}m以上にあるとき、その他はつり、除却、外壁の修繕等に伴う工事現場から工事現場の周辺への飛来落下物による危害を防止するため必要があるときは、国土交通大臣の定める基準に従って、工事現場の周囲その他危害防止上必要な部分を{{1}}でおおう等当該危害を防止するための措置を講じなければならない。',
+ blanks:[{a:'7',c:['7','3','5','10']},{a:'鉄網又は帆布',c:['鉄網又は帆布','板塀','仮囲い','安全ネット']}],
+ pt:'高さ7m以上の作業部分は鉄網・帆布で覆う（メッシュシート養生の根拠）。'},
+{id:'L15',law:'建築基準法施行令',art:'第136条の6（建て方）',
+ text:'建築物の建て方を行なうに当たっては、{{0}}を取り付ける等荷重又は外力による倒壊を防止するための措置を講じなければならない。鉄骨造の建築物の建て方の{{1}}は、荷重及び外力に対して安全なものとしなければならない。',
+ blanks:[{a:'仮筋かい',c:['仮筋かい','控え綱','水平つなぎ','足場']},{a:'仮締',c:['仮締','本締','溶接','建入れ']}],
+ pt:'建て方は仮筋かいで倒壊防止、鉄骨の仮締は安全なものに。'},
+{id:'L16',law:'建築基準法',art:'第89条（工事現場における確認の表示等）',
+ text:'第6条第1項の建築、大規模の修繕又は大規模の模様替の工事の施工者は、当該工事現場の見易い場所に、国土交通省令で定める様式によって、建築主、設計者、工事施工者及び工事の{{0}}の氏名又は名称並びに当該工事に係る同項の確認があった旨の{{1}}をしなければならない。また、当該工事に係る{{2}}を当該工事現場に備えておかなければならない。',
+ blanks:[{a:'現場管理者',c:['現場管理者','主任技術者','監理者','監督員']},{a:'表示',c:['表示','届出','報告','掲示']},{a:'設計図書',c:['設計図書','施工計画書','確認済証','建築計画概要書']}],
+ pt:'確認済の表示板（建築主・設計者・施工者・現場管理者）＋設計図書の備付け。'},
+{id:'L17',law:'労働安全衛生法',art:'第14条（作業主任者）',
+ text:'事業者は、高圧室内作業その他の労働災害を防止するための管理を必要とする作業で、政令で定めるものについては、都道府県労働局長の{{0}}を受けた者又は都道府県労働局長の登録を受けた者が行う{{1}}を修了した者のうちから、厚生労働省令で定めるところにより、{{2}}を選任し、その者に当該作業に従事する労働者の指揮その他の厚生労働省令で定める事項を行わせなければならない。',
+ blanks:[{a:'免許',c:['免許','認定','許可','承認']},{a:'技能講習',c:['技能講習','特別教育','職長教育','安全教育']},{a:'作業主任者',c:['作業主任者','安全管理者','職長','安全衛生責任者']}],
+ pt:'作業主任者＝免許 or 技能講習修了者から選任。'},
+{id:'L18',law:'労働安全衛生法',art:'第15条（統括安全衛生責任者）',
+ text:'特定元方事業者は、その労働者及びその請負人の労働者が当該場所において作業を行うときは、これらの労働者の作業が同一の場所において行われることによって生ずる労働災害を防止するため、{{0}}を選任し、その者に{{1}}の指揮をさせるとともに、第30条第1項各号の事項を統括管理させなければならない。',
+ blanks:[{a:'統括安全衛生責任者',c:['統括安全衛生責任者','総括安全衛生管理者','安全衛生責任者','安全管理者']},{a:'元方安全衛生管理者',c:['元方安全衛生管理者','店社安全衛生管理者','衛生管理者','産業医']}],
+ pt:'統括安全衛生責任者（元方）→元方安全衛生管理者を指揮。下請側は安全衛生責任者。「総括」と「統括」の字に注意。'},
+{id:'L19',law:'労働安全衛生法',art:'第25条（事業者の講ずべき措置）',
+ text:'事業者は、労働災害発生の急迫した危険があるときは、直ちに作業を{{0}}し、労働者を作業場から{{1}}させる等必要な措置を講じなければならない。',
+ blanks:[{a:'中止',c:['中止','変更','縮小','延期']},{a:'退避',c:['退避','待機','移動','解散']}],
+ pt:'急迫した危険→作業中止・退避。'},
+{id:'L20',law:'労働安全衛生法',art:'第30条（特定元方事業者等の講ずべき措置）',
+ text:'特定元方事業者は、その労働者及び関係請負人の労働者の作業が同一の場所において行われることによって生ずる労働災害を防止するため、次の事項に関する必要な措置を講じなければならない。一 {{0}}の設置及び運営を行うこと。二 作業間の{{1}}を行うこと。三 作業場所を{{2}}すること。',
+ blanks:[{a:'協議組織',c:['協議組織','安全委員会','衛生委員会','対策本部']},{a:'連絡及び調整',c:['連絡及び調整','指揮及び監督','協力及び援助','報告及び記録']},{a:'巡視',c:['巡視','点検','清掃','監視']}],
+ pt:'協議組織・連絡調整・巡視（毎作業日1回以上）・教育指導援助・工程計画等。'},
+{id:'L21',law:'労働安全衛生法',art:'第59条（安全衛生教育）',
+ text:'事業者は、労働者を雇い入れたときは、当該労働者に対し、厚生労働省令で定めるところにより、その従事する業務に関する安全又は衛生のための{{0}}を行なわなければならない。この規定は、労働者の{{1}}を変更したときについて準用する。また、危険又は有害な業務で、厚生労働省令で定めるものに労働者をつかせるときは、当該業務に関する安全又は衛生のための{{2}}を行なわなければならない。',
+ blanks:[{a:'教育',c:['教育','訓練','講習','指導']},{a:'作業内容',c:['作業内容','作業場所','雇用形態','賃金']},{a:'特別の教育',c:['特別の教育','技能講習','職長教育','免許試験']}],
+ pt:'雇入れ時教育・作業内容変更時教育・特別教育（危険有害業務）の3本立て。'},
+{id:'L22',law:'労働安全衛生法',art:'第60条（職長等の教育）',
+ text:'事業者は、その事業場の業種が政令で定めるものに該当するときは、新たに職務につくこととなった{{0}}その他の作業中の労働者を直接指導又は監督する者（作業主任者を除く。）に対し、次の事項について、厚生労働省令で定めるところにより、安全又は衛生のための教育を行なわなければならない。一 作業方法の決定及び労働者の{{1}}に関すること。二 労働者に対する指導又は監督の方法に関すること。',
+ blanks:[{a:'職長',c:['職長','主任技術者','安全管理者','作業主任者']},{a:'配置',c:['配置','評価','賃金','雇用']}],
+ pt:'職長教育の対象から「作業主任者」は除かれる。'},
+{id:'L23',law:'労働安全衛生法',art:'第61条（就業制限）',
+ text:'事業者は、クレーンの運転その他の業務で、政令で定めるものについては、都道府県労働局長の当該業務に係る{{0}}を受けた者又は都道府県労働局長の登録を受けた者が行う当該業務に係る技能講習を修了した者その他厚生労働省令で定める資格を有する者でなければ、当該業務に就かせてはならない。当該業務に従事するときは、これに係る免許証その他その資格を証する書面を{{1}}していなければならない。',
+ blanks:[{a:'免許',c:['免許','許可','認定','登録']},{a:'携帯',c:['携帯','提出','掲示','保管']}],
+ pt:'就業制限業務は免許／技能講習等の資格者のみ。資格証は「携帯」。'},
+{id:'L24',law:'労働安全衛生法',art:'第88条（計画の届出等）',
+ text:'事業者は、建設業に属する事業の仕事のうち重大な労働災害を生ずるおそれがある特に大規模な仕事で、厚生労働省令で定めるものを開始しようとするときは、その計画を当該仕事の開始の日の{{0}}日前までに、厚生労働省令で定めるところにより、{{1}}に届け出なければならない。また、建設業その他政令で定める業種に属する事業の仕事で、厚生労働省令で定めるものを開始しようとする者は、その計画を当該仕事の開始の日の{{2}}日前までに、厚生労働省令で定めるところにより、労働基準監督署長に届け出なければならない。',
+ blanks:[{a:'30',c:['30','14','7','60']},{a:'厚生労働大臣',c:['厚生労働大臣','国土交通大臣','都道府県労働局長','労働基準監督署長']},{a:'14',c:['14','30','7','10']}],
+ pt:'特に大規模→30日前・厚生労働大臣。一定規模→14日前・労働基準監督署長。'}
+];
+
+/* ================= 初期データ：工程表（バーチャート） ================= */
+/* bar=[開始,終了]（月の座標、1.0=1月初め、7.0=6月末） m=月別出来高(万円) */
+const SCHED = [
+{id:'S1',title:'鉄骨造 3階建 事務所ビル 新築工事',sub:'工期 6か月　総工事金額 5,000万円',months:['1月','2月','3月','4月','5月','6月'],
+ tasks:[
+  {n:'仮設工事',bar:[1,7],m:[50,20,20,20,20,20]},
+  {n:'土工事・地業工事',bar:[1,2.4],m:[200,100,0,0,0,0]},
+  {n:'鉄筋コンクリート工事',bar:[2,3.7],m:[0,300,200,0,0,0]},
+  {n:'鉄骨工事',hide:'A',bar:[3,4.5],m:[0,0,600,300,0,0],clue:'アンカーボルト設置後、建方・本締め・デッキプレート敷き'},
+  {n:'外部仕上げ工事',bar:[4,5.8],m:[0,0,0,400,300,0],clue:'ALCパネル取付け、屋上防水'},
+  {n:'金属製建具工事',bar:[4.3,5.7],m:[0,0,0,150,150,0]},
+  {n:'内部仕上げ工事',hide:'B',bar:[5,7],m:[0,0,0,0,400,400],clue:'軽量鉄骨下地、ボード張り、床仕上げ'},
+  {n:'設備工事',bar:[2,7],m:[0,100,200,200,400,200]},
+  {n:'外構工事',bar:[5.6,7],m:[0,0,0,0,50,200]}
+ ],
+ qs:[
+  {id:'S1Q1',t:'工程表の A に該当する工事名として適当なものはどれか。',c:['鉄骨工事','鉄筋工事','外壁工事','屋上防水工事'],a:0,e:'3月〜4月中旬、鉄筋コンクリート工事（基礎）の後に始まり、外部仕上げの前に完了する工程。手がかり欄の「建方・本締め・デッキプレート」は鉄骨工事の作業。'},
+  {id:'S1Q2',t:'工程表の B に該当する工事名として適当なものはどれか。',c:['内部仕上げ工事','外構工事','塗装工事','防水工事'],a:0,e:'外部仕上げと建具がほぼ終わってから始まり、竣工まで続く工程。「軽量鉄骨下地・ボード張り」は内装の作業。'},
+  {id:'S1Q3',t:'出来高表から、総工事金額に対する3月末までの累計出来高の比率を求めよ。',c:['20.4％','35.8％','41.2％','57.2％'],a:1,e:'月別合計：1月250、2月520、3月1,020（万円）。累計1,790÷5,000＝35.8％。',calc:true},
+  {id:'S1Q4',t:'設備工事の工事金額に対する、4月末時点の累計出来高の比率を求めよ。',c:['27.3％','45.5％','81.8％','100％'],a:1,e:'設備工事：2月100＋3月200＋4月200＝500。500÷1,100＝45.5％。',calc:true},
+  {id:'S1Q5',t:'総工事金額に対する5月末までの累計出来高の比率を求めよ。',c:['57.2％','74.8％','83.6％','92.0％'],a:2,e:'4月1,070、5月1,320。累計1,790＋1,070＋1,320＝4,180。4,180÷5,000＝83.6％。',calc:true}
+ ]},
+{id:'S2',title:'鉄筋コンクリート造 3階建 共同住宅 新築工事',sub:'工期 6か月　総工事金額 6,000万円',months:['1月','2月','3月','4月','5月','6月'],
+ tasks:[
+  {n:'仮設工事',bar:[1,7],m:[100,40,40,40,40,40]},
+  {n:'土工事・地業工事',bar:[1,2.3],m:[300,100,0,0,0,0]},
+  {n:'躯体工事',hide:'A',bar:[2,4.5],m:[0,600,600,300,0,0],clue:'1階〜3階の配筋、型枠、コンクリート打設'},
+  {n:'防水工事',bar:[4.5,4.9],m:[0,0,0,200,0,0]},
+  {n:'外壁タイル工事',bar:[4.3,5.7],m:[0,0,0,300,200,0]},
+  {n:'建具工事',bar:[4.4,5.6],m:[0,0,0,200,200,0]},
+  {n:'内装工事',hide:'B',bar:[4.8,7],m:[0,0,0,100,400,400],clue:'ユニットバス、壁・天井ボード、床フローリング'},
+  {n:'塗装工事',bar:[5.3,6.9],m:[0,0,0,0,100,100]},
+  {n:'設備工事',bar:[2,7],m:[0,200,300,300,300,200]},
+  {n:'外構工事',bar:[5.7,7],m:[0,0,0,0,100,200]}
+ ],
+ qs:[
+  {id:'S2Q1',t:'工程表の A に該当する工事名として適当なものはどれか。',c:['躯体工事','地業工事','外壁工事','解体工事'],a:0,e:'2月〜4月中旬にわたる最大工種。配筋・型枠・コンクリート打設はRC躯体の作業。'},
+  {id:'S2Q2',t:'工程表の B に該当する工事名として適当なものはどれか。',c:['内装工事','外構工事','設備工事','塗装工事'],a:0,e:'躯体完了後に始まり竣工まで続く。ユニットバス・ボード・フローリングは内装。'},
+  {id:'S2Q3',t:'総工事金額に対する4月末までの累計出来高の比率を求めよ。',c:['38.0％','62.0％','66.7％','84.3％'],a:1,e:'月別合計：1月400、2月940、3月940、4月1,440。累計3,720÷6,000＝62.0％。',calc:true},
+  {id:'S2Q4',t:'外壁タイル工事の工事金額に対する、4月末時点の累計出来高の比率を求めよ。',c:['40％','60％','80％','100％'],a:1,e:'4月300÷500＝60％。',calc:true},
+  {id:'S2Q5',t:'防水工事の開始時期に関する記述として最も適当なものはどれか。',c:['屋上スラブのコンクリート打設完了後、躯体工事の終了間際に行う','土工事完了直後に行う','内装工事の完了後に行う','外構工事と同時に行う'],a:0,e:'屋上防水は躯体（屋上スラブ）完了後、外装・内装に先立って行う。工程表でも4月中旬〜下旬。'}
+ ]}
+];
+
+/* 工程管理の知識（4択） */
+const KNOW_Q = [
+{id:'K01',t:'バーチャート工程表の特徴として最も不適当なものはどれか。',c:['各作業の所要日数と施工日程がわかりやすい','作業の順序関係と相互関係が明確にわかる','作成が容易で見やすい','出来高累計曲線を併記すると進捗が把握しやすい'],a:1,e:'バーチャートは作業間の関連（先行・後続）が読み取りにくいのが短所。関連を明確にするのはネットワーク工程表。'},
+{id:'K02',t:'出来高累計曲線（Sカーブ）の説明として最も適当なものはどれか。',c:['工事の初期と終期は緩やかで、中期に急勾配となるS字形になる','工期を通して一定の勾配の直線になる','初期に最も急勾配となり、次第に緩やかになる','工種ごとに独立して描き、合計はしない'],a:0,e:'着工直後・竣工直前は出来高が上がりにくく、中盤に躯体など金額の大きい工事が集中するためS字形。'},
+{id:'K03',t:'工程計画を立てる際の一般的な手順として適当なものはどれか。',c:['施工順序の決定 → 各工事の所要日数の算定 → 工程表の作成 → 検討・修正','工程表の作成 → 施工順序の決定 → 所要日数の算定','所要日数の算定 → 工程表の作成 → 施工順序の決定','検討・修正 → 工程表の作成 → 施工順序の決定'],a:0,e:'順序→日数→工程表→調整の流れ。'},
+{id:'K04',t:'総工事費と工期の関係に関する記述として最も適当なものはどれか。',c:['工期を短縮するほど直接費は減少する','工期を延ばすほど間接費は減少する','間接費は工期に比例して増加し、直接費は工期を短縮するほど増加する','直接費と間接費はいずれも工期と無関係である'],a:2,e:'突貫すると直接費増、工期が延びると現場経費などの間接費増。両者の和が最小となる工期が最適工期。'},
+{id:'K05',t:'工程表の進度管理に関する記述として最も不適当なものはどれか。',c:['予定と実施の出来高を比較し、遅れがあれば原因を調べて対策をとる','工程会議で各工種の進捗を確認し、作業間の調整を行う','遅れが生じた場合は、後続工程の作業を単純にすべて後ろへずらせばよい','進度は出来高累計曲線と実施曲線の差で把握できる'],a:2,e:'遅れは作業の並行化・人員増などで回復を図るのが基本。全体を後ろにずらすと工期が守れない。'}
+];
+
+/* ================= 初期データ：用語（単語帳） ================= */
+/* term=用語 cat=分類 d=説明 n=施工上の留意点（；区切り） */
+const TERMS=[
+{id:'T01',term:'遣方（やりかた）',cat:'仮設',d:'建物の位置・通り芯・高さの基準を示すため、根切りの周囲に杭を打ち、水貫（貫板）を水平に取り付けたもの。',n:'水貫の上端は水平にし、高さの基準となる釘や墨は変形・移動しない位置に付ける；根切りや重機作業に触れない位置に設け、設置後に位置・寸法を検査してから着工する'},
+{id:'T02',term:'ベンチマーク',cat:'仮設',d:'建物の高さおよび位置の基準となる点。既存の工作物や移動のおそれのない場所に設ける。',n:'2か所以上設けて相互に照合できるようにする；工事中に動いたり損傷しないよう養生し、定期的に確認する'},
+{id:'T03',term:'陸墨（ろくずみ）',cat:'仮設',d:'各階の柱・壁などに付ける水平の基準墨。床仕上げ高さから一定の高さ（例：＋1m）に出し、内装・設備の高さの基準にする。',n:'レベルで各階を通して出し、基準になるので複数人で確認する；上階への基準の移動はスラブ開口などを利用して鉛直に上げ、外周から回さない'},
+{id:'T04',term:'親綱',cat:'仮設',d:'高所作業で墜落制止用器具（安全帯）のフックを掛けるために水平に張るロープ。',n:'たるみがないよう支柱に緊張して固定し、支柱間隔は10m以下程度とする；1本の親綱に同時に2人以上のフックを掛けない'},
+{id:'T05',term:'足場の手すり先行工法',cat:'仮設',d:'枠組足場の組立て時、作業床に上がる前に上の層の手すりを先行して取り付け、解体時も作業床を外すまで手すりを残す工法。',n:'手すりのない作業床には立ち入らない；組立て・解体は足場の組立て等作業主任者の指揮のもとで行う'},
+{id:'T06',term:'乗入れ構台',cat:'仮設',d:'根切り工事中に、掘削機やダンプを地上から根切り内へ乗り入れるために設ける仮設の作業構台。',n:'使用する重機の荷重で構造計算し、スロープ勾配は1/10〜1/6程度とする；支柱は山留めの切梁や本設の基礎・柱と干渉しない位置に計画する'},
+{id:'T07',term:'防護棚（朝顔）',cat:'仮設',d:'工事現場からの落下物から通行人などを守るため、外部足場の外側に突き出して設ける棚。',n:'突き出し長さは2m以上、水平面から20°以上の角度で、隙間なく設ける；高さ10m以上は1段以上、20m以上は2段以上設ける'},
+{id:'T08',term:'ローリングタワー',cat:'仮設',d:'脚部にキャスターを付けて移動できるようにした枠組足場（移動式足場）。',n:'作業中はキャスターをロックし、人を乗せたまま移動しない；アウトリガーを設け、高さは設置面の状況に応じた制限内とする'},
+{id:'T09',term:'床付け',cat:'土工事',d:'根切りを設計の深さまで掘り、底面を平らに仕上げること。',n:'床付け面を乱さないよう最後は手掘りや平刃バケットで仕上げる；乱した場合は砂・砂利で置き換えて転圧する'},
+{id:'T10',term:'釜場排水',cat:'土工事',d:'根切り底の一部に集水用のピット（釜場）を設け、集まった地下水をポンプで排出する排水工法。',n:'釜場は基礎・基礎梁から離れた位置に設ける；湧水量が多い場合はボイリングを起こすおそれがあるので、ウェルポイント等の他工法を検討する'},
+{id:'T11',term:'ヒービング',cat:'土工事',d:'軟弱な粘性土地盤で、山留め壁背面の土の重量によって根切り底面が膨れ上がる現象。',n:'山留め壁を良質な地盤まで十分に根入れする；地盤改良や掘削の分割・底盤コンクリートの早期打設で対応する'},
+{id:'T12',term:'ボイリング',cat:'土工事',d:'砂質地盤で、根切り内外の地下水位差により根切り底から水と砂が湧き上がり、地盤が支持力を失う現象。',n:'ディープウェル等で根切り外の地下水位を下げる；山留め壁の根入れを深くして水の回り込みを長くする'},
+{id:'T13',term:'腹起し・切梁',cat:'土工事',d:'山留め壁が受ける土圧を支えるため、壁面に沿って水平に取り付ける部材が腹起し、腹起し同士を突っ張る部材が切梁。',n:'切梁にはプレロードを導入して山留め壁の変位を抑える；取付け前に深く掘り下げず、撤去は下層の底盤・床が完成してから順に行う'},
+{id:'T14',term:'プレボーリング工法（既製杭）',cat:'杭',d:'アースオーガーであらかじめ掘削し、根固め液・杭周固定液を注入した孔に既製杭を建て込む工法。',n:'掘削中のオーガー電流値や排出土で支持層への到達を確認する；杭の建込み後、空掘り部分は速やかに埋め戻す'},
+{id:'T15',term:'スライム処理',cat:'杭',d:'場所打ちコンクリート杭で、孔底に沈殿した掘りくず（スライム）を除去すること。',n:'掘削直後の一次処理と、コンクリート打設直前の二次処理を行う；処理後はトレミー管で連続してコンクリートを打設する'},
+{id:'T16',term:'鉄筋のかぶり厚さ',cat:'鉄筋',d:'鉄筋の表面からコンクリート表面までの最短距離。耐久性・耐火性・付着に関わる。',n:'設計かぶり厚さは最小かぶり厚さに施工誤差10mmを加えて確保する；スペーサーで保持し、型枠に接する面や開口周りは特に確認する'},
+{id:'T17',term:'スペーサー',cat:'鉄筋',d:'かぶり厚さを確保するため、鉄筋と型枠の間に入れる部材。',n:'スラブは1.3個/m²程度、梁は1.5m間隔程度とし、鉄筋の自重・作業荷重に耐えるものを使う；打放しや外部は側面にプラスチック製、底面はコンクリート製など、さび汁が出ないものを選ぶ'},
+{id:'T18',term:'鉄筋の重ね継手',cat:'鉄筋',d:'鉄筋の端部を所定の長さ重ね合わせ、結束線で結束して力を伝える継手。',n:'継手は応力の小さい位置に設け、隣接する継手は相互にずらす；重ね長さは径・コンクリート強度に応じた長さ（例：40d）とし、D35以上には用いない'},
+{id:'T19',term:'ガス圧接継手',cat:'鉄筋',d:'鉄筋の端面を突き合わせ、酸素アセチレン炎で加熱しながら加圧して接合する継手。',n:'ふくらみの直径1.4d以上、長さ1.1d以上、偏心量1/5d以下などの外観検査と超音波探傷検査を行う；径の差が7mmを超える鉄筋どうしは圧接しない、有資格者が行う'},
+{id:'T20',term:'鉄筋のあき',cat:'鉄筋',d:'隣り合う鉄筋の表面間の距離。コンクリートが鉄筋の間を通り充填できるように確保する。',n:'粗骨材最大寸法の1.25倍、25mm、鉄筋径の1.5倍のうち最大の値以上とする；柱・梁の交差部や継手部で不足しやすいので配筋図で確認する'},
+{id:'T21',term:'セパレータ',cat:'型枠',d:'型枠のせき板の間隔を保持し、コンクリートの側圧に抵抗する締付け金物。',n:'打放し仕上げではコーン付きとし、打設後はコーン穴をモルタルで埋め、頭部は防錆処理する；間隔はコンクリート側圧の計算により決める'},
+{id:'T22',term:'型枠の剥離剤',cat:'型枠',d:'型枠のせき板をコンクリートから離れやすくするために塗る油脂系などの材料。',n:'鉄筋に付着させない；塗りすぎるとコンクリート表面の変色や仕上材の付着不良の原因になる'},
+{id:'T23',term:'コンクリートのスランプ',cat:'コンクリート',d:'スランプコーンを引き上げた後の頂部の下がり（cm）で表す、フレッシュコンクリートの軟らかさの指標。',n:'荷卸し時に試験し、許容差（スランプ18cmは±2.5cm）を確認する；現場で水を加えて調整してはならない'},
+{id:'T24',term:'ブリーディング',cat:'コンクリート',d:'打設後、骨材やセメントが沈降することにより水が表面に浮き上がる現象。',n:'表面のブリーディング水は取り除いてから仕上げや打継ぎを行う；単位水量を少なくし、沈下ひび割れはタンピングで処理する'},
+{id:'T25',term:'コールドジョイント',cat:'コンクリート',d:'先に打ち込んだコンクリートが凝結し始めた後に打ち重ねたため、一体化せずに生じる不連続面。',n:'打重ね時間の限度（外気温25℃未満で150分、25℃以上で120分）を守る；打重ね時は棒形振動機を先に打ったコンクリートに10cm程度差し込んで一体化させる'},
+{id:'T26',term:'コンクリートの打継ぎ',cat:'コンクリート',d:'先に打設して硬化したコンクリートに、後から新しいコンクリートを打ち継ぐこと。',n:'梁・スラブはスパンの中央付近、柱・壁はスラブ・梁・基礎の上端に設ける；打継ぎ面のレイタンスを取り除き、散水して湿潤状態にしてから打ち継ぐ'},
+{id:'T27',term:'タンピング',cat:'コンクリート',d:'スラブなどの上面を打設後、凝結前にタンパーでたたいて締め固めること。',n:'沈下ひび割れ・初期ひび割れが生じる前後に行い、ひび割れを消す；ブリーディング水を処理してから行う'},
+{id:'T28',term:'コンクリートの湿潤養生',cat:'コンクリート',d:'打設後、水分の逸散を防ぐため散水・シート覆い・養生マットなどで湿潤状態に保つこと。',n:'普通ポルトランドセメントで5日以上、早強で3日以上保つ；直射日光・風を避け、寒中は初期凍害を受けないよう保温する'},
+{id:'T29',term:'コンクリートの締固め',cat:'コンクリート',d:'棒形振動機などで気泡を追い出し、型枠内の隅々までコンクリートを密実に充填すること。',n:'挿入間隔は60cm以下、1か所5〜15秒程度、鉛直に挿入して先端を先に打った層に10cm程度入れる；引き抜くときはゆっくりと、穴が残らないようにする'},
+{id:'T30',term:'高力ボルト摩擦接合',cat:'鉄骨',d:'高力ボルトで母材を強く締め付け、接合面に生じる摩擦力で応力を伝える接合方法。',n:'摩擦面は黒皮・塗料・油を除去してすべり係数0.45以上を確保する；一次締め→マーキング→本締めの順で、ボルト群の中央から端部へ締め付ける'},
+{id:'T31',term:'仮ボルト',cat:'鉄骨',d:'鉄骨建方時に、本締め前に部材を仮に固定するために用いるボルト。',n:'中ボルト等を用い、ボルト1群に対して1/3程度以上かつ2本以上締める；本接合用の高力ボルトを仮ボルトに兼用しない'},
+{id:'T32',term:'スタッド溶接',cat:'鉄骨',d:'鉄骨梁とコンクリートスラブを一体化するため、頭付きスタッドをアーク溶接で梁フランジに取り付けること。',n:'下向き姿勢を原則とし、母材の水分・さび・塗料を除去する；30°打撃曲げ試験や外観検査（余盛りの形状）で確認する'},
+{id:'T33',term:'アンダーカット',cat:'鉄骨',d:'溶接の止端部で母材が溝状に掘れ、溶着金属で埋まらないまま残る溶接欠陥。',n:'溶接電流過大・運棒速度過大・アーク長過大が原因なので溶接条件を管理する；限度を超えたものはグラインダーで処理後、補修溶接する'},
+{id:'T34',term:'ベースモルタル',cat:'鉄骨',d:'鉄骨柱脚のベースプレート下に、建方精度を確保するため敷く無収縮モルタル。',n:'あと詰め中心塗り工法では建方の3日前までに施工し養生する；厚さ30〜50mm、大きさ200〜300mm角程度とする'},
+{id:'T35',term:'建入れ直し',cat:'鉄骨',d:'鉄骨建方後、柱の倒れ・ねじれをワイヤーやターンバックルで修正して精度を確保すること。',n:'高力ボルトの本締め前に行い、各節ごとに計測して精度を確認する；本設の筋かいを建入れ直しに用いない'},
+{id:'T36',term:'木造の筋かい',cat:'木工事',d:'柱と横架材で構成する軸組に斜めに入れ、地震や風などの水平力に抵抗させる部材。',n:'筋かいには欠込みをしない（圧縮筋かいは所定の金物で固定）；端部は柱・横架材に筋かい金物で緊結する'},
+{id:'T37',term:'大引き・根太',cat:'木工事',d:'木造1階床組で、根太を支える横材が大引き、床板を直接受ける部材が根太。',n:'大引きは床束で支持し、根太の間隔は303mm程度（畳・フローリングなど仕上げで変える）とする；継手は束の上に設ける'},
+{id:'T38',term:'ALCパネル縦壁ロッキング構法',cat:'外装',d:'縦張りのALCパネルを上下の取付金物で1点ずつ固定し、層間変位に対してパネルが回転して追従できるようにする構法。',n:'パネル間の目地は伸縮目地としてシーリング材を充填する；パネルへの設備開口は構造上の制限内とし、無理に切欠かない'},
+{id:'T39',term:'改良圧着張り',cat:'タイル',d:'下地とタイル裏面の両方に張付けモルタルを塗り付け、タイルをたたき押さえて張る工法。',n:'張付けモルタルは1回の塗付け面積2m²以内とし、塗り置き時間30分以内で張る；タイルはたたき押さえてモルタルを裏面全体に密着させる'},
+{id:'T40',term:'伸縮調整目地',cat:'タイル',d:'温度変化や乾燥収縮による躯体・タイルの動きを吸収するため、外壁タイル面に設ける目地。',n:'3〜4m間隔程度で縦横に設け、躯体のひび割れ誘発目地の位置と合わせる；目地にはシーリング材を充填する'},
+{id:'T41',term:'アスファルト防水の絶縁工法',cat:'防水',d:'下地のひび割れや動きが防水層に伝わらないよう、防水層を下地に部分的に接着させる工法。',n:'立上り・出入口などの端部は密着させる；防水層内の湿気を逃がすため脱気装置を設ける'},
+{id:'T42',term:'バックアップ材・ボンドブレーカー',cat:'シーリング',d:'シーリング目地の深さを調整し、三面接着を防ぐために入れる材料。深い目地にはバックアップ材、浅い目地にはボンドブレーカー（テープ）を用いる。',n:'シーリング材と接着しない材質のものを選ぶ；バックアップ材は目地幅より少し大きい径とし、途中で切れ目・隙間を作らない'},
+{id:'T43',term:'素地ごしらえ（けれん）',cat:'塗装',d:'塗装前に下地のさび・油分・汚れ・旧塗膜などを除去し、塗料が付着しやすい状態にすること。',n:'鉄部はけれん後速やかにさび止め塗料を塗る；木部は含水率18%以下、コンクリート・モルタルは10%以下程度に乾燥していることを確認する'},
+{id:'T44',term:'石こうボードの直張り工法（GL工法）',cat:'内装',d:'コンクリート壁面に石こう系接着材をだんご状に塗り付け、石こうボードを直接押し付けて張る工法。',n:'接着材の塗付け間隔は周辺部150〜200mm、中央部200〜250mm程度とする；躯体の乾燥を確認してから張り、張付け後は接着材が乾くまで1週間程度は仕上げをしない'},
+{id:'T45',term:'テーパーエッジ・ジョイントコンパウンド',cat:'内装',d:'石こうボードの長辺の縁を薄く傾斜させた形状がテーパーエッジ、その継目にテープと共に塗り込み平滑にするパテ材がジョイントコンパウンド。',n:'継目処理は下塗り→中塗り→上塗りと塗り幅を広げながら行う；各層を十分乾燥させてからサンディングする'},
+{id:'T46',term:'ビニル床シートの熱溶接工法',cat:'内装',d:'張り付けたビニル床シートの継目に溝を切り、溶接棒を熱風で溶かして接合する工法。',n:'張付け後12時間以上（接着剤硬化後）経過してから溶接する；溶接部は溶接棒を余盛りし、冷却後に削り取って平滑にする'},
+{id:'T47',term:'野縁・野縁受け',cat:'内装',d:'軽量鉄骨天井下地で、ボードを直接受ける部材が野縁、野縁を吊りボルト側から受ける部材が野縁受け。',n:'野縁間隔はボード下地張りで360mm程度、仕上げ直張りで303mm程度とする；吊りボルト間隔は900mm程度、周辺部は壁から150mm以内に設ける'},
+{id:'T48',term:'スタッド・ランナー',cat:'内装',d:'軽量鉄骨壁下地で、床・天井に固定する溝形の部材がランナー、ランナー間に立てる縦材がスタッド。',n:'スタッド間隔はボード1枚張りで300mm、2枚張りで450mm程度とする；振れ止めは床から1.2m間隔程度で通し、上部ランナーとの間に10mm程度の隙間を確保する'}
+];
+
+/* ================= 初期データ：問題5 施工（躯体・仕上げ 4択） ================= */
+/* g=躯体/仕上げ  t=問題文（___が空欄） c=選択肢 a=正答index e=解説 */
+const SEKOU_Q=[
+{id:'P01',g:'躯体',t:'根切りの埋戻しは、透水性のよい山砂などを用い、1層 ___ mm程度ごとに水締め又はランマーで締め固める。',c:['150','300','600','900'],a:1,e:'埋戻しは1層300mm程度ごとに締固め。厚くすると締まらず沈下の原因になる。'},
+{id:'P02',g:'躯体',t:'場所打ちコンクリート杭のコンクリート打設では、トレミー管の先端をコンクリート中に ___ m以上埋め込んだ状態を保つ。',c:['1','2','3','4'],a:1,e:'トレミー管の先端は常にコンクリート中に2m以上。抜けると泥水を巻き込む。'},
+{id:'P03',g:'躯体',t:'鉄筋のガス圧接部の外観検査では、ふくらみの直径は鉄筋径の ___ 倍以上とする。',c:['1.1','1.2','1.4','1.6'],a:2,e:'直径1.4d以上、長さ1.1d以上、偏心量1/5d以下、折れ曲がり2°以下。'},
+{id:'P04',g:'躯体',t:'鉄筋の重ね継手を隣り合わせて設ける場合、継手の中心位置は継手長さの ___ 倍又は1.5倍ずらす。',c:['0.5','1.0','2.0','3.0'],a:0,e:'継手は同一箇所に集中させず、0.5倍又は1.5倍ずらして千鳥に配置する。'},
+{id:'P05',g:'躯体',t:'柱の帯筋・梁のあばら筋の末端のフックは ___ 度以上とし、余長は6d以上とする。',c:['45','90','135','180'],a:2,e:'帯筋・あばら筋は135°フック（余長6d）。主筋の定着は90°や180°もある。'},
+{id:'P06',g:'躯体',t:'コンクリート荷卸し時のスランプ試験で、指定スランプ18cmのときの許容差は ___ cmである。',c:['±1.5','±2.5','±3.0','±5.0'],a:1,e:'スランプ8cm以上18cm以下は±2.5cm、21cmは±1.5cm、5cm以下・8cm未満は±1.5cm。'},
+{id:'P07',g:'躯体',t:'コンクリートの打重ね時間間隔の限度は、外気温が25℃以上の場合 ___ 分以内とする。',c:['90','120','150','180'],a:1,e:'25℃以上：120分、25℃未満：150分。超えるとコールドジョイントの原因。'},
+{id:'P08',g:'躯体',t:'棒形振動機によるコンクリートの締固めでは、挿入間隔を ___ cm以下とし、1か所5〜15秒程度加振する。',c:['30','45','60','90'],a:2,e:'挿入間隔60cm以下、鉛直に挿入し、先端を先に打った層に10cm程度入れる。'},
+{id:'P09',g:'躯体',t:'普通コンクリートの荷卸し時の空気量は ___ %を標準とし、許容差は±1.5%とする。',c:['2.0','3.0','4.5','6.0'],a:2,e:'普通・軽量コンクリートとも空気量4.5%（±1.5%）。'},
+{id:'P10',g:'躯体',t:'基礎・柱・壁・梁側のせき板は、コンクリートの圧縮強度が ___ N/mm²以上に達したことを確認すれば取り外せる。',c:['3','5','10','15'],a:1,e:'側面のせき板は5N/mm²以上。梁下・スラブ下の支保工は設計基準強度（又は所定強度）が必要。'},
+{id:'P11',g:'躯体',t:'普通ポルトランドセメントを用いたコンクリートの湿潤養生期間は ___ 日以上とする。',c:['3','5','7','10'],a:1,e:'普通5日、早強3日、中庸熱・低熱7日以上。'},
+{id:'P12',g:'躯体',t:'JIS形高力ボルトのナット回転法による本締めでは、一次締め後のナット回転量を ___ 度±30度とする。',c:['60','90','120','180'],a:2,e:'ボルト長さ5d以下は120°±30°、5d超は180°±30°。トルシア形はピンテールの破断で確認。'},
+{id:'P13',g:'躯体',t:'鉄骨建方における柱の倒れの管理許容差は、柱の高さの ___ 以下かつ10mm以下とする。',c:['1/300','1/500','1/1000','1/2000'],a:2,e:'管理許容差H/1000かつ10mm以下、限界許容差H/700かつ15mm以下。'},
+{id:'P14',g:'躯体',t:'頭付きスタッドの溶接後の検査として、打撃曲げ試験は ___ 度曲げて溶接部の割れの有無を確認する。',c:['15','30','45','60'],a:1,e:'30°打撃曲げ試験。割れがなければ曲げたまま使用してよい。'},
+{id:'P15',g:'躯体',t:'鉄骨柱脚のアンカーボルトは、ナットの外にねじ山が ___ 山以上出るようにする。',c:['1','2','3','5'],a:2,e:'ねじ山は3山以上出す。ナットは二重ナット等で緩み止め。'},
+{id:'P16',g:'躯体',t:'木造在来軸組の土台を固定するアンカーボルトは、間隔 ___ m以内とし、土台の継手・仕口付近や隅角部にも設ける。',c:['1.8','2.7','3.6','4.5'],a:1,e:'アンカーボルトは2.7m以内、継手付近では上木側の端部に設ける。'},
+{id:'P17',g:'仕上げ',t:'アスファルト防水において、ルーフィングの重ね幅は幅方向・長手方向とも ___ mm以上とする。',c:['50','100','150','200'],a:1,e:'重ね幅100mm以上。上下層の継目は同一箇所にしない。'},
+{id:'P18',g:'仕上げ',t:'ウレタンゴム系塗膜防水の補強布の重ね幅は ___ mm以上とする。',c:['30','50','100','150'],a:1,e:'補強布の重ね幅50mm以上。立上り・出入隅は補強布を増し張り。'},
+{id:'P19',g:'仕上げ',t:'外壁タイルの改良圧着張りでは、張付けモルタルの塗り置き時間を ___ 分以内とし、1回の塗付け面積は2m²以内とする。',c:['10','30','60','90'],a:1,e:'30分以内、2m²以内。密着張り（ヴィブラート）は20分以内・1回の塗付け2m²以内。'},
+{id:'P20',g:'仕上げ',t:'タイルの密着張り（ヴィブラート工法）では、張付けは ___ へ、一段おきに水糸に合わせて張り、その後間を埋めるように張る。',c:['上部から下部','下部から上部','中央から左右','左右から中央'],a:0,e:'密着張りは上から下へ。モルタルの垂れ・汚れを防ぐ。'},
+{id:'P21',g:'仕上げ',t:'外壁タイル張り面の伸縮調整目地は、縦横とも ___ m間隔程度に設け、躯体のひび割れ誘発目地と位置を合わせる。',c:['1〜2','3〜4','6〜8','10'],a:1,e:'3〜4m間隔。目地にはシーリング材を充填する。'},
+{id:'P22',g:'仕上げ',t:'セメントモルタル塗りでは、下塗り後 ___ 以上放置してひび割れを十分発生させてから中塗りを行う。',c:['3日','1週間','2週間','1か月'],a:2,e:'下塗り後2週間以上放置。乾燥収縮ひび割れを先に出しきる。'},
+{id:'P23',g:'仕上げ',t:'金属折板葺きのタイトフレームは、受け梁に ___ で取り付け、溶接後はスラグを除去して錆止め塗料を塗る。',c:['隅肉溶接','突合せ溶接','スポット溶接','ボルト締め'],a:0,e:'タイトフレームは受け梁に隅肉溶接（両側）。'},
+{id:'P24',g:'仕上げ',t:'アルミニウム製建具がモルタルと接する部分は、アルミの腐食を防ぐため接触部に ___ を塗布する。',c:['耐アルカリ性の塗料','錆止めペイント','アスファルトプライマー','シーラー'],a:0,e:'アルミはアルカリに弱いので、モルタル接触部に耐アルカリ性塗料で絶縁する。'},
+{id:'P25',g:'仕上げ',t:'ガラスのはめ込みでは、ガラスの自重を支え位置を保持するため、下辺に ___ を2か所設置する。',c:['セッティングブロック','バックアップ材','エッジスペーサー','ボンドブレーカー'],a:0,e:'セッティングブロックはガラス幅の1/4程度の位置に2か所。'},
+{id:'P26',g:'仕上げ',t:'石こうボードの直張り工法（GL工法）で、接着材の塗付け間隔は中央部で ___ mm程度とする。',c:['100〜150','200〜250','300〜350','400〜450'],a:1,e:'周辺部150〜200mm、中央部200〜250mm。張付け後は接着材乾燥まで仕上げをしない。'},
+{id:'P27',g:'仕上げ',t:'軽量鉄骨天井下地において、ボードを下地張りする場合の野縁の間隔は ___ mm程度とする。',c:['303','360','450','600'],a:1,e:'下地張り360mm、仕上げ直張り303mm、屋内の吊りボルト間隔900mm。'},
+{id:'P28',g:'仕上げ',t:'軽量鉄骨壁下地のスタッドの振れ止めは、床面から ___ mm程度の間隔で通す。',c:['600','900','1200','1500'],a:2,e:'振れ止めは床面から1,200mm程度ごと。上部ランナー付近は省略可。'},
+{id:'P29',g:'仕上げ',t:'ビニル床シートの熱溶接工法では、張付け後 ___ 時間以上経過して接着剤が硬化してから継目を溶接する。',c:['6','12','24','48'],a:1,e:'12時間以上。溶接部は余盛りし、冷却後に削り取る。'},
+{id:'P30',g:'仕上げ',t:'フローリングボードの根太張り工法では、釘は ___ の付け根から斜めに打ち込み、表面に釘頭を出さない。',c:['さね','木口','裏面','表面'],a:0,e:'雄ざねの付け根から斜め45°程度に隠し釘。接着剤を併用。'},
+{id:'P31',g:'仕上げ',t:'壁紙張りにおいて、石こうボード下地の目地・釘頭をパテで平滑にした後、吸込みを止めるため ___ を全面に塗布する。',c:['シーラー','ワニス','錆止め','ボンドブレーカー'],a:0,e:'下地の吸込み止め・接着力向上のためシーラー塗布。'},
+{id:'P32',g:'仕上げ',t:'硬質ウレタンフォームの吹付け断熱工法では、1層の吹付け厚さを ___ mm以下とし、多層に分けて所定厚さにする。',c:['15','30','50','80'],a:1,e:'1層30mm以下、1日の総吹付け厚さ80mm以下。厚吹きすると内部の発熱で劣化する。'},
+{id:'P33',g:'仕上げ',t:'木部の塗装で、素地ごしらえ時の木材の含水率は ___ %以下であることを確認してから塗装する。',c:['12','18','25','30'],a:1,e:'木部18%以下、コンクリート・モルタル10%以下。'},
+{id:'P34',g:'仕上げ',t:'エアスプレーによる吹付け塗装では、スプレーガンを塗面から ___ cm程度離し、塗面に直角に保って平行に動かす。',c:['10','30','50','100'],a:1,e:'30cm程度、パターンの1/3程度を重ねながら塗る。'}
+];
+
+/* ================= 状態・保存 ================= */
+const KEY='sekou2ji_v1';
+let store={stats:{},customLaw:[],customKnow:[],customTerm:[],customSekou:[],flags:{}};
+try{const s=localStorage.getItem(KEY);if(s)store=Object.assign(store,JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){toast('保存できませんでした（ブラウザの保存領域を確認）');}}
+function rec(id,ok){const s=store.stats[id]||{ok:0,ng:0,streak:0};if(ok){s.ok++;s.streak++;}else{s.ng++;s.streak=0;}s.last=ok?1:0;store.stats[id]=s;save();}
+function isWeak(id){const s=store.stats[id];return s&&(s.ng>0&&s.streak<2);}
+function allLaw(){return LAW_Q.concat(store.customLaw);}
+function allKnow(){return KNOW_Q.concat(store.customKnow);}
+function allTerm(){return TERMS.concat(store.customTerm);}
+function allSekou(){return SEKOU_Q.concat(store.customSekou);}
+function isLast(id){return !!(store.flags&&store.flags[id]);}
+function toggleFlag(id){if(!store.flags)store.flags={};if(store.flags[id])delete store.flags[id];else store.flags[id]=1;save();}
+/* 昨年出題は後ろへ（excl=trueなら除外） */
+function order(pool,excl){const a=shuffle(pool);return excl?a.filter(q=>!isLast(q.id)):a.filter(q=>!isLast(q.id)).concat(a.filter(q=>isLast(q.id)));}
+function flagBtn(id){return `<button class="chip fl ${isLast(id)?'on':''}" data-fl="${id}">${isLast(id)?'昨年出題':'昨年出題にする'}</button>`;}
+function bindFlags(cb){app.querySelectorAll('[data-fl]').forEach(b=>b.onclick=e=>{e.stopPropagation();toggleFlag(b.dataset.fl);cb();});}
+function exclChips(state){return `<h2>昨年出題した問題</h2><div class="filters"><button class="chip ${!state.excl?'on':''}" data-x="0">後回しで出す</button><button class="chip ${state.excl?'on':''}" data-x="1">出さない</button></div>`;}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+
+/* ================= 画面切替 ================= */
+const app=document.getElementById('app');
+let tab='law';
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));render();});
+function render(){({law:renderLaw,sched:renderSched,term:renderTerm,sekou:renderSekou,stats:renderStats,add:renderAdd})[tab]();window.scrollTo(0,0);}
+
+/* カウントダウン */
+(function(){const d=Math.ceil((new Date(2026,10,8)-new Date().setHours(0,0,0,0))/86400000);document.getElementById('days').textContent=d>=0?d:0;})();
+
+/* ================= 法規 ================= */
+let law={filter:'all',mode:'all',excl:false,list:false,queue:[],idx:0,fill:[],cur:0,done:false};
+function renderLaw(){
+  if(law.list)return renderLawList();
+  if(!law.queue.length)return renderLawStart();
+  const q=law.queue[law.idx];
+  if(!q)return renderLawEnd();
+  const filled=law.fill.every(v=>v!==null);
+  let html=`<div class="meta"><span>${esc(q.law)}</span><span class="num">${law.idx+1} / ${law.queue.length}</span></div>
+  <div class="prog"><i style="width:${(law.idx/law.queue.length*100)}%"></i></div>
+  <div class="sheet"><div class="src">${esc(q.art)}</div><div class="qtext">`;
+  let k=0;
+  html+=q.text.split(/(\{\{\d+\}\})/).map(part=>{
+    const m=part.match(/^\{\{(\d+)\}\}$/);
+    if(!m)return esc(part);
+    const i=+m[1];const v=law.fill[i];
+    let cls='blank';if(law.done)cls+=v===q.blanks[i].a?' ok':' ng';else if(i===law.cur)cls+=' cur';if(v===null)cls+=' empty';
+    return `<button class="${cls}" data-b="${i}">${v===null?'（'+(i+1)+'）':esc(v)}</button>`;
+  }).join('');
+  html+=`</div>`;
+  if(!law.done){
+    const b=q.blanks[law.cur];
+    html+=`<div class="hint">空欄（${law.cur+1}）に入る語句を選ぶ</div><div class="choices">`+
+      law.choiceOrder[law.cur].map(c=>`<button data-c="${esc(c)}">${esc(c)}</button>`).join('')+`</div>
+      <button class="btn primary wide" id="judge" ${filled?'':'disabled'}>答え合わせ</button>`;
+  }else{
+    const allOk=law.fill.every((v,i)=>v===q.blanks[i].a);
+    html+=`<div class="result ${allOk?'ok':'ng'}">${allOk?'正解':'不正解'}　正答：<span class="ans">${q.blanks.map(b=>esc(b.a)).join('／')}</span></div>
+      ${q.pt?`<div class="pt">${esc(q.pt)}</div>`:''}
+      <button class="btn primary wide" id="next">次の問題</button>`;
+  }
+  html+=`</div><button class="btn wide" id="quit" style="margin-top:0">中断してメニューへ</button>`;
+  app.innerHTML=html;
+  app.querySelectorAll('.blank').forEach(b=>b.onclick=()=>{if(law.done)return;law.cur=+b.dataset.b;renderLaw();});
+  app.querySelectorAll('.choices button').forEach(b=>b.onclick=()=>{law.fill[law.cur]=b.dataset.c;const nx=law.fill.findIndex(v=>v===null);if(nx>=0)law.cur=nx;renderLaw();});
+  const j=document.getElementById('judge');if(j)j.onclick=()=>{law.done=true;const ok=law.fill.every((v,i)=>v===q.blanks[i].a);rec(q.id,ok);renderLaw();};
+  const n=document.getElementById('next');if(n)n.onclick=()=>{law.idx++;setupLawQ();renderLaw();};
+  document.getElementById('quit').onclick=()=>{law.queue=[];renderLaw();};
+}
+function setupLawQ(){const q=law.queue[law.idx];if(!q)return;law.fill=q.blanks.map(()=>null);law.cur=0;law.done=false;law.choiceOrder=q.blanks.map(b=>shuffle(b.c));}
+function renderLawStart(){
+  const laws=['all','建設業法','建築基準法','労働安全衛生法'];
+  const pool=lawPool();
+  app.innerHTML=`<div class="sheet"><h2>出題範囲</h2><div class="filters">${laws.map(l=>`<button class="chip ${law.filter===l?'on':''}" data-f="${l}">${l==='all'?'すべて':l}</button>`).join('')}</div>
+  <h2>出題方法</h2><div class="filters">
+    <button class="chip ${law.mode==='all'?'on':''}" data-m="all">全問（シャッフル）</button>
+    <button class="chip ${law.mode==='weak'?'on':''}" data-m="weak">苦手のみ</button>
+    <button class="chip ${law.mode==='new'?'on':''}" data-m="new">未着手のみ</button></div>
+  ${exclChips(law)}
+  <div class="hint">対象 <span class="num">${order(pool,law.excl).length}</span> 問（うち昨年出題 <span class="num">${pool.filter(q=>isLast(q.id)).length}</span>）</div>
+  <button class="btn primary wide" id="start" ${order(pool,law.excl).length?'':'disabled'}>開始</button>
+  <button class="btn wide" id="list">問題一覧を見る</button></div>
+  <div class="sheet"><h2>解き方</h2><div class="hint">条文中の空欄を順にタップし、下の語群から選びます。全部埋めると「答え合わせ」が押せます。間違えた問題は「苦手」に入り、2回連続正解で外れます。</div></div>`;
+  app.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{law.filter=b.dataset.f;renderLawStart();});
+  app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{law.mode=b.dataset.m;renderLawStart();});
+  app.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{law.excl=b.dataset.x==='1';renderLawStart();});
+  document.getElementById('start').onclick=()=>{law.queue=order(pool,law.excl);law.idx=0;setupLawQ();renderLaw();};
+  document.getElementById('list').onclick=()=>{law.list=true;renderLaw();};
+}
+function renderLawList(){
+  const pool=allLaw().filter(q=>law.filter==='all'||q.law.indexOf(law.filter)===0);
+  app.innerHTML=`<div class="sheet"><h2>法規 問題一覧（${law.filter==='all'?'すべて':esc(law.filter)}・${pool.length}問）</h2><div class="hint">正答を埋めた状態で表示。「昨年出題にする」を押すと出題順が後ろになります（出さない設定も可）。</div>
+  <ul class="termlist lawlist">${pool.map(q=>{const s=store.stats[q.id];return `<li class="${isLast(q.id)?'last':''}"><b>${esc(q.art)}${flagBtn(q.id)}${isWeak(q.id)?' <span class="num" style="color:var(--ng)">△</span>':''}</b><span style="color:var(--ink2);font-size:11px">${esc(q.law)}${s?`　正${s.ok}／誤${s.ng}`:''}</span><br><span style="color:var(--ink);font-size:13px">${q.text.split(/(\{\{\d+\}\})/).map(p=>{const m=p.match(/^\{\{(\d+)\}\}$/);return m?`<span class="ans">${esc(q.blanks[+m[1]].a)}</span>`:esc(p);}).join('')}</span></li>`;}).join('')}</ul>
+  <button class="btn primary wide" id="back">メニューへ</button></div>`;
+  bindFlags(renderLawList);
+  document.getElementById('back').onclick=()=>{law.list=false;renderLaw();};
+}
+function lawPool(){return allLaw().filter(q=>law.filter==='all'||q.law.indexOf(law.filter)===0).filter(q=>law.mode==='all'||(law.mode==='weak'?isWeak(q.id):!store.stats[q.id]));}
+function renderLawEnd(){
+  const ids=law.queue.map(q=>q.id);const ok=ids.filter(id=>store.stats[id]&&store.stats[id].last===1).length;
+  app.innerHTML=`<div class="sheet"><h2>終了</h2><div class="stat"><div><b>${law.queue.length}</b><span>出題</span></div><div><b>${ok}</b><span>正解</span></div><div><b>${Math.round(ok/law.queue.length*100)}</b><span>％</span></div></div>
+  <button class="btn primary wide" id="again">メニューへ</button></div>`;
+  document.getElementById('again').onclick=()=>{law.queue=[];renderLaw();};
+}
+
+/* ================= 工程表 ================= */
+let sc={view:'menu',si:0,qi:0,ans:null,showCalc:false,know:{queue:[],idx:0,ans:null}};
+function renderSched(){
+  if(sc.view==='menu')return renderSchedMenu();
+  if(sc.view==='know')return renderKnow();
+  const s=SCHED[sc.si];const q=s.qs[sc.qi];
+  if(!q){sc.view='menu';return renderSchedMenu();}
+  let html=`<div class="meta"><span>${esc(s.title)}</span><span class="num">問${sc.qi+1} / ${s.qs.length}</span></div>
+  <div class="sheet"><div class="src">${esc(s.sub)}</div><div class="scroll">${gantt(s)}</div>
+  <div class="hint">手がかり：${s.tasks.filter(t=>t.hide).map(t=>`<b>${t.hide}</b>＝${esc(t.clue)}`).join('　')}</div>
+  <div class="scroll">${dekidaka(s,sc.showCalc||sc.ans!==null)}</div>
+  <button class="btn" style="margin-top:8px;font-size:13px;padding:6px 12px" id="calc">${sc.showCalc?'合計を隠す':'月別合計・累計を表示（答え合わせ後は自動表示）'}</button></div>
+  <div class="sheet"><div class="qtext" style="line-height:1.7;font-size:15px">${esc(q.t)}</div><div class="choices" style="grid-template-columns:1fr">`;
+  html+=q.c.map((c,i)=>{let st='';if(sc.ans!==null){if(i===q.a)st='background:var(--ok-soft);border-color:var(--ok)';else if(i===sc.ans)st='background:var(--ng-soft);border-color:var(--ng)';}return `<button data-i="${i}" style="${st};text-align:left" ${sc.ans!==null?'disabled':''}>${esc(c)}</button>`;}).join('');
+  html+=`</div>`;
+  if(sc.ans!==null)html+=`<div class="result ${sc.ans===q.a?'ok':'ng'}">${sc.ans===q.a?'正解':'不正解'}</div><div class="pt">${esc(q.e)}</div><button class="btn primary wide" id="next">${sc.qi+1<s.qs.length?'次の問題':'終了'}</button>`;
+  html+=`</div><button class="btn wide" id="quit" style="margin-top:0">中断してメニューへ</button>`;
+  app.innerHTML=html;
+  app.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{sc.ans=+b.dataset.i;rec(q.id,sc.ans===q.a);renderSched();});
+  document.getElementById('calc').onclick=()=>{sc.showCalc=!sc.showCalc;renderSched();};
+  const n=document.getElementById('next');if(n)n.onclick=()=>{sc.qi++;sc.ans=null;sc.showCalc=false;renderSched();};
+  document.getElementById('quit').onclick=()=>{sc.view='menu';renderSched();};
+}
+function gantt(s){
+  const L=118,W=560,rowH=24,top=30,mw=(W-L-10)/s.months.length;const H=top+s.tasks.length*rowH+14;
+  let g=`<svg class="gantt" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  s.months.forEach((m,i)=>{const x=L+i*mw;g+=`<line x1="${x}" y1="${top-8}" x2="${x}" y2="${H-8}" stroke="var(--line)" stroke-dasharray="2 3"/><text x="${x+mw/2}" y="${top-12}" text-anchor="middle" class="mono">${m}</text>`;});
+  g+=`<line x1="${L+s.months.length*mw}" y1="${top-8}" x2="${L+s.months.length*mw}" y2="${H-8}" stroke="var(--line)" stroke-dasharray="2 3"/>`;
+  s.tasks.forEach((t,i)=>{const y=top+i*rowH;const x1=L+(t.bar[0]-1)*mw,x2=L+(t.bar[1]-1)*mw;
+    g+=`<line x1="0" y1="${y+rowH}" x2="${W}" y2="${y+rowH}" stroke="var(--grid)"/>`;
+    g+=`<text x="6" y="${y+16}" ${t.hide?'font-weight="700" fill="var(--accent)"':''}>${esc(t.hide?t.hide:t.n)}</text>`;
+    g+=`<rect x="${x1}" y="${y+6}" width="${x2-x1}" height="12" rx="2" fill="${t.hide?'var(--accent)':'#b8cbd8'}"/>`;});
+  return g+`</svg>`;
+}
+function dekidaka(s,show){
+  const n=s.months.length;const tot=s.tasks.reduce((a,t)=>a+t.m.reduce((x,y)=>x+y,0),0);
+  const monthly=s.months.map((_,i)=>s.tasks.reduce((a,t)=>a+t.m[i],0));
+  let cum=0;
+  let h=`<table class="tbl"><tr><th>工種</th><th>工事金額</th>${s.months.map(m=>`<th>${m}</th>`).join('')}</tr>`;
+  s.tasks.forEach(t=>{const sum=t.m.reduce((x,y)=>x+y,0);h+=`<tr><td>${t.hide?'<span class="q">'+t.hide+'</span>':esc(t.n)}</td><td class="num">${sum.toLocaleString()}</td>${t.m.map(v=>`<td class="num">${v?v.toLocaleString():''}</td>`).join('')}</tr>`;});
+  h+=`<tr class="total"><td>総工事金額</td><td class="num">${tot.toLocaleString()}</td>${monthly.map(v=>`<td class="num">${show?v.toLocaleString():'？'}</td>`).join('')}</tr>`;
+  h+=`<tr class="total"><td>累計比率</td><td></td>${monthly.map(v=>{cum+=v;return `<td class="num">${show?(cum/tot*100).toFixed(1)+'%':'？'}</td>`;}).join('')}</tr></table><div class="hint">単位：万円</div>`;
+  return h;
+}
+function renderSchedMenu(){
+  const kw=allKnow();
+  app.innerHTML=`<div class="sheet"><h2>バーチャート工程表の問題</h2>${SCHED.map((s,i)=>{const done=s.qs.filter(q=>store.stats[q.id]).length;const ok=s.qs.filter(q=>store.stats[q.id]&&store.stats[q.id].last===1).length;return `<button class="btn wide" data-s="${i}" style="text-align:left;margin-top:8px"><b>${esc(s.title)}</b><br><span class="hint">${esc(s.sub)}　<span class="num">${ok}/${s.qs.length}</span> 正解（${done}問 着手）</span></button>`;}).join('')}</div>
+  <div class="sheet"><h2>工程管理の知識（4択）</h2><div class="hint">対象 <span class="num">${kw.length}</span> 問</div><button class="btn primary wide" id="know">開始</button></div>`;
+  app.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{sc.view='q';sc.si=+b.dataset.s;sc.qi=0;sc.ans=null;sc.showCalc=false;renderSched();});
+  document.getElementById('know').onclick=()=>{sc.view='know';sc.know={queue:shuffle(kw),idx:0,ans:null};renderSched();};
+}
+function renderKnow(){
+  const k=sc.know;const q=k.queue[k.idx];
+  if(!q){sc.view='menu';return renderSched();}
+  let html=`<div class="meta"><span>工程管理の知識</span><span class="num">${k.idx+1} / ${k.queue.length}</span></div><div class="prog"><i style="width:${k.idx/k.queue.length*100}%"></i></div>
+  <div class="sheet"><div class="qtext" style="line-height:1.7;font-size:15px">${esc(q.t)}</div><div class="choices" style="grid-template-columns:1fr">`;
+  html+=q.c.map((c,i)=>{let st='';if(k.ans!==null){if(i===q.a)st='background:var(--ok-soft);border-color:var(--ok)';else if(i===k.ans)st='background:var(--ng-soft);border-color:var(--ng)';}return `<button data-i="${i}" style="${st};text-align:left" ${k.ans!==null?'disabled':''}>${esc(c)}</button>`;}).join('');
+  html+=`</div>`;
+  if(k.ans!==null)html+=`<div class="result ${k.ans===q.a?'ok':'ng'}">${k.ans===q.a?'正解':'不正解'}</div><div class="pt">${esc(q.e)}</div><button class="btn primary wide" id="next">次の問題</button>`;
+  html+=`</div><button class="btn wide" id="quit" style="margin-top:0">中断してメニューへ</button>`;
+  app.innerHTML=html;
+  app.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{k.ans=+b.dataset.i;rec(q.id,k.ans===q.a);renderKnow();});
+  const n=document.getElementById('next');if(n)n.onclick=()=>{k.idx++;k.ans=null;renderKnow();};
+  document.getElementById('quit').onclick=()=>{sc.view='menu';renderSched();};
+}
+
+/* ================= 用語（単語帳） ================= */
+let tm={cat:'all',mode:'all',excl:false,queue:[],idx:0,flip:false,list:false};
+function termPool(){return allTerm().filter(t=>tm.cat==='all'||t.cat===tm.cat).filter(t=>tm.mode==='all'||(tm.mode==='weak'?isWeak(t.id):!store.stats[t.id]));}
+function renderTerm(){
+  if(tm.list)return renderTermList();
+  if(!tm.queue.length)return renderTermStart();
+  const t=tm.queue[tm.idx];
+  if(!t)return renderTermEnd();
+  let html=`<div class="meta"><span>${esc(t.cat)}</span><span class="num">${tm.idx+1} / ${tm.queue.length}</span></div><div class="prog"><i style="width:${tm.idx/tm.queue.length*100}%"></i></div>
+  <div class="card" id="card"><div class="cat">${esc(t.cat)}</div><div class="term">${esc(t.term)}</div>`;
+  if(tm.flip){
+    html+=`<h3>用語の説明</h3><p>${esc(t.d)}</p><h3>施工上の留意点</h3><ul>${t.n.split('；').map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  }else html+=`<div class="hint" style="margin-top:14px">説明と留意点を2つ、頭の中で言ってからタップ</div><div class="tap">タップで表示</div>`;
+  html+=`</div>`;
+  if(tm.flip)html+=`<div class="row"><button class="btn" id="ng" style="border-color:var(--ng);color:var(--ng)">あやふや</button><button class="btn primary" id="ok">言えた</button></div>`;
+  html+=`<button class="btn wide" id="quit">中断してメニューへ</button>`;
+  app.innerHTML=html;
+  document.getElementById('card').onclick=()=>{if(!tm.flip){tm.flip=true;renderTerm();}};
+  const o=document.getElementById('ok');if(o)o.onclick=()=>{rec(t.id,true);tm.idx++;tm.flip=false;renderTerm();};
+  const n=document.getElementById('ng');if(n)n.onclick=()=>{rec(t.id,false);tm.idx++;tm.flip=false;renderTerm();};
+  document.getElementById('quit').onclick=()=>{tm.queue=[];renderTerm();};
+}
+function renderTermStart(){
+  const cats=['all'].concat([...new Set(allTerm().map(t=>t.cat))]);
+  const pool=termPool();
+  app.innerHTML=`<div class="sheet"><h2>分類</h2><div class="filters">${cats.map(c=>`<button class="chip ${tm.cat===c?'on':''}" data-f="${esc(c)}">${c==='all'?'すべて':esc(c)}</button>`).join('')}</div>
+  <h2>出題方法</h2><div class="filters"><button class="chip ${tm.mode==='all'?'on':''}" data-m="all">全部（シャッフル）</button><button class="chip ${tm.mode==='weak'?'on':''}" data-m="weak">あやふやのみ</button><button class="chip ${tm.mode==='new'?'on':''}" data-m="new">未着手のみ</button></div>
+  ${exclChips(tm)}
+  <div class="hint">対象 <span class="num">${order(pool,tm.excl).length}</span> 語（うち昨年出題 <span class="num">${pool.filter(q=>isLast(q.id)).length}</span>）</div>
+  <button class="btn primary wide" id="start" ${order(pool,tm.excl).length?'':'disabled'}>めくる</button>
+  <button class="btn wide" id="list">一覧で読む</button></div>
+  <div class="sheet"><h2>本番での書き方</h2><div class="hint">問題2は「用語の説明」＋「施工上留意すべきこと」を各1〜2行で書く形式です。留意点は数値（間隔・時間・厚さ）を1つ入れると具体的になります。カード裏の留意点は2つ載せているので、どちらか1つを確実に書ける状態を目標に。</div></div>`;
+  app.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{tm.cat=b.dataset.f;renderTermStart();});
+  app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{tm.mode=b.dataset.m;renderTermStart();});
+  app.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{tm.excl=b.dataset.x==='1';renderTermStart();});
+  document.getElementById('start').onclick=()=>{tm.queue=order(pool,tm.excl);tm.idx=0;tm.flip=false;renderTerm();};
+  document.getElementById('list').onclick=()=>{tm.list=true;renderTerm();};
+}
+function renderTermList(){
+  const pool=allTerm().filter(t=>tm.cat==='all'||t.cat===tm.cat);
+  app.innerHTML=`<div class="sheet"><h2>用語一覧（${tm.cat==='all'?'すべて':esc(tm.cat)}・${pool.length}語）</h2><div class="hint">「昨年出題にする」を押すと、めくる順が後ろになります。</div><ul class="termlist">${pool.map(t=>`<li class="${isLast(t.id)?'last':''}"><b>${esc(t.term)}${flagBtn(t.id)}${isWeak(t.id)?' <span class="num" style="color:var(--ng)">△</span>':''}</b><span>${esc(t.d)}</span><br><span>留意：${esc(t.n.replace(/；/g,'／'))}</span></li>`).join('')}</ul>
+  <button class="btn primary wide" id="back">メニューへ</button></div>`;
+  bindFlags(renderTermList);
+  document.getElementById('back').onclick=()=>{tm.list=false;renderTerm();};
+}
+function renderTermEnd(){
+  const ok=tm.queue.filter(t=>store.stats[t.id]&&store.stats[t.id].last===1).length;
+  app.innerHTML=`<div class="sheet"><h2>終了</h2><div class="stat"><div><b>${tm.queue.length}</b><span>語</span></div><div><b>${ok}</b><span>言えた</span></div><div><b>${tm.queue.length-ok}</b><span>あやふや</span></div></div><button class="btn primary wide" id="again">メニューへ</button></div>`;
+  document.getElementById('again').onclick=()=>{tm.queue=[];renderTerm();};
+}
+
+/* ================= 施工（問題5 4択） ================= */
+let sk={g:'all',mode:'all',excl:false,list:false,queue:[],idx:0,ans:null};
+function sekouPool(){return allSekou().filter(q=>sk.g==='all'||q.g===sk.g).filter(q=>sk.mode==='all'||(sk.mode==='weak'?isWeak(q.id):!store.stats[q.id]));}
+function renderSekou(){
+  if(sk.list)return renderSekouList();
+  if(!sk.queue.length)return renderSekouStart();
+  const q=sk.queue[sk.idx];
+  if(!q)return renderSekouEnd();
+  let html=`<div class="meta"><span>施工（${esc(q.g)}）</span><span class="num">${sk.idx+1} / ${sk.queue.length}</span></div><div class="prog"><i style="width:${sk.idx/sk.queue.length*100}%"></i></div>
+  <div class="sheet"><div class="qtext" style="line-height:1.8;font-size:15px">${esc(q.t).replace(/___/g,'<span class="blank empty" style="cursor:default">　　　</span>')}</div><div class="choices">`;
+  html+=q.c.map((c,i)=>{let st='';if(sk.ans!==null){if(i===q.a)st='background:var(--ok-soft);border-color:var(--ok)';else if(i===sk.ans)st='background:var(--ng-soft);border-color:var(--ng)';}return `<button data-i="${i}" style="${st}" ${sk.ans!==null?'disabled':''}>${esc(c)}</button>`;}).join('');
+  html+=`</div>`;
+  if(sk.ans!==null)html+=`<div class="result ${sk.ans===q.a?'ok':'ng'}">${sk.ans===q.a?'正解':'不正解'}　正答：<span class="ans">${esc(q.c[q.a])}</span></div>${q.e?`<div class="pt">${esc(q.e)}</div>`:''}<button class="btn primary wide" id="next">次の問題</button>`;
+  html+=`</div><button class="btn wide" id="quit" style="margin-top:0">中断してメニューへ</button>`;
+  app.innerHTML=html;
+  app.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{sk.ans=+b.dataset.i;rec(q.id,sk.ans===q.a);renderSekou();});
+  const n=document.getElementById('next');if(n)n.onclick=()=>{sk.idx++;sk.ans=null;renderSekou();};
+  document.getElementById('quit').onclick=()=>{sk.queue=[];renderSekou();};
+}
+function renderSekouStart(){
+  const pool=sekouPool();
+  app.innerHTML=`<div class="sheet"><h2>分野</h2><div class="filters">${['all','躯体','仕上げ'].map(g=>`<button class="chip ${sk.g===g?'on':''}" data-f="${g}">${g==='all'?'すべて':g}</button>`).join('')}</div>
+  <h2>出題方法</h2><div class="filters"><button class="chip ${sk.mode==='all'?'on':''}" data-m="all">全問（シャッフル）</button><button class="chip ${sk.mode==='weak'?'on':''}" data-m="weak">苦手のみ</button><button class="chip ${sk.mode==='new'?'on':''}" data-m="new">未着手のみ</button></div>
+  ${exclChips(sk)}
+  <div class="hint">対象 <span class="num">${order(pool,sk.excl).length}</span> 問（うち昨年出題 <span class="num">${pool.filter(q=>isLast(q.id)).length}</span>）</div><button class="btn primary wide" id="start" ${order(pool,sk.excl).length?'':'disabled'}>開始</button><button class="btn wide" id="list">問題一覧を見る</button></div>
+  <div class="sheet"><h2>問題5について</h2><div class="hint">躯体（土工・杭・鉄筋・型枠・コンクリート・鉄骨・木）と仕上げ（防水・タイル・左官・屋根・建具・内装・塗装）の施工に関する記述の空欄に入る語句・数値を4択で選ぶ形式です。数値は「何の基準か」（間隔・時間・厚さ・強度）とセットで覚えると法規の数値と混ざりません。</div></div>`;
+  app.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{sk.g=b.dataset.f;renderSekouStart();});
+  app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{sk.mode=b.dataset.m;renderSekouStart();});
+  app.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{sk.excl=b.dataset.x==='1';renderSekouStart();});
+  document.getElementById('start').onclick=()=>{sk.queue=order(pool,sk.excl);sk.idx=0;sk.ans=null;renderSekou();};
+  document.getElementById('list').onclick=()=>{sk.list=true;renderSekou();};
+}
+function renderSekouList(){
+  const pool=allSekou().filter(q=>sk.g==='all'||q.g===sk.g);
+  app.innerHTML=`<div class="sheet"><h2>施工 問題一覧（${sk.g==='all'?'すべて':esc(sk.g)}・${pool.length}問）</h2><ul class="termlist lawlist">${pool.map(q=>`<li class="${isLast(q.id)?'last':''}"><b>${esc(q.g)}${flagBtn(q.id)}${isWeak(q.id)?' <span class="num" style="color:var(--ng)">△</span>':''}</b><span style="color:var(--ink);font-size:13px">${esc(q.t).replace(/___/g,`<span class="ans">${esc(q.c[q.a])}</span>`)}</span></li>`).join('')}</ul><button class="btn primary wide" id="back">メニューへ</button></div>`;
+  bindFlags(renderSekouList);
+  document.getElementById('back').onclick=()=>{sk.list=false;renderSekou();};
+}
+function renderSekouEnd(){
+  const ok=sk.queue.filter(q=>store.stats[q.id]&&store.stats[q.id].last===1).length;
+  app.innerHTML=`<div class="sheet"><h2>終了</h2><div class="stat"><div><b>${sk.queue.length}</b><span>出題</span></div><div><b>${ok}</b><span>正解</span></div><div><b>${Math.round(ok/sk.queue.length*100)}</b><span>％</span></div></div><button class="btn primary wide" id="again">メニューへ</button></div>`;
+  document.getElementById('again').onclick=()=>{sk.queue=[];renderSekou();};
+}
+
+/* ================= 記録 ================= */
+function renderStats(){
+  const groups=[['法規',allLaw()],['工程表',SCHED.flatMap(s=>s.qs)],['工程知識',allKnow()],['用語',allTerm()],['施工',allSekou()]];
+  let html='';
+  groups.forEach(([name,qs])=>{
+    const st=qs.map(q=>store.stats[q.id]).filter(Boolean);const ok=st.reduce((a,s)=>a+s.ok,0),ng=st.reduce((a,s)=>a+s.ng,0);
+    html+=`<div class="sheet"><h2>${name}</h2><div class="stat"><div><b>${st.length}<span style="font-size:12px;color:var(--ink2)">/${qs.length}</span></b><span>着手</span></div><div><b>${ok+ng?Math.round(ok/(ok+ng)*100):0}</b><span>正答率％</span></div><div><b>${qs.filter(q=>isWeak(q.id)).length}</b><span>苦手</span></div></div>`;
+    const weak=qs.filter(q=>isWeak(q.id));
+    if(weak.length)html+=`<ul class="weak">${weak.map(q=>`<li><span>${esc(q.art||q.term||q.t)}</span><span class="num">×${store.stats[q.id].ng}</span></li>`).join('')}</ul>`;
+    html+=`</div>`;
+  });
+  html+=`<div class="sheet"><h2>データ</h2><div class="hint">学習記録と追加問題はこのブラウザ内に保存されています。機種変更やPCとの共有にはJSONで書き出してください。</div>
+  <div class="row"><button class="btn" id="exp">JSON書き出し</button><button class="btn" id="imp">JSON読み込み</button></div><input type="file" id="file" accept=".json" style="display:none">
+  <button class="btn wide" id="reset" style="color:var(--ng)">学習記録をリセット（追加問題は残す）</button></div>`;
+  app.innerHTML=html;
+  document.getElementById('exp').onclick=()=>{const b=new Blob([JSON.stringify(store,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sekou2ji_'+new Date().toISOString().slice(0,10)+'.json';a.click();};
+  document.getElementById('imp').onclick=()=>document.getElementById('file').click();
+  document.getElementById('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.stats)throw 0;store=Object.assign({stats:{},customLaw:[],customKnow:[],customTerm:[],customSekou:[],flags:{}},d);save();toast('読み込みました');renderStats();}catch(x){toast('読み込めないファイルです');}};r.readAsText(f);};
+  document.getElementById('reset').onclick=()=>{if(confirm('学習記録を消しますか？'))
+{store.stats={};save();renderStats();}};
+}
+
+/* ================= 追加 ================= */
+function renderAdd(){
+  app.innerHTML=`<div class="sheet"><h2>法規 穴埋め問題を追加</h2>
+  <label class="f">法令<select id="a-law"><option>建設業法</option><option>建築基準法</option><option>建築基準法施行令</option><option>労働安全衛生法</option><option>労働安全衛生規則</option><option>その他</option></select></label>
+  <label class="f">条文名（例：第24条の4（検査及び引渡し））<input type="text" id="a-art"></label>
+  <label class="f">条文（空欄にしたい語句を【 】で囲む）<textarea id="a-text" placeholder="例：当該通知を受けた日から【20日】以内で、かつ、できる限り短い期間内に、その完成を確認するための【検査】を完了しなければならない。"></textarea></label>
+  <label class="f">誤りの選択肢（空欄ごとに1行、読点「、」区切り。空欄の数と行数を合わせる。省略すると他の問題の正答から自動で作ります）<textarea id="a-ch" style="min-height:70px" placeholder="14日、30日、1月&#10;引渡し、支払、承認"></textarea></label>
+  <label class="f">ポイント（任意）<input type="text" id="a-pt"></label>
+  <button class="btn primary wide" id="a-save">保存</button>
+  <div class="custom-list">${store.customLaw.map((q,i)=>`<div><span>${esc(q.law)}　${esc(q.art)}</span><button data-dl="${i}">削除</button></div>`).join('')}</div></div>
+  <div class="sheet"><h2>4択問題を追加（工程知識・施工）</h2>
+  <label class="f">種類<select id="k-kind"><option value="know">工程管理の知識</option><option value="躯体">施工（躯体）</option><option value="仕上げ">施工（仕上げ）</option></select></label>
+  <label class="f">問題文（空欄は ___ と書く）<textarea id="k-t" style="min-height:70px"></textarea></label>
+  <label class="f">選択肢（1行1つ、4つ）<textarea id="k-c" style="min-height:90px"></textarea></label>
+  <label class="f">正答の番号（1〜4）<input type="text" id="k-a" inputmode="numeric"></label>
+  <label class="f">解説（任意）<input type="text" id="k-e"></label>
+  <button class="btn primary wide" id="k-save">保存</button>
+  <div class="custom-list">${store.customKnow.map((q,i)=>`<div><span>工程　${esc(q.t).slice(0,36)}</span><button data-dk="${i}">削除</button></div>`).join('')}${store.customSekou.map((q,i)=>`<div><span>${esc(q.g)}　${esc(q.t).slice(0,36)}</span><button data-ds="${i}">削除</button></div>`).join('')}</div></div>
+  <div class="sheet"><h2>用語カードを追加</h2>
+  <label class="f">用語<input type="text" id="t-term"></label>
+  <label class="f">分類<select id="t-cat"><option>仮設</option><option>土工事</option><option>杭</option><option>鉄筋</option><option>型枠</option><option>コンクリート</option><option>鉄骨</option><option>木工事</option><option>外装</option><option>タイル</option><option>防水</option><option>シーリング</option><option>塗装</option><option>内装</option><option>その他</option></select></label>
+  <label class="f">用語の説明<textarea id="t-d" style="min-height:70px"></textarea></label>
+  <label class="f">施工上の留意点（複数は「；」で区切る）<textarea id="t-n" style="min-height:70px"></textarea></label>
+  <button class="btn primary wide" id="t-save">保存</button>
+  <div class="custom-list">${store.customTerm.map((q,i)=>`<div><span>${esc(q.cat)}　${esc(q.term)}</span><button data-dt="${i}">削除</button></div>`).join('')}</div></div>
+  <div class="sheet"><h2>バーチャート問題の追加について</h2><div class="hint">工程表とデータ表はHTML内の <code>SCHED</code> 配列に書き足すと増やせます（工種名・バーの位置・月別金額・設問）。問題集の数値を写すだけで同じ形式で出題されます。</div></div>`;
+  document.getElementById('a-save').onclick=()=>{
+    const text=document.getElementById('a-text').value.trim();const art=document.getElementById('a-art').value.trim();
+    const parts=text.split(/【([^】]+)】/);if(parts.length<3){toast('【 】で空欄を1つ以上指定してください');return;}
+    const answers=[];let t='';parts.forEach((p,i)=>{if(i%2===1){answers.push(p.trim());t+='{{'+(answers.length-1)+'}}';}else t+=p;});
+    const lines=document.getElementById('a-ch').value.split('\n').map(l=>l.trim()).filter(Boolean);
+    const pool=allLaw().flatMap(q=>q.blanks.map(b=>b.a));
+    const blanks=answers.map((a,i)=>{let wrong=lines[i]?lines[i].split(/[、,，]/).map(s=>s.trim()).filter(Boolean):[];
+      if(wrong.length<3){const extra=shuffle(pool.filter(x=>x!==a&&wrong.indexOf(x)<0));while(wrong.length<3&&extra.length)wrong.push(extra.pop());}
+      return {a:a,c:[a].concat(wrong.slice(0,3))};});
+    store.customLaw.push({id:'C'+Date.now(),law:document.getElementById('a-law').value,art:art||'（条文名なし）',text:t,blanks:blanks,pt:document.getElementById('a-pt').value.trim()});
+    save();toast('追加しました');renderAdd();};
+  document.getElementById('k-save').onclick=()=>{
+    const t=document.getElementById('k-t').value.trim();const c=document.getElementById('k-c').value.split('\n').map(s=>s.trim()).filter(Boolean);const a=parseInt(document.getElementById('k-a').value,10);
+    if(!t||c.length!==4||!(a>=1&&a<=4)){toast('問題文・選択肢4つ・正答番号を確認してください');return;}
+    const kind=document.getElementById('k-kind').value;const e=document.getElementById('k-e').value.trim();
+    if(kind==='know')store.customKnow.push({id:'CK'+Date.now(),t:t,c:c,a:a-1,e:e});else store.customSekou.push({id:'CS'+Date.now(),g:kind,t:t,c:c,a:a-1,e:e});save();toast('追加しました');renderAdd();};
+  document.getElementById('t-save').onclick=()=>{
+    const term=document.getElementById('t-term').value.trim(),d=document.getElementById('t-d').value.trim(),n=document.getElementById('t-n').value.trim();
+    if(!term||!d||!n){toast('用語・説明・留意点を入力してください');return;}
+    store.customTerm.push({id:'CT'+Date.now(),term:term,cat:document.getElementById('t-cat').value,d:d,n:n});save();toast('追加しました');renderAdd();};
+  app.querySelectorAll('[data-dt]').forEach(b=>b.onclick=()=>{store.customTerm.splice(+b.dataset.dt,1);save();renderAdd();});
+  app.querySelectorAll('[data-dl]').forEach(b=>b.onclick=()=>{store.customLaw.splice(+b.dataset.dl,1);save();renderAdd();});
+  app.querySelectorAll('[data-ds]').forEach(b=>b.onclick=()=>{store.customSekou.splice(+b.dataset.ds,1);save();renderAdd();});
+  app.querySelectorAll('[data-dk]').forEach(b=>b.onclick=()=>{store.customKnow.splice(+b.dataset.dk,1);save();renderAdd();});
+}
+
+render();
+</script>
+</body>
+</html>
