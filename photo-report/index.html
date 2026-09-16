@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="現場写真">
+<title>現場写真報告書</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f2a33">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
+.top-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:0.5px solid #e0e0e0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;min-height:48px}
+.top-header h1{font-size:15px;font-weight:600;color:#1a1a1a;display:flex;align-items:center;gap:6px}
+.back-btn{display:flex;align-items:center;gap:4px;font-size:14px;color:#378ADD;cursor:pointer;padding:4px 0;background:none;border:none}
+.screen{display:none}
+.screen.active{display:block}
+
+#listScreen main{padding:12px;max-width:480px;margin:0 auto}
+.new-btn{width:100%;padding:14px;border:1.5px dashed #378ADD;border-radius:12px;background:#f0f7ff;color:#378ADD;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
+.new-btn:active{background:#dbeeff}
+.search-wrap{position:relative;margin-bottom:12px}
+.search-wrap input{width:100%;font-size:14px;padding:10px 12px 10px 34px;border:0.5px solid #e0e0e0;border-radius:10px;outline:none;color:#1a1a1a;background:#fff}
+.search-wrap input:focus{border-color:#378ADD}
+.search-wrap .search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:#999;pointer-events:none}
+.list-footer{margin-top:20px;padding-top:14px;border-top:0.5px solid #e0e0e0;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.list-footer button{font-size:12px;padding:8px 12px;border:0.5px solid #ccc;border-radius:8px;background:#fff;color:#555;cursor:pointer}
+.list-footer button:active{background:#f0f0f0}
+.storage-note{font-size:11px;color:#999;text-align:center;margin-top:8px;line-height:1.6}
+.report-list{display:flex;flex-direction:column;gap:8px}
+.report-item{background:#fff;border-radius:12px;border:0.5px solid #e0e0e0;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.report-item:active{background:#f8f8f8}
+.report-icon{width:48px;height:48px;border-radius:10px;background:#f0f7ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;overflow:hidden}
+.report-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.report-info{flex:1;min-width:0}
+.report-title-text{font-size:14px;font-weight:600;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.report-meta{font-size:11px;color:#aaa;margin-top:2px}
+.report-stats{font-size:11px;color:#888;margin-top:3px}
+.stat-badge{display:inline-block;padding:1px 6px;border-radius:4px;margin-right:4px;font-size:10px;font-weight:600}
+.stat-b{background:#dbeeff;color:#185FA5}
+.stat-a{background:#d4f0e4;color:#0F6E56}
+.report-del-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;color:#ddd;flex-shrink:0;font-size:16px}
+.report-del-btn:active{background:#fff0f0;color:#e05}
+.report-arrow{color:#ccc;flex-shrink:0;font-size:18px}
+.empty-state{text-align:center;padding:48px 24px;color:#bbb}
+.empty-state .emoji{font-size:40px;margin-bottom:12px}
+.empty-state p{font-size:14px;line-height:1.6}
+
+#editScreen main{padding:12px;max-width:480px;margin:0 auto}
+.edit-header-right{display:flex;align-items:center;gap:8px}
+.save-indicator{font-size:10px;color:#aaa;white-space:nowrap}
+.save-indicator.saved{color:#1D9E75}
+.layout-sel{font-size:12px;padding:4px 8px;border:0.5px solid #ccc;border-radius:8px;background:#fff;color:#333;appearance:none;-webkit-appearance:none;padding-right:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center}
+.report-title-wrap{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;padding:10px 12px;margin-bottom:10px}
+.report-title-wrap input{width:100%;font-size:14px;font-weight:600;border:none;outline:none;color:#1a1a1a;background:transparent}
+.report-title-wrap input::placeholder{color:#aaa;font-weight:400}
+.pair-card{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;margin-bottom:10px;overflow:hidden}
+.pair-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#fafafa;border-bottom:0.5px solid #e8e8e8}
+.pair-num{font-size:12px;font-weight:600;color:#555}
+.pair-del{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;color:#bbb;font-size:15px}
+.pair-del:active{background:#fff0f0;color:#e05}
+.photos-row{display:grid;grid-template-columns:1fr 1fr}
+.photo-slot{position:relative;aspect-ratio:4/3;cursor:pointer;overflow:hidden;background:#f8f8f8;display:flex;align-items:center;justify-content:center}
+.photo-slot:first-child{border-right:0.5px solid #e8e8e8}
+.photo-slot img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-empty{display:flex;flex-direction:column;align-items:center;gap:5px}
+.photo-empty .icon{font-size:22px;color:#ddd}
+.photo-empty span{font-size:10px;color:#ccc}
+.photo-badge{position:absolute;bottom:6px;left:6px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:0.03em}
+.badge-b{background:#dbeeff;color:#185FA5}
+.badge-a{background:#d4f0e4;color:#0F6E56}
+.photo-check{position:absolute;top:5px;right:5px;width:18px;height:18px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+.comment-wrap{padding:5px 12px;border-top:0.5px solid #f0f0f0}
+.comment-wrap input{width:100%;font-size:11px;border:none;outline:none;color:#333;background:transparent}
+.comment-wrap input::placeholder{color:#ccc}
+.caption-wrap{padding:7px 12px;border-top:0.5px solid #e8e8e8;background:#fafafa}
+.caption-wrap input{width:100%;font-size:12px;font-weight:500;border:none;outline:none;color:#333;background:transparent}
+.caption-wrap input::placeholder{color:#bbb}
+.add-pair-btn{width:100%;padding:12px;border:1px dashed #d0d0d0;border-radius:10px;background:transparent;color:#888;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:12px}
+.add-pair-btn:active{background:#f5f5f5}
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.act-btn{padding:13px 8px;border:0.5px solid #d8d8d8;border-radius:10px;background:#fff;color:#333;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
+.act-btn.pdf{color:#378ADD;border-color:#b8d8f8}
+.act-btn.xls{color:#1D9E75;border-color:#b0e0cc}
+.act-btn:active{transform:scale(0.97);background:#f5f5f5}
+.act-btn.loading{opacity:0.6;pointer-events:none}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.overlay.open{opacity:1;pointer-events:auto}
+.sheet{background:#fff;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));width:100%;max-width:480px;transform:translateY(20px);transition:transform 0.2s}
+.overlay.open .sheet{transform:translateY(0)}
+.sheet-title{font-size:13px;font-weight:600;color:#888;text-align:center;margin-bottom:14px}
+.sheet-btn{width:100%;padding:15px;border:none;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.sheet-btn.cam{background:#dbeeff;color:#185FA5}
+.sheet-btn.gal{background:#d4f0e4;color:#0F6E56}
+.sheet-btn.del{background:#fff0f0;color:#cc3333}
+.sheet-btn.cancel{background:#f0f0f0;color:#888}
+.sheet-btn:active{opacity:0.75}
+.new-report-sheet{background:#fff;border-radius:18px 18px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:480px;transform:translateY(20px);transition:transform 0.2s}
+.overlay.open .new-report-sheet{transform:translateY(0)}
+.new-report-sheet h3{font-size:15px;font-weight:600;margin-bottom:16px;color:#1a1a1a}
+.new-report-sheet input{width:100%;font-size:15px;padding:12px;border:0.5px solid #e0e0e0;border-radius:10px;outline:none;color:#1a1a1a;margin-bottom:12px}
+.new-report-sheet input:focus{border-color:#378ADD}
+.create-btn{width:100%;padding:14px;border:none;border-radius:12px;background:#378ADD;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.create-btn:active{opacity:0.85}
+.sheet-cancel{width:100%;padding:12px;border:none;border-radius:12px;background:#f0f0f0;color:#888;font-size:14px;cursor:pointer}
+
+.toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#222;color:#fff;font-size:13px;padding:9px 18px;border-radius:20px;opacity:0;transition:opacity 0.25s;pointer-events:none;z-index:200;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(55,138,221,0.3);border-top-color:#378ADD;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+input[type=file]{display:none}
+
+/* PDF用印刷レイアウト（非表示） */
+#pdfRender{position:fixed;left:-9999px;top:0;width:794px;background:#fff;font-family:'Hiragino Sans','Yu Gothic','Meiryo',sans-serif;z-index:-1}
+.pdf-page{width:794px;min-height:1123px;padding:36px 40px;display:flex;flex-direction:column;gap:10px;background:#fff}
+.pdf-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5px solid #333;padding-bottom:6px;margin-bottom:4px}
+.pdf-title{font-size:16px;font-weight:700;color:#111}
+.pdf-info{font-size:10px;color:#777}
+.pdf-pair{border:0.5px solid #ccc;border-radius:3px;overflow:hidden;flex:1}
+.pdf-pair-label{background:#f5f5f5;padding:3px 8px;font-size:10px;font-weight:700;color:#555;border-bottom:0.5px solid #ddd}
+.pdf-photos{display:grid;grid-template-columns:1fr 1fr}
+.pdf-photo-box{position:relative;border-right:0.5px solid #ddd}
+.pdf-photo-box:last-child{border-right:none}
+.pdf-photo-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.pdf-photo-empty{width:100%;aspect-ratio:4/3;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#bbb}
+.pdf-badge{position:absolute;top:4px;left:4px;font-size:8px;font-weight:700;padding:2px 5px;border-radius:2px}
+.pdf-badge-b{background:#dbeeff;color:#185FA5}
+.pdf-badge-a{background:#d4f0e4;color:#0F6E56}
+.pdf-comment{padding:3px 8px;font-size:9px;color:#555;border-top:0.5px solid #eee;background:#fafafa;min-height:16px}
+.pdf-caption{padding:3px 8px;font-size:10px;font-weight:600;color:#333;border-top:0.5px solid #e0e0e0;background:#f8f8f8}
+</style>
+</head>
+<body>
+
+<!-- 一覧画面 -->
+<div id="listScreen" class="screen active">
+  <div class="top-header">
+    <h1>📷 現場写真報告書</h1>
+  </div>
+  <main>
+    <button class="new-btn" id="newReportBtn">＋ 新しい報告書を作成</button>
+    <div class="search-wrap"><span class="search-ico">🔍</span><input type="search" id="searchInput" placeholder="タイトルで検索"></div>
+    <div class="report-list" id="reportList"></div>
+    <div class="list-footer">
+      <button id="exportBtn">📦 バックアップを書き出す</button>
+      <button id="importBtn">📥 バックアップを読み込む</button>
+      <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+    </div>
+    <div class="storage-note">データはこのブラウザ内に保存されます。機種変更前や長期間使わないときは、バックアップを書き出しておいてください。</div>
+  </main>
+</div>
+
+<!-- 編集画面 -->
+<div id="editScreen" class="screen">
+  <div class="top-header">
+    <button class="back-btn" id="backBtn">← 一覧</button>
+    <div class="edit-header-right">
+      <span class="save-indicator saved" id="saveIndicator">💾 保存済</span>
+      <select class="layout-sel" id="labelSel" title="写真の呼び方">
+        <option value="指摘時|是正後">指摘時/是正後</option>
+        <option value="施工前|施工後">施工前/施工後</option>
+        <option value="着手前|完了">着手前/完了</option>
+        <option value="既存|改修後">既存/改修後</option>
+        <option value="custom">自由入力…</option>
+      </select>
+      <select class="layout-sel" id="layoutSel">
+        <option value="3">3件/頁</option>
+        <option value="2">2件/頁</option>
+        <option value="1">1件/頁</option>
+      </select>
+    </div>
+  </div>
+  <main>
+    <div class="report-title-wrap">
+      <input type="text" id="reportTitle" placeholder="報告書タイトル（例：5/2 配筋検査）">
+    </div>
+    <div id="pairsContainer"></div>
+    <button class="add-pair-btn" id="addPairBtn">＋ 写真ペアを追加</button>
+    <div class="action-row">
+      <button class="act-btn pdf" id="pdfBtn">📄 PDF保存</button>
+      <button class="act-btn xls" id="xlsBtn">📊 Excel出力</button>
+    </div>
+  </main>
+</div>
+
+<!-- PDF描画用（非表示） -->
+<div id="pdfRender"></div>
+
+<!-- 新規作成シート -->
+<div class="overlay" id="newOverlay">
+  <div class="new-report-sheet">
+    <h3>新しい報告書</h3>
+    <input type="text" id="newTitleInput" placeholder="タイトル（例：5/2 配筋検査）" maxlength="40">
+    <button class="create-btn" id="createBtn">作成</button>
+    <button class="sheet-cancel" id="newCancelBtn">キャンセル</button>
+  </div>
+</div>
+
+<!-- 呼び方 自由入力シート -->
+<div class="overlay" id="labelOverlay">
+  <div class="new-report-sheet">
+    <h3>写真の呼び方</h3>
+    <input type="text" id="labelBeforeInput" placeholder="左の写真（例：施工前）" maxlength="8">
+    <input type="text" id="labelAfterInput" placeholder="右の写真（例：施工後）" maxlength="8">
+    <button class="create-btn" id="labelOkBtn">決定</button>
+    <button class="sheet-cancel" id="labelCancelBtn">キャンセル</button>
+  </div>
+</div>
+
+<!-- 写真選択シート -->
+<div class="overlay" id="photoOverlay">
+  <div class="sheet">
+    <div class="sheet-title" id="sheetTitle">写真を追加</div>
+    <button class="sheet-btn cam" id="camBtn">📷 カメラで撮影</button>
+    <button class="sheet-btn gal" id="galBtn">🖼 ライブラリから選択</button>
+    <button class="sheet-btn del" id="delPhotoBtn" style="display:none">🗑 写真を削除</button>
+    <button class="sheet-btn cancel" id="photoCancelBtn">キャンセル</button>
+  </div>
+</div>
+
+<input type="file" id="fileCamera" accept="image/*" capture="environment">
+<input type="file" id="fileGallery" accept="image/*">
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+
+<script>
+const STORAGE_KEY = 'genba_standalone_v2';      // 旧: localStorage（初回起動時にIndexedDBへ移行）
+const DB_NAME = 'genba_photo_report';
+const DB_STORE = 'reports';
+let db = null;
+let reports = [];
+
+// ===== IndexedDB =====
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = () => { req.result.createObjectStore(DB_STORE, { keyPath: 'id' }); };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+function dbGetAll() {
+  return new Promise((resolve, reject) => {
+    const req = db.transaction(DB_STORE, 'readonly').objectStore(DB_STORE).getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = () => reject(req.error);
+  });
+}
+function dbPut(report) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readwrite');
+    tx.objectStore(DB_STORE).put(report);
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+  });
+}
+function dbPutMany(list) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readwrite');
+    const st = tx.objectStore(DB_STORE);
+    list.forEach(r => st.put(r));
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+  });
+}
+function dbDelete(id) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readwrite');
+    tx.objectStore(DB_STORE).delete(id);
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+  });
+}
+let currentId = null;
+let activeSlot = null;
+let saveTimer = null;
+
+function toast(msg, dur=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function formatDate(iso) {
+  const d = new Date(iso);
+  return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+}
+function todayJP() {
+  return new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit'});
+}
+
+// 編集中の報告書を保存（入力のたびに呼ばれるので0.8秒まとめ書き）
+function saveAll() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    const r = currentReport(); if (!r) return;
+    try { await dbPut(r); setSaveInd('saved'); }
+    catch(e) { console.error(e); toast('保存失敗：空き容量を確認してください'); }
+  }, 800);
+  setSaveInd('saving');
+}
+// 起動時：IndexedDBから読み込み。旧localStorageにデータがあれば移行する
+async function loadAll() {
+  try {
+    db = await openDB();
+    reports = await dbGetAll();
+    const legacy = localStorage.getItem(STORAGE_KEY);
+    if (legacy) {
+      try {
+        const old = JSON.parse(legacy);
+        const have = new Set(reports.map(r => r.id));
+        const add = old.filter(r => !have.has(r.id));
+        if (add.length) { await dbPutMany(add); reports = reports.concat(add); }
+        localStorage.removeItem(STORAGE_KEY);   // 移行完了後に旧データを解放
+        if (add.length) toast(`${add.length}件の報告書を新しい保存方式に移行しました`);
+      } catch(e) { console.error('migration failed', e); }
+    }
+    reports.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+  } catch(e) {
+    console.error(e);
+    toast('保存領域を開けませんでした。プライベートブラウズでは利用できません', 5000);
+    reports = [];
+  }
+}
+function setSaveInd(s) {
+  const el = document.getElementById('saveIndicator');
+  el.textContent = s==='saving' ? '⏳ 保存中…' : '💾 保存済';
+  el.classList.toggle('saved', s==='saved');
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ===== 一覧 =====
+function renderList() {
+  const list = document.getElementById('reportList');
+  if (reports.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="emoji">📋</div><p>報告書がありません<br>「新しい報告書を作成」から始めてください</p></div>`;
+    return;
+  }
+  const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  const shown = [...reports].reverse().filter(r => !q || (r.title || '').toLowerCase().includes(q));
+  list.innerHTML = '';
+  if (shown.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="emoji">🔍</div><p>「${q}」に一致する報告書はありません</p></div>`;
+    return;
+  }
+  shown.forEach(r => {
+    const bc = r.pairs.filter(p=>p.before).length;
+    const ac = r.pairs.filter(p=>p.after).length;
+    const L = labelsOf(r);
+    // 代表サムネ：最初に写真が入っているペアの左側（なければ右側）
+    const thumbPair = r.pairs.find(p=>p.before||p.after);
+    const thumb = thumbPair ? (thumbPair.before||thumbPair.after) : null;
+    const el = document.createElement('div');
+    el.className = 'report-item';
+    el.innerHTML = `
+      <div class="report-icon">${thumb ? `<img src="${thumb}" alt="" loading="lazy" decoding="async">` : '📷'}</div>
+      <div class="report-info">
+        <div class="report-title-text">${r.title||'（タイトルなし）'}</div>
+        <div class="report-meta">更新：${formatDate(r.updatedAt||r.createdAt)}</div>
+        <div class="report-stats">
+          <span class="stat-badge stat-b">${L.before} ${bc}件</span>
+          <span class="stat-badge stat-a">${L.after} ${ac}件</span>
+        </div>
+      </div>
+      <div class="report-del-btn" onclick="deleteReport(event,'${r.id}')">🗑</div>
+      <div class="report-arrow">›</div>`;
+    el.addEventListener('click', e => { if(e.target.closest('.report-del-btn')) return; openReport(r.id); });
+    list.appendChild(el);
+  });
+}
+function deleteReport(e, id) {
+  e.stopPropagation();
+  const r = reports.find(r=>r.id===id);
+  if (!confirm(`「${r.title||'（タイトルなし）'}」を削除しますか？`)) return;
+  reports = reports.filter(r=>r.id!==id);
+  dbDelete(id).catch(e => { console.error(e); toast('削除に失敗しました'); });
+  renderList();
+}
+document.getElementById('searchInput').oninput = renderList;
+
+// ===== バックアップ 書き出し／読み込み =====
+document.getElementById('exportBtn').onclick = () => {
+  if (reports.length === 0) { toast('書き出す報告書がありません'); return; }
+  const payload = { app: DB_NAME, version: 1, exportedAt: new Date().toISOString(), reports };
+  const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `写真報告書_バックアップ_${todayStr()}.json`; a.click();
+  URL.revokeObjectURL(url);
+  toast(`${reports.length}件を書き出しました ✓`);
+};
+document.getElementById('importBtn').onclick = () => document.getElementById('importFile').click();
+document.getElementById('importFile').onchange = async e => {
+  const file = e.target.files[0]; e.target.value = '';
+  if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    const list = Array.isArray(data) ? data : data.reports;
+    if (!Array.isArray(list) || !list.every(r => r && r.id && Array.isArray(r.pairs))) throw new Error('形式が違います');
+    const have = new Set(reports.map(r => r.id));
+    const dup = list.filter(r => have.has(r.id)).length;
+    let mode = 'add';
+    if (dup > 0) {
+      mode = confirm(`同じ報告書が${dup}件あります。\n「OK」＝バックアップの内容で上書き\n「キャンセル」＝重複分は読み込まない`) ? 'overwrite' : 'add';
+    }
+    const incoming = mode === 'overwrite' ? list : list.filter(r => !have.has(r.id));
+    if (incoming.length === 0) { toast('新しく読み込む報告書はありませんでした'); return; }
+    await dbPutMany(incoming);
+    const byId = new Map(reports.map(r => [r.id, r]));
+    incoming.forEach(r => byId.set(r.id, r));
+    reports = [...byId.values()].sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+    renderList();
+    toast(`${incoming.length}件を読み込みました ✓`);
+  } catch(err) {
+    console.error(err);
+    toast('読み込めませんでした：' + err.message, 4000);
+  }
+};
+
+document.getElementById('newReportBtn').onclick = () => {
+  document.getElementById('newTitleInput').value = '';
+  document.getElementById('newOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('newTitleInput').focus(), 300);
+};
+document.getElementById('newCancelBtn').onclick = () => document.getElementById('newOverlay').classList.remove('open');
+document.getElementById('newOverlay').onclick = e => { if(e.target===document.getElementById('newOverlay')) document.getElementById('newOverlay').classList.remove('open'); };
+document.getElementById('createBtn').onclick = () => {
+  const title = document.getElementById('newTitleInput').value.trim();
+  if (!title) return;
+  const now = new Date().toISOString();
+  const report = {
+    id: uid(), title, createdAt: now, updatedAt: now, layout: '3', nextPairId: 4,
+    pairs: [
+      {id:1,before:null,beforeComment:'',after:null,afterComment:'',caption:''},
+      {id:2,before:null,beforeComment:'',after:null,afterComment:'',caption:''},
+      {id:3,before:null,beforeComment:'',after:null,afterComment:'',caption:''}
+    ]
+  };
+  reports.push(report);
+  dbPut(report).catch(e => { console.error(e); toast('保存に失敗しました'); });
+  document.getElementById('newOverlay').classList.remove('open');
+  openReport(report.id);
+};
+document.getElementById('newTitleInput').onkeydown = e => { if(e.key==='Enter') document.getElementById('createBtn').click(); };
+
+// ===== 編集 =====
+function openReport(id) {
+  currentId = id;
+  const r = reports.find(r=>r.id===id);
+  document.getElementById('reportTitle').value = r.title||'';
+  document.getElementById('layoutSel').value = r.layout||'3';
+  syncLabelSel(r);
+  setSaveInd('saved');
+  renderPairs();
+  showScreen('editScreen');
+}
+function currentReport() { return reports.find(r=>r.id===currentId); }
+// 写真の呼び方（報告書ごと。未設定なら従来どおり 指摘時/是正後）
+const DEFAULT_LABELS = { before: '指摘時', after: '是正後' };
+function labelsOf(r) { return (r && r.labels && r.labels.before && r.labels.after) ? r.labels : DEFAULT_LABELS; }
+function syncLabelSel(r) {
+  const l = labelsOf(r);
+  const sel = document.getElementById('labelSel');
+  const v = `${l.before}|${l.after}`;
+  sel.value = [...sel.options].some(o => o.value === v) ? v : 'custom';
+}
+document.getElementById('labelSel').onchange = () => {
+  const r = currentReport(); if (!r) return;
+  const v = document.getElementById('labelSel').value;
+  if (v === 'custom') {
+    const l = labelsOf(r);
+    document.getElementById('labelBeforeInput').value = l.before;
+    document.getElementById('labelAfterInput').value = l.after;
+    document.getElementById('labelOverlay').classList.add('open');
+    return;
+  }
+  const [before, after] = v.split('|');
+  r.labels = { before, after };
+  renderPairs(); saveCurrent();
+};
+document.getElementById('labelOkBtn').onclick = () => {
+  const r = currentReport(); if (!r) return;
+  const before = document.getElementById('labelBeforeInput').value.trim();
+  const after  = document.getElementById('labelAfterInput').value.trim();
+  if (!before || !after) { toast('両方の呼び方を入力してください'); return; }
+  r.labels = { before, after };
+  document.getElementById('labelOverlay').classList.remove('open');
+  syncLabelSel(r); renderPairs(); saveCurrent();
+};
+document.getElementById('labelCancelBtn').onclick = () => { document.getElementById('labelOverlay').classList.remove('open'); syncLabelSel(currentReport()); };
+document.getElementById('labelOverlay').onclick = e => { if (e.target === document.getElementById('labelOverlay')) { document.getElementById('labelOverlay').classList.remove('open'); syncLabelSel(currentReport()); } };
+function saveCurrent() {
+  const r = currentReport(); if(!r) return;
+  r.title = document.getElementById('reportTitle').value;
+  r.layout = document.getElementById('layoutSel').value;
+  r.updatedAt = new Date().toISOString();
+  saveAll();
+}
+document.getElementById('reportTitle').oninput = saveCurrent;
+document.getElementById('layoutSel').onchange = saveCurrent;
+document.getElementById('backBtn').onclick = () => { saveCurrent(); renderList(); showScreen('listScreen'); };
+
+function addPair() {
+  const r = currentReport();
+  r.pairs.push({id:r.nextPairId++,before:null,beforeComment:'',after:null,afterComment:'',caption:''});
+  renderPairs(); saveCurrent();
+}
+function deletePair(id) {
+  const r = currentReport();
+  if(r.pairs.length<=1){toast('最低1件必要です');return;}
+  if(!confirm('この写真ペアを削除しますか？'))return;
+  r.pairs=r.pairs.filter(p=>p.id!==id);
+  renderPairs(); saveCurrent();
+}
+function renderPairs() {
+  const r = currentReport();
+  const c = document.getElementById('pairsContainer');
+  c.innerHTML='';
+  const L = labelsOf(r);
+  r.pairs.forEach((pair,idx)=>{
+    const el=document.createElement('div');
+    el.className='pair-card';
+    const mkSlot=(side)=>{
+      const img=pair[side];
+      const badge=side==='before'?'badge-b':'badge-a';
+      const label=side==='before'?L.before:L.after;
+      if(img) return `<img src="${img}" alt="${label}"><span class="photo-badge ${badge}">${label}</span><span class="photo-check">✓</span>`;
+      return `<div class="photo-empty"><div class="icon">📷</div><span>${label}</span></div><span class="photo-badge ${badge}">${label}</span>`;
+    };
+    el.innerHTML=`
+      <div class="pair-header">
+        <span class="pair-num">写真 ${idx+1}</span>
+        <span class="pair-del" onclick="deletePair(${pair.id})">🗑</span>
+      </div>
+      <div class="photos-row">
+        <div class="photo-slot" onclick="openPhotoSheet(${pair.id},'before')">${mkSlot('before')}</div>
+        <div class="photo-slot" onclick="openPhotoSheet(${pair.id},'after')">${mkSlot('after')}</div>
+      </div>
+      <div class="comment-wrap" style="border-bottom:0.5px solid #f0f0f0">
+        <input type="text" placeholder="${L.before}コメント" value="${(pair.beforeComment||'').replace(/"/g,'&quot;')}"
+          oninput="currentReport().pairs.find(p=>p.id===${pair.id}).beforeComment=this.value;saveCurrent()">
+      </div>
+      <div class="comment-wrap">
+        <input type="text" placeholder="${L.after}コメント" value="${(pair.afterComment||'').replace(/"/g,'&quot;')}"
+          oninput="currentReport().pairs.find(p=>p.id===${pair.id}).afterComment=this.value;saveCurrent()">
+      </div>
+      <div class="caption-wrap">
+        <input type="text" placeholder="メモ（場所・内容など）" value="${(pair.caption||'').replace(/"/g,'&quot;')}"
+          oninput="currentReport().pairs.find(p=>p.id===${pair.id}).caption=this.value;saveCurrent()">
+      </div>`;
+    c.appendChild(el);
+  });
+}
+document.getElementById('addPairBtn').onclick = addPair;
+
+function openPhotoSheet(pairId, side) {
+  activeSlot={pairId,side};
+  const pair=currentReport().pairs.find(p=>p.id===pairId);
+  document.getElementById('sheetTitle').textContent=(side==='before'?labelsOf(currentReport()).before:labelsOf(currentReport()).after)+'の写真';
+  document.getElementById('delPhotoBtn').style.display=pair[side]?'flex':'none';
+  document.getElementById('photoOverlay').classList.add('open');
+}
+document.getElementById('photoCancelBtn').onclick=()=>document.getElementById('photoOverlay').classList.remove('open');
+document.getElementById('photoOverlay').onclick=e=>{if(e.target===document.getElementById('photoOverlay'))document.getElementById('photoOverlay').classList.remove('open');};
+document.getElementById('camBtn').onclick=()=>{document.getElementById('photoOverlay').classList.remove('open');document.getElementById('fileCamera').click();};
+document.getElementById('galBtn').onclick=()=>{document.getElementById('photoOverlay').classList.remove('open');document.getElementById('fileGallery').click();};
+document.getElementById('delPhotoBtn').onclick=()=>{
+  const pair=currentReport().pairs.find(p=>p.id===activeSlot.pairId);
+  if(pair){pair[activeSlot.side]=null;renderPairs();saveCurrent();}
+  document.getElementById('photoOverlay').classList.remove('open');
+};
+// 写真圧縮：最大幅1200px・JPEG品質70%に縮小
+function compressImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX_W = 1200;
+        let w = img.width, h = img.height;
+        if (w > MAX_W) { h = Math.round(h * MAX_W / w); w = MAX_W; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.70));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleFile(file) {
+  if(!file||!activeSlot)return;
+  compressImage(file).then(compressed => {
+    const pair=currentReport().pairs.find(p=>p.id===activeSlot.pairId);
+    if(pair){pair[activeSlot.side]=compressed;renderPairs();saveCurrent();}
+  });
+  document.getElementById('fileCamera').value='';
+  document.getElementById('fileGallery').value='';
+}
+document.getElementById('fileCamera').onchange=e=>handleFile(e.target.files[0]);
+document.getElementById('fileGallery').onchange=e=>handleFile(e.target.files[0]);
+
+// ===== PDF生成（html2canvas + jsPDF） =====
+document.getElementById('pdfBtn').onclick = async () => {
+  const r = currentReport();
+  if (!r) return;
+  if (r.pairs.every(p=>!p.before&&!p.after)) { toast('写真を追加してください'); return; }
+
+  const btn = document.getElementById('pdfBtn');
+  btn.classList.add('loading');
+  btn.innerHTML = '<span class="spinner"></span>PDF生成中…';
+  toast('PDF生成中です。しばらくお待ちください…', 8000);
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const title = r.title || '検査写真報告書';
+    const layout = parseInt(r.layout || '3');
+    const today = todayJP();
+    const pairs = r.pairs;
+    const L = labelsOf(r);
+    const ppp = layout;
+    const pages = [];
+    for (let i=0; i<pairs.length; i+=ppp) pages.push(pairs.slice(i,i+ppp));
+
+    const doc = new jsPDF({ unit:'px', format:'a4', orientation:'portrait' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+
+    const render = document.getElementById('pdfRender');
+
+    for (let pi=0; pi<pages.length; pi++) {
+      const page = pages[pi];
+
+      // HTMLページを構築
+      render.innerHTML = '';
+      const pageDiv = document.createElement('div');
+      pageDiv.className = 'pdf-page';
+      pageDiv.style.height = `${Math.round(794 * pageH / pageW)}px`;
+
+      // ヘッダー
+      pageDiv.innerHTML = `
+        <div class="pdf-header">
+          <div class="pdf-title">${title}</div>
+          <div class="pdf-info">${today}　${pi+1} / ${pages.length} ページ</div>
+        </div>`;
+
+      page.forEach((pair, idx) => {
+        const gn = pi * ppp + idx + 1;
+        const bImg = pair.before ? `<img class="pdf-photo-img" src="${pair.before}" crossorigin="anonymous">` : `<div class="pdf-photo-empty">（写真なし）</div>`;
+        const aImg = pair.after ? `<img class="pdf-photo-img" src="${pair.after}" crossorigin="anonymous">` : `<div class="pdf-photo-empty">（写真なし）</div>`;
+        const pairEl = document.createElement('div');
+        pairEl.className = 'pdf-pair';
+        pairEl.innerHTML = `
+          <div class="pdf-pair-label">No.${gn}　${pair.caption||''}</div>
+          <div class="pdf-photos">
+            <div class="pdf-photo-box">
+              <span class="pdf-badge pdf-badge-b">${L.before}</span>
+              ${bImg}
+              <div class="pdf-comment">${pair.beforeComment||''}</div>
+            </div>
+            <div class="pdf-photo-box">
+              <span class="pdf-badge pdf-badge-a">${L.after}</span>
+              ${aImg}
+              <div class="pdf-comment">${pair.afterComment||''}</div>
+            </div>
+          </div>`;
+        pageDiv.appendChild(pairEl);
+      });
+
+      render.appendChild(pageDiv);
+
+      // html2canvasでキャプチャ
+      const canvas = await html2canvas(pageDiv, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.85);
+      if (pi > 0) doc.addPage();
+      doc.addImage(imgData, 'JPEG', 0, 0, pageW, pageH);
+    }
+
+    render.innerHTML = '';
+
+    // ファイル名：タイトル+日付
+    const safeTitle = title.replace(/[\\/:*?"<>|　]/g,'_');
+    doc.save(`${safeTitle}_${todayStr()}.pdf`);
+    toast('PDFを保存しました ✓');
+  } catch(e) {
+    toast('PDF生成エラー: ' + e.message);
+    console.error(e);
+  } finally {
+    btn.classList.remove('loading');
+    btn.innerHTML = '📄 PDF保存';
+  }
+};
+
+// ===== Excel出力（ExcelJS・写真埋め込みの報告書形式） =====
+function loadImageSize(dataUrl) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+    img.onerror = () => resolve(null);
+    img.src = dataUrl;
+  });
+}
+document.getElementById('xlsBtn').onclick = async () => {
+  const r = currentReport();
+  if (!r) return;
+  const btn = document.getElementById('xlsBtn');
+  if (typeof ExcelJS === 'undefined') { toast('Excel出力ライブラリが読み込めていません（通信環境を確認してください）'); return; }
+  btn.classList.add('loading');
+  btn.innerHTML = '<span class="spinner"></span>Excel生成中…';
+  toast('Excel生成中です。しばらくお待ちください…', 8000);
+
+  try {
+    const title = r.title || '検査写真報告書';
+    const ppp = parseInt(r.layout || '3');           // 1頁あたりの件数（PDFと同じ設定）
+    const pairs = r.pairs;
+    const L = labelsOf(r);
+
+    // ---- レイアウト定数 ----
+    const COL_W = 14;                                 // 列幅（文字数）×6列
+    const COL_PX = COL_W * 7 + 5;                     // ≒ピクセル換算
+    const BOX_PX = COL_PX * 3;                        // 写真枠の幅（3列分）
+    const PHOTO_PT = { 3: 165, 2: 250, 1: 420 }[ppp] || 165; // 写真行の高さ(pt)
+    const PHOTO_PX = PHOTO_PT * 96 / 72;
+    const PAD = 6;                                    // 枠内の余白(px)
+
+    const font = { name: 'Meiryo UI', size: 10 };
+    const thin = { style: 'thin', color: { argb: 'FF999999' } };
+    const border = { top: thin, left: thin, bottom: thin, right: thin };
+    const fillGray  = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2F2F2' } };
+    const fillBlue  = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFDBEEFF' } };
+    const fillGreen = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD4F0E4' } };
+
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet('報告書', {
+      pageSetup: {
+        paperSize: 9, orientation: 'portrait',
+        fitToPage: true, fitToWidth: 1, fitToHeight: 0,
+        margins: { left: 0.5, right: 0.5, top: 0.6, bottom: 0.6, header: 0.3, footer: 0.3 },
+        printTitlesRow: '1:2'
+      },
+      views: [{ showGridLines: false }]
+    });
+    ws.columns = Array.from({ length: 6 }, () => ({ width: COL_W }));
+
+    // ---- ヘッダー（各ページ先頭に繰り返し印刷） ----
+    ws.mergeCells('A1:D1');
+    ws.getCell('A1').value = title;
+    ws.getCell('A1').font = { ...font, size: 14, bold: true };
+    ws.getCell('A1').alignment = { vertical: 'middle' };
+    ws.mergeCells('E1:F1');
+    ws.getCell('E1').value = '作成日 ' + todayJP();
+    ws.getCell('E1').font = font;
+    ws.getCell('E1').alignment = { vertical: 'middle', horizontal: 'right' };
+    ws.getRow(1).height = 24;
+    ['A1','B1','C1','D1','E1','F1'].forEach(a => { ws.getCell(a).border = { bottom: { style: 'medium', color: { argb: 'FF333333' } } }; });
+    ws.getRow(2).height = 8;
+
+    // ---- 写真ペアごとのブロック（5行） ----
+    let row = 3;
+    for (let i = 0; i < pairs.length; i++) {
+      const p = pairs[i];
+      const rL = row, rB = row + 1, rP = row + 2, rC = row + 3, rS = row + 4;
+
+      // 1) ラベル行
+      ws.mergeCells(`A${rL}:F${rL}`);
+      const lc = ws.getCell(`A${rL}`);
+      lc.value = `No.${i + 1}　${p.caption || ''}`;
+      lc.font = { ...font, bold: true };
+      lc.fill = fillGray;
+      lc.alignment = { vertical: 'middle' };
+      lc.border = border;
+      ws.getRow(rL).height = 18;
+
+      // 2) バッジ行
+      ws.mergeCells(`A${rB}:C${rB}`); ws.mergeCells(`D${rB}:F${rB}`);
+      const bB = ws.getCell(`A${rB}`), bA = ws.getCell(`D${rB}`);
+      bB.value = L.before; bB.fill = fillBlue;  bB.font = { ...font, bold: true, color: { argb: 'FF185FA5' } };
+      bA.value = L.after; bA.fill = fillGreen; bA.font = { ...font, bold: true, color: { argb: 'FF0F6E56' } };
+      [bB, bA].forEach(c => { c.alignment = { vertical: 'middle', horizontal: 'center' }; c.border = border; });
+      ws.getRow(rB).height = 16;
+
+      // 3) 写真行
+      ws.mergeCells(`A${rP}:C${rP}`); ws.mergeCells(`D${rP}:F${rP}`);
+      ws.getRow(rP).height = PHOTO_PT;
+      for (const [side, cellAddr, colStart] of [['before', `A${rP}`, 0], ['after', `D${rP}`, 3]]) {
+        const cell = ws.getCell(cellAddr);
+        cell.border = border;
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+        const data = p[side];
+        if (!data) { cell.value = '（写真なし）'; cell.font = { ...font, color: { argb: 'FFAAAAAA' } }; continue; }
+        const size = await loadImageSize(data);
+        if (!size) { cell.value = '（画像読込エラー）'; cell.font = { ...font, color: { argb: 'FFAAAAAA' } }; continue; }
+        const scale = Math.min((BOX_PX - PAD * 2) / size.w, (PHOTO_PX - PAD * 2) / size.h);
+        const iw = size.w * scale, ih = size.h * scale;
+        const offX = (BOX_PX - iw) / 2, offY = (PHOTO_PX - ih) / 2;
+        const imgId = wb.addImage({ base64: data, extension: 'jpeg' });
+        ws.addImage(imgId, {
+          tl: { col: colStart + offX / COL_PX, row: (rP - 1) + offY / PHOTO_PX },
+          ext: { width: iw, height: ih },
+          editAs: 'oneCell'
+        });
+      }
+
+      // 4) コメント行
+      ws.mergeCells(`A${rC}:C${rC}`); ws.mergeCells(`D${rC}:F${rC}`);
+      const cB = ws.getCell(`A${rC}`), cA = ws.getCell(`D${rC}`);
+      cB.value = p.beforeComment || ''; cA.value = p.afterComment || '';
+      [cB, cA].forEach(c => { c.font = font; c.alignment = { vertical: 'top', wrapText: true }; c.border = border; });
+      ws.getRow(rC).height = 32;
+
+      // 5) 間隔行 ＋ ページ区切り
+      ws.getRow(rS).height = 10;
+      if ((i + 1) % ppp === 0 && i < pairs.length - 1) ws.getRow(rS).addPageBreak();
+
+      row += 5;
+    }
+    if (pairs.length === 0) {
+      ws.getCell('A3').value = '（写真ペアがありません）';
+      ws.getCell('A3').font = { ...font, color: { argb: 'FFAAAAAA' } };
+    }
+
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeTitle = title.replace(/[\\/:*?"<>|　]/g, '_');
+    a.href = url;
+    a.download = `${safeTitle}_${todayStr()}.xlsx`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Excelを保存しました ✓');
+  } catch (e) {
+    toast('Excel生成エラー: ' + e.message);
+    console.error(e);
+  } finally {
+    btn.classList.remove('loading');
+    btn.innerHTML = '📊 Excel出力';
+  }
+};
+
+loadAll().then(renderList);
+</script>
+</body>
+</html>
