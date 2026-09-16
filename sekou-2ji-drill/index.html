@@ -28,7 +28,7 @@ header h1 small{display:block;font-size:11px;font-weight:400;color:var(--ink2);l
 .countdown b{display:block;font-family:var(--mono);font-size:24px;color:var(--ink);font-weight:600}
 nav{position:sticky;top:0;z-index:5;background:rgba(238,242,244,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
 nav .tabs{display:flex;max-width:720px;margin:0 auto}
-nav button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:10px 4px;font:inherit;font-size:14px;color:var(--ink2);cursor:pointer}
+nav button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:10px 2px;font:inherit;font-size:13px;color:var(--ink2);cursor:pointer}
 nav button.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:700}
 main{max-width:720px;margin:0 auto;padding:14px 12px 80px}
 .sheet{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:16px 14px;margin-bottom:14px;box-shadow:0 1px 0 rgba(31,50,66,.04)}
@@ -102,6 +102,17 @@ textarea{min-height:110px;line-height:1.7}
 .chip.fl.on{background:var(--warn-soft);border-color:var(--warn);color:var(--ink)}
 .lawlist .ans{color:var(--accent);font-weight:700;border-bottom:2px solid var(--accent)}
 .last{opacity:.7}
+.ex{background:#f3f6f8;border-radius:6px;padding:10px 12px;margin-top:8px;font-size:13px;line-height:1.7}
+.ex b{color:var(--accent)}
+.cnt{font-size:11px;color:var(--ink2);text-align:right;margin-top:2px}
+.cnt.over{color:var(--ng)}
+.chk{list-style:none;margin:8px 0 0;padding:0;font-size:13px}
+.chk li{padding:5px 0;border-bottom:1px dashed var(--line)}
+.chk li.ok::before{content:'✓ ';color:var(--ok);font-weight:700}
+.chk li.ng::before{content:'△ ';color:var(--ng);font-weight:700}
+.setbox{border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin-top:10px}
+.setbox h3{margin:0;font-size:13px;color:var(--ink2)}
+textarea.s{min-height:64px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -115,6 +126,7 @@ textarea{min-height:110px;line-height:1.7}
   <button data-tab="sched">工程表</button>
   <button data-tab="term">用語</button>
   <button data-tab="sekou">施工</button>
+  <button data-tab="essay">記述</button>
   <button data-tab="stats">記録</button>
   <button data-tab="add">追加</button>
 </div></nav>
@@ -431,9 +443,52 @@ const SEKOU_Q=[
 {id:'P34',g:'仕上げ',t:'エアスプレーによる吹付け塗装では、スプレーガンを塗面から ___ cm程度離し、塗面に直角に保って平行に動かす。',c:['10','30','50','100'],a:1,e:'30cm程度、パターンの1/3程度を重ねながら塗る。'}
 ];
 
+/* ================= 問題1 経験記述 ================= */
+const ESSAY_THEMES={
+ kotei:{name:'工程管理（遅延防止）',last:true,q1:'工事を遅延させる可能性がある主な要因と、影響を受ける作業内容',q2:'遅延を防ぐために有効と考える事前に講ずべき対応策',m1:'作業工程の短縮に有効と考える合理的な方法や手段',m2:'工程短縮以外に得られる工事への良い影響'},
+ hinshitsu:{name:'品質管理',q1:'品質低下を招く可能性がある主な要因と、影響を受ける作業内容',q2:'品質低下を防ぐために有効と考える事前に講ずべき対応策',m1:'品質確保に有効と考える合理的な方法や手段',m2:'品質確保以外に得られる工事への良い影響'},
+ anzen:{name:'安全管理',q1:'労働災害（又は第三者災害）が発生する可能性がある主な要因と、影響を受ける作業内容',q2:'災害を防ぐために有効と考える事前に講ずべき対応策',m1:'安全確保に有効と考える合理的な方法や手段',m2:'安全確保以外に得られる工事への良い影響'},
+ keikaku:{name:'施工計画（近隣・環境）',q1:'近隣や環境への影響、施工上の支障となる主な要因と、影響を受ける作業内容',q2:'それを防ぐために有効と考える事前に講ずべき対応策',m1:'施工の合理化に有効と考える方法や手段',m2:'合理化以外に得られる工事への良い影響'}
+};
+const ESSAY_PLAN=`【令和7年度の工事計画（ロ．新築）】閑静な住宅街。敷地685m²、市道5m（歩道1.5m）と4m（歩道1m）に接道、隣家あり。既存共同住宅の改修と並行し、四周に仮囲い。居住者不在。工期10月〜2月（工程表による）。
+軽量鉄骨造2階建 共同住宅 6世帯（1LDK）、建築面積120m²・延べ240m²、最高高さ6.9m、階高2.9m、根切深さGL-0.5m。羽根付き鋼管杭4.0m×4本、RC独立基礎、2階床はデッキプレート、鉄筋・鉄骨は工場加工・現場組立て、耐火被覆はロックウール吹付け。
+屋根：野地板＋アスファルトルーフィング＋ガルバリウム鋼板葺き／外壁：窯業系サイディング（フッ素樹脂塗装品）／腰壁：コンクリート打放し＋クリア塗装／バルコニー床：モルタル＋ウレタン塗膜防水／外部鉄骨階段：錆止め＋SOP／建具：アルミサッシ複層ガラス、化粧シート鋼製玄関扉。
+内部：床 鋼製大引＋木製床パネル＋PB＋フローリング（水回りCF）／壁・天井 LGS下地＋PB＋ビニルクロス／戸境壁 乾式耐火遮音間仕切／ユニットバス、システムキッチン。外構：駐輪場12台、インターロッキング舗装、囲障復旧（腰壁アクリルリシン吹替え）。`;
+const ESSAY_EX={
+ kotei:{sets:[
+  {a:'a',k:'鉄骨工事（建方）',y:'工場製作の軽量鉄骨部材の製作・搬入が遅れると建方に着手できず、後続の屋根・外壁・内装工事まで全体工程が遅れる。',t:'着工前に鉄骨製作工場と製作工程表を確認し、製品検査日と搬入日を確定する。アンカーボルト位置の確認を製作図承認前に済ませ、手直しによる遅れをなくす。'},
+  {a:'b',k:'杭工事（羽根付き鋼管杭）',y:'市道幅員4〜5mの住宅街で杭打機・トラックの搬入経路と据付位置が確保できないと、杭打設の着手が遅れる。',t:'事前に搬入経路を実走して確認し、囲障の撤去範囲と重機据付位置を配置図で決める。道路使用許可・近隣への通知を着工2週間前までに済ませる。'},
+  {a:'c',k:'内装工事（せっこうボード張り）',y:'12月〜1月の繁忙期に軽鉄・ボード工が確保できないと、6世帯分のボード張りが遅れ、クロス・床仕上げに影響する。',t:'着工時に協力会社と月別の作業員数を確認して確保する。住戸ごとに作業区画を分け、下地検査が済んだ住戸から順に張り進める工程にする。'}],
+  m:[
+  {h:'外壁を工場塗装済みの窯業系サイディングとし、現場での塗装工程を省く。',e:'塗装の乾燥待ちがなくなり冬季の天候の影響を受けにくい。塗膜品質が均一になり、現場の塗料廃材も減る。'},
+  {h:'ユニットバス・システムキッチン・化粧シート建具など工場生産品を採用し、現場作業を組立て中心にする。',e:'職種間の取合い作業と手直しが減り、現場の廃材が減る。仕上げ品質が安定する。'}]},
+ hinshitsu:{sets:[
+  {a:'a',k:'鉄筋コンクリート工事（独立基礎）',y:'10〜11月でも夜間に気温が下がると初期強度が出ず、型枠の早期解体や養生不足でひび割れ・強度不足を招く。',t:'打設後は5日以上の湿潤養生を計画し、側面せき板は圧縮強度5N/mm²以上を確認してから解体する。寒気が予想される日はシート養生とする。'},
+  {a:'b',k:'鉄骨工事（建方）',y:'建入れ精度が悪いと、外壁サイディングの目地不良や建具の建付け不良、床の不陸につながる。',t:'各節ごとにトランシットで柱の倒れをH/1000以下かつ10mm以下で確認し、高力ボルト本締め前に建入れ直しを行う。'},
+  {a:'c',k:'外壁工事（窯業系サイディング）',y:'留付け金具の施工不良やシーリングの充填不足で、雨漏り・パネルの浮きが生じる。',t:'施工要領書で金具の留付け間隔とシーリング目地幅（10mm以上）・プライマー塗布を作業員に周知し、最初の1面を検査してから全体に展開する。'}],
+  m:[
+  {h:'サイディング・ユニットバスなど工場生産品を採用し、現場での加工を減らす。',e:'現場作業日数が短縮され、廃材と手直しが減る。'},
+  {h:'住戸ごとに施工→自主検査→次工程の順序を決め、検査記録を写真で残す。',e:'手戻りが減って工程が安定し、引渡し後の指摘対応も速くなる。'}]},
+ anzen:{sets:[
+  {a:'b',k:'鉄骨工事（建方）',y:'隣家に近い住宅街で移動式クレーンを据え付けるため、転倒や吊荷の落下による作業員・第三者の災害が起こる。',t:'据付地盤を敷鉄板で養生し、アウトリガーは最大張出しとする。作業半径内を立入禁止にして合図者を配置し、風速10m/s以上で作業を中止する。'},
+  {a:'c',k:'屋根工事（ガルバリウム鋼板葺き）',y:'最高高さ6.9mの勾配屋根での作業で、軒先・けらばからの墜落災害が起こる。',t:'外部足場を軒より高く組み手すり・幅木を設ける。屋根面に親綱を張り墜落制止用器具を使用させ、雨天・強風時は作業を中止する。'},
+  {a:'a',k:'内装工事（クッションフロア・クロス張り）',y:'接着剤の有機溶剤により、換気の悪い住戸内で中毒や引火が起こる。',t:'窓の開放と換気扇で換気を確保し、火気厳禁を表示する。SDSで使用材料を作業員に周知し、保護手袋・防毒マスクを着用させる。'}],
+  m:[
+  {h:'屋根・外壁材を工場で加工し、高所での切断作業を減らす。',e:'高所作業時間が短くなり工程も短縮する。切粉の飛散が減り近隣への影響も減る。'},
+  {h:'毎朝のKY活動で当日の作業手順と危険箇所を全員で確認する。',e:'作業の段取りが共有され、手待ちや手戻りが減る。'}]},
+ keikaku:{sets:[
+  {a:'b',k:'杭工事（羽根付き鋼管杭）',y:'閑静な住宅街のため、杭施工や重機の騒音・振動で近隣から苦情が出ると作業が中断する。',t:'低騒音・低振動の回転圧入式で施工し、作業時間帯を8〜17時に限定する。着工前に近隣へ工程と作業内容を説明し、連絡先を仮囲いに掲示する。'},
+  {a:'a',k:'仮設工事（資材搬入・仮置き）',y:'既存共同住宅の改修と並行するため資材置場が少なく、搬入車両が幅員4〜5mの市道を塞いで通行の支障になる。',t:'資材は工程に合わせて必要量ずつ搬入し、工事段階ごとに資材置場と車両出入口の配置を計画する。搬入時は誘導員を配置し、車両は敷地内で転回させる。'},
+  {a:'c',k:'内装工事（ボード・床仕上げ）',y:'ボード端材・梱包材などの廃材分別が不十分だと処分費が増え、建設リサイクル法違反となる。',t:'分別コンテナを種類ごとに設置し、作業員に分別方法を周知する。マニフェストで処分量を管理する。'}],
+  m:[
+  {h:'工場加工の鉄骨・サイディング・ユニット設備を採用し、現場作業を減らす。',e:'騒音・粉じんの発生時間が短くなり、近隣への影響と廃材が減る。'},
+  {h:'搬入日と搬入時間をまとめて計画し、車両台数を減らす。',e:'交通誘導の負担と近隣の苦情が減り、荷受けの手待ちも減る。'}]}
+};
+const ESSAY_TIPS=['自分の工種は「工種名（作業名）」の形で具体的に：例「鉄骨工事（建方）」','②は「要因」と「影響を受ける作業」の両方を1文で。「〜が遅れると〜に着手できない」の型','③は数値を1つ入れる：日数・寸法・時間帯・人数・強度など','②③は3セットすべて異なる内容に。①は同じでも可','書いてはいけないもの：選んだ工事に不要な工種、品質を下げる変更、建築設備工事の内容（解体を除く）','2.の方法は1.の③と同じ内容にしない。「良い影響」はテーマ以外（工程なら品質・安全・環境・コスト）'];
+
 /* ================= 状態・保存 ================= */
 const KEY='sekou2ji_v1';
-let store={stats:{},customLaw:[],customKnow:[],customTerm:[],customSekou:[],flags:{}};
+let store={stats:{},customLaw:[],customKnow:[],customTerm:[],customSekou:[],flags:{},essay:{}};
 try{const s=localStorage.getItem(KEY);if(s)store=Object.assign(store,JSON.parse(s));}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){toast('保存できませんでした（ブラウザの保存領域を確認）');}}
 function rec(id,ok){const s=store.stats[id]||{ok:0,ng:0,streak:0};if(ok){s.ok++;s.streak++;}else{s.ng++;s.streak=0;}s.last=ok?1:0;store.stats[id]=s;save();}
@@ -459,7 +514,7 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 const app=document.getElementById('app');
 let tab='law';
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));render();});
-function render(){({law:renderLaw,sched:renderSched,term:renderTerm,sekou:renderSekou,stats:renderStats,add:renderAdd})[tab]();window.scrollTo(0,0);}
+function render(){({law:renderLaw,sched:renderSched,term:renderTerm,sekou:renderSekou,essay:renderEssay,stats:renderStats,add:renderAdd})[tab]();window.scrollTo(0,0);}
 
 /* カウントダウン */
 (function(){const d=Math.ceil((new Date(2026,10,8)-new Date().setHours(0,0,0,0))/86400000);document.getElementById('days').textContent=d>=0?d:0;})();
@@ -725,6 +780,55 @@ function renderSekouEnd(){
   document.getElementById('again').onclick=()=>{sk.queue=[];renderSekou();};
 }
 
+/* ================= 記述 画面 ================= */
+let es={theme:null,showEx:false,showPlan:false};
+function essayData(k){if(!store.essay)store.essay={};if(!store.essay[k])store.essay[k]={sets:[{a:'a',k:'',y:'',t:''},{a:'b',k:'',y:'',t:''},{a:'c',k:'',y:'',t:''}],m:[{h:'',e:''},{h:'',e:''}]};return store.essay[k];}
+function renderEssay(){
+  if(!es.theme)return renderEssayMenu();
+  const th=ESSAY_THEMES[es.theme];const d=essayData(es.theme);const ex=ESSAY_EX[es.theme];
+  const ta=(id,v,ph)=>`<textarea class="s" data-e="${id}" placeholder="${esc(ph)}">${esc(v)}</textarea><div class="cnt" data-c="${id}"></div>`;
+  let html=`<div class="meta"><span>問題1 経験記述</span><span>${esc(th.name)}${th.last?'（昨年出題）':''}</span></div>
+  <div class="sheet"><button class="btn" style="font-size:13px;padding:6px 12px" id="plan">${es.showPlan?'工事計画を隠す':'工事計画（令和7年度 新築）を見る'}</button>${es.showPlan?`<div class="ex" style="white-space:pre-wrap">${esc(ESSAY_PLAN)}</div>`:''}</div>`;
+  html+=`<div class="sheet"><h2>1．遅延防止等に関する記述（3セット）</h2><div class="hint">項目A：a 材料／b 工事用機械・器具・設備／c 作業員。①工種名は同一でも可、②③はすべて異なる内容。</div>`;
+  d.sets.forEach((s,i)=>{html+=`<div class="setbox"><h3>セット${i+1}</h3>
+    <label class="f">項目A<select data-e="a${i}"><option value="a" ${s.a==='a'?'selected':''}>a 材料（本工事材料・仮設材料）</option><option value="b" ${s.a==='b'?'selected':''}>b 工事用機械・器具・設備</option><option value="c" ${s.a==='c'?'selected':''}>c 作業員</option></select></label>
+    <label class="f">① 工種名又は作業名等<input type="text" data-e="k${i}" value="${esc(s.k)}" placeholder="例：鉄骨工事（建方）"></label>
+    <label class="f">② ${esc(th.q1)}${ta('y'+i,s.y,'〜が…すると、〜の作業が…する。')}</label>
+    <label class="f">③ ${esc(th.q2)}${ta('t'+i,s.t,'数値を1つ入れる（日数・寸法・時間帯など）')}</label></div>`;});
+  html+=`</div><div class="sheet"><h2>2．合理的な方法と良い影響（2セット）</h2><div class="hint">1．の③と同じ内容は不可。「良い影響」は${esc(th.name.replace(/（.*/,''))}以外の面で。</div>`;
+  d.m.forEach((s,i)=>{html+=`<div class="setbox"><h3>セット${i+1}</h3><label class="f">${esc(th.m1)}${ta('h'+i,s.h,'')}</label><label class="f">${esc(th.m2)}${ta('e'+i,s.e,'')}</label></div>`;});
+  html+=`</div><div class="sheet"><h2>セルフチェック</h2><ul class="chk" id="chk"></ul></div>
+  <div class="sheet"><button class="btn wide" id="ex" style="margin-top:0">${es.showEx?'例文を隠す':'例文（新築・建築）を見る'}</button>${es.showEx?ex.sets.map((s,i)=>`<div class="ex"><b>セット${i+1}｜項目${s.a}｜①${esc(s.k)}</b><br>②${esc(s.y)}<br>③${esc(s.t)}</div>`).join('')+ex.m.map((s,i)=>`<div class="ex"><b>2-${i+1}</b><br>方法：${esc(s.h)}<br>良い影響：${esc(s.e)}</div>`).join('')+`<div class="hint">例文は令和7年度の新築工事計画を前提に作成。丸写しではなく、自分の言葉と数値に置き換えて使う。</div>`:''}</div>
+  <div class="sheet"><h2>書き方のコツ</h2><ul class="chk">${ESSAY_TIPS.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
+  <button class="btn wide" id="back">テーマ選択へ</button>`;
+  app.innerHTML=html;
+  const upd=()=>{app.querySelectorAll('[data-c]').forEach(c=>{const id=c.dataset.c;const v=app.querySelector(`[data-e="${id}"]`).value;const n=v.length;c.textContent=n+'字';c.classList.toggle('over',n>110);});essayCheck();};
+  app.querySelectorAll('[data-e]').forEach(el=>el.oninput=()=>{const id=el.dataset.e;const t=id[0],i=+id.slice(1);if(t==='a')d.sets[i].a=el.value;else if(t==='k')d.sets[i].k=el.value;else if(t==='y')d.sets[i].y=el.value;else if(t==='t')d.sets[i].t=el.value;else if(t==='h')d.m[i].h=el.value;else if(t==='e')d.m[i].e=el.value;save();upd();});
+  upd();
+  document.getElementById('plan').onclick=()=>{es.showPlan=!es.showPlan;renderEssay();};
+  document.getElementById('ex').onclick=()=>{es.showEx=!es.showEx;renderEssay();};
+  document.getElementById('back').onclick=()=>{es.theme=null;renderEssay();};
+}
+function essayCheck(){
+  const d=essayData(es.theme);const ul=document.getElementById('chk');if(!ul)return;const r=[];
+  const bad=/設備工事|電気工事|給排水|空調|配管工事|配線/;const num=/[0-9０-９]/;
+  d.sets.forEach((s,i)=>{const n=i+1;
+    r.push([!!s.k.trim(),`セット${n}：①工種名が書けている`]);
+    r.push([s.y.trim().length>=30,`セット${n}：②が30字以上（要因＋影響を受ける作業）`]);
+    r.push([num.test(s.t),`セット${n}：③に数値が入っている`]);
+    r.push([!bad.test(s.y+s.t),`セット${n}：設備工事の内容を書いていない`]);});
+  const ys=d.sets.map(s=>s.y.trim()).filter(Boolean),ts=d.sets.map(s=>s.t.trim()).filter(Boolean);
+  r.push([new Set(ys).size===ys.length&&new Set(ts).size===ts.length,'②③が3セットで重複していない']);
+  d.m.forEach((s,i)=>{r.push([!!s.h.trim()&&!!s.e.trim(),`2-${i+1}：方法と良い影響の両方が書けている`]);r.push([!ts.some(t=>t&&s.h.trim()&&(t===s.h.trim())),`2-${i+1}：1．の③と同じ内容になっていない`]);});
+  r.push([d.m[0].h.trim()!==d.m[1].h.trim()||!d.m[0].h.trim(),'2．の方法が2つで異なる']);
+  ul.innerHTML=r.map(([ok,t])=>`<li class="${ok?'ok':'ng'}">${esc(t)}</li>`).join('');
+}
+function renderEssayMenu(){
+  app.innerHTML=`<div class="sheet"><h2>テーマを選ぶ（4テーマとも下書きを用意する）</h2>${Object.entries(ESSAY_THEMES).map(([k,t])=>{const d=store.essay&&store.essay[k];const done=d?d.sets.filter(s=>s.k&&s.y&&s.t).length+d.m.filter(s=>s.h&&s.e).length:0;return `<button class="btn wide" data-th="${k}" style="text-align:left;margin-top:8px"><b>${esc(t.name)}</b>${t.last?' <span class="chip fl on" style="margin-left:6px">昨年出題</span>':''}<br><span class="hint">下書き <span class="num">${done}/5</span> セット</span></button>`;}).join('')}</div>
+  <div class="sheet"><h2>問題1の形式（令和7年度）</h2><div class="hint">問題用紙に示された工事計画（解体／新築／改修）から1つ選び、項目A（材料・機械・作業員）を選んだうえで、①工種名 ②要因と影響を受ける作業 ③事前の対応策 を3セット、さらに合理的な方法と良い影響を2セット記述する。テーマは年ごとに変わるので、4テーマ分の「要因→対策」のネタを新築工事で用意しておく。下書きはこのブラウザに保存され、JSON書き出しにも含まれる。</div></div>`;
+  app.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{es.theme=b.dataset.th;es.showEx=false;renderEssay();});
+}
+
 /* ================= 記録 ================= */
 function renderStats(){
   const groups=[['法規',allLaw()],['工程表',SCHED.flatMap(s=>s.qs)],['工程知識',allKnow()],['用語',allTerm()],['施工',allSekou()]];
@@ -742,7 +846,7 @@ function renderStats(){
   app.innerHTML=html;
   document.getElementById('exp').onclick=()=>{const b=new Blob([JSON.stringify(store,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sekou2ji_'+new Date().toISOString().slice(0,10)+'.json';a.click();};
   document.getElementById('imp').onclick=()=>document.getElementById('file').click();
-  document.getElementById('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.stats)throw 0;store=Object.assign({stats:{},customLaw:[],customKnow:[],customTerm:[],customSekou:[],flags:{}},d);save();toast('読み込みました');renderStats();}catch(x){toast('読み込めないファイルです');}};r.readAsText(f);};
+  document.getElementById('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.stats)throw 0;store=Object.assign({stats:{},customLaw:[],customKnow:[],customTerm:[],customSekou:[],flags:{},essay:{}},d);save();toast('読み込みました');renderStats();}catch(x){toast('読み込めないファイルです');}};r.readAsText(f);};
   document.getElementById('reset').onclick=()=>{if(confirm('学習記録を消しますか？'))
 {store.stats={};save();renderStats();}};
 }
