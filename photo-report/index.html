@@ -66,6 +66,14 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .photos-row{display:grid;grid-template-columns:1fr 1fr}
 .photo-slot{position:relative;aspect-ratio:4/3;cursor:pointer;overflow:hidden;background:#f8f8f8;display:flex;align-items:center;justify-content:center}
 .photo-slot:first-child{border-right:0.5px solid #e8e8e8}
+.pair-card.album .photos-row{grid-template-columns:1fr}
+.pair-card.album .photo-slot:first-child{border-right:none}
+.pair-card.album .photo-badge{display:none}
+.pdf-album{display:grid;gap:10px;flex:1;min-height:0}
+.pdf-album-item{border:0.5px solid #ccc;border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+.pdf-album-item .pdf-photo-img,.pdf-album-item .pdf-photo-empty{aspect-ratio:auto;flex:1;min-height:0;object-fit:contain;background:#f5f5f5}
+.pdf-album-item .pdf-pair-label{flex:none}
+.pdf-album-item .pdf-comment{flex:none}
 .photo-slot img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-empty{display:flex;flex-direction:column;align-items:center;gap:5px}
 .photo-empty .icon{font-size:22px;color:#ddd}
@@ -161,6 +169,10 @@ input[type=file]{display:none}
     <button class="back-btn" id="backBtn">← 一覧</button>
     <div class="edit-header-right">
       <span class="save-indicator saved" id="saveIndicator">💾 保存済</span>
+      <select class="layout-sel" id="modeSel" title="並べ方">
+        <option value="pair">対比（左右）</option>
+        <option value="album">アルバム</option>
+      </select>
       <select class="layout-sel" id="labelSel" title="写真の呼び方">
         <option value="指摘時|是正後">指摘時/是正後</option>
         <option value="施工前|施工後">施工前/施工後</option>
@@ -196,6 +208,10 @@ input[type=file]{display:none}
   <div class="new-report-sheet">
     <h3>新しい報告書</h3>
     <input type="text" id="newTitleInput" placeholder="タイトル（例：5/2 配筋検査）" maxlength="40">
+    <select class="layout-sel" id="newModeSel" style="width:100%;font-size:14px;padding:10px;margin-bottom:10px">
+      <option value="pair">対比（左右に2枚を並べる）</option>
+      <option value="album">アルバム（写真を順に並べる）</option>
+    </select>
     <button class="create-btn" id="createBtn">作成</button>
     <button class="sheet-cancel" id="newCancelBtn">キャンセル</button>
   </div>
@@ -374,9 +390,9 @@ function renderList() {
       <div class="report-info">
         <div class="report-title-text">${r.title||'（タイトルなし）'}</div>
         <div class="report-meta">更新：${formatDate(r.updatedAt||r.createdAt)}</div>
-        <div class="report-stats">
-          <span class="stat-badge stat-b">${L.before} ${bc}件</span>
-          <span class="stat-badge stat-a">${L.after} ${ac}件</span>
+        <div class="report-stats">${isAlbum(r)
+          ? `<span class="stat-badge stat-b">写真 ${bc}枚</span>`
+          : `<span class="stat-badge stat-b">${L.before} ${bc}件</span><span class="stat-badge stat-a">${L.after} ${ac}件</span>`}
         </div>
       </div>
       <div class="report-del-btn" onclick="deleteReport(event,'${r.id}')">🗑</div>
@@ -446,7 +462,9 @@ document.getElementById('createBtn').onclick = () => {
   if (!title) return;
   const now = new Date().toISOString();
   const report = {
-    id: uid(), title, createdAt: now, updatedAt: now, layout: '3', nextPairId: 4,
+    id: uid(), title, createdAt: now, updatedAt: now, nextPairId: 4,
+    mode: document.getElementById('newModeSel').value,
+    layout: document.getElementById('newModeSel').value === 'album' ? '6' : '3',
     pairs: [
       {id:1,before:null,beforeComment:'',after:null,afterComment:'',caption:''},
       {id:2,before:null,beforeComment:'',after:null,afterComment:'',caption:''},
@@ -465,13 +483,33 @@ function openReport(id) {
   currentId = id;
   const r = reports.find(r=>r.id===id);
   document.getElementById('reportTitle').value = r.title||'';
-  document.getElementById('layoutSel').value = r.layout||'3';
+  syncModeUI(r);
   syncLabelSel(r);
   setSaveInd('saved');
   renderPairs();
   showScreen('editScreen');
 }
 function currentReport() { return reports.find(r=>r.id===currentId); }
+// 並べ方（報告書ごと）：pair＝左右対比（既定）／album＝1枚ずつ並べる
+function isAlbum(r) { return !!(r && r.mode === 'album'); }
+const LAYOUT_OPTS = { pair: [['3','3件/頁'],['2','2件/頁'],['1','1件/頁']], album: [['6','6枚/頁'],['4','4枚/頁'],['2','2枚/頁']] };
+function syncModeUI(r) {
+  const album = isAlbum(r);
+  document.getElementById('modeSel').value = album ? 'album' : 'pair';
+  document.getElementById('labelSel').style.display = album ? 'none' : '';
+  const sel = document.getElementById('layoutSel');
+  const opts = LAYOUT_OPTS[album ? 'album' : 'pair'];
+  sel.innerHTML = opts.map(([v,t]) => `<option value="${v}">${t}</option>`).join('');
+  if (!opts.some(([v]) => v === String(r.layout))) r.layout = opts[0][0];
+  sel.value = r.layout;
+  document.getElementById('addPairBtn').textContent = album ? '＋ 写真を追加' : '＋ 写真ペアを追加';
+}
+document.getElementById('modeSel').onchange = () => {
+  const r = currentReport(); if (!r) return;
+  r.mode = document.getElementById('modeSel').value;
+  syncModeUI(r); renderPairs(); saveCurrent();
+  if (r.mode === 'album' && r.pairs.some(p => p.after)) toast('右側の写真は非表示になります（対比に戻すと表示されます）', 3500);
+};
 // 写真の呼び方（報告書ごと。未設定なら従来どおり 指摘時/是正後）
 const DEFAULT_LABELS = { before: '指摘時', after: '是正後' };
 function labelsOf(r) { return (r && r.labels && r.labels.before && r.labels.after) ? r.labels : DEFAULT_LABELS; }
@@ -525,7 +563,7 @@ function addPair() {
 function deletePair(id) {
   const r = currentReport();
   if(r.pairs.length<=1){toast('最低1件必要です');return;}
-  if(!confirm('この写真ペアを削除しますか？'))return;
+  if(!confirm(isAlbum(r)?'この写真を削除しますか？':'この写真ペアを削除しますか？'))return;
   r.pairs=r.pairs.filter(p=>p.id!==id);
   renderPairs(); saveCurrent();
 }
@@ -534,16 +572,37 @@ function renderPairs() {
   const c = document.getElementById('pairsContainer');
   c.innerHTML='';
   const L = labelsOf(r);
+  const album = isAlbum(r);
   r.pairs.forEach((pair,idx)=>{
     const el=document.createElement('div');
-    el.className='pair-card';
+    el.className='pair-card'+(album?' album':'');
     const mkSlot=(side)=>{
       const img=pair[side];
       const badge=side==='before'?'badge-b':'badge-a';
       const label=side==='before'?L.before:L.after;
       if(img) return `<img src="${img}" alt="${label}"><span class="photo-badge ${badge}">${label}</span><span class="photo-check">✓</span>`;
-      return `<div class="photo-empty"><div class="icon">📷</div><span>${label}</span></div><span class="photo-badge ${badge}">${label}</span>`;
+      return `<div class="photo-empty"><div class="icon">📷</div><span>${album?'写真を追加':label}</span></div><span class="photo-badge ${badge}">${label}</span>`;
     };
+    if(album){
+      el.innerHTML=`
+      <div class="pair-header">
+        <span class="pair-num">写真 ${idx+1}</span>
+        <span class="pair-del" onclick="deletePair(${pair.id})">🗑</span>
+      </div>
+      <div class="photos-row">
+        <div class="photo-slot" onclick="openPhotoSheet(${pair.id},'before')">${mkSlot('before')}</div>
+      </div>
+      <div class="comment-wrap" style="border-bottom:0.5px solid #f0f0f0">
+        <input type="text" placeholder="コメント" value="${(pair.beforeComment||'').replace(/"/g,'&quot;')}"
+          oninput="currentReport().pairs.find(p=>p.id===${pair.id}).beforeComment=this.value;saveCurrent()">
+      </div>
+      <div class="caption-wrap">
+        <input type="text" placeholder="メモ（場所・内容など）" value="${(pair.caption||'').replace(/"/g,'&quot;')}"
+          oninput="currentReport().pairs.find(p=>p.id===${pair.id}).caption=this.value;saveCurrent()">
+      </div>`;
+      c.appendChild(el);
+      return;
+    }
     el.innerHTML=`
       <div class="pair-header">
         <span class="pair-num">写真 ${idx+1}</span>
@@ -573,7 +632,7 @@ document.getElementById('addPairBtn').onclick = addPair;
 function openPhotoSheet(pairId, side) {
   activeSlot={pairId,side};
   const pair=currentReport().pairs.find(p=>p.id===pairId);
-  document.getElementById('sheetTitle').textContent=(side==='before'?labelsOf(currentReport()).before:labelsOf(currentReport()).after)+'の写真';
+  document.getElementById('sheetTitle').textContent=isAlbum(currentReport())?'写真を追加':(side==='before'?labelsOf(currentReport()).before:labelsOf(currentReport()).after)+'の写真';
   document.getElementById('delPhotoBtn').style.display=pair[side]?'flex':'none';
   document.getElementById('photoOverlay').classList.add('open');
 }
@@ -624,7 +683,8 @@ document.getElementById('fileGallery').onchange=e=>handleFile(e.target.files[0])
 document.getElementById('pdfBtn').onclick = async () => {
   const r = currentReport();
   if (!r) return;
-  if (r.pairs.every(p=>!p.before&&!p.after)) { toast('写真を追加してください'); return; }
+  const album = isAlbum(r);
+  if (r.pairs.every(p=>!p.before&&!(album?false:p.after))) { toast('写真を追加してください'); return; }
 
   const btn = document.getElementById('pdfBtn');
   btn.classList.add('loading');
@@ -634,7 +694,7 @@ document.getElementById('pdfBtn').onclick = async () => {
   try {
     const { jsPDF } = window.jspdf;
     const title = r.title || '検査写真報告書';
-    const layout = parseInt(r.layout || '3');
+    const layout = parseInt(r.layout || (album ? '6' : '3'));
     const today = todayJP();
     const pairs = r.pairs;
     const L = labelsOf(r);
@@ -664,6 +724,27 @@ document.getElementById('pdfBtn').onclick = async () => {
           <div class="pdf-info">${today}　${pi+1} / ${pages.length} ページ</div>
         </div>`;
 
+      if (album) {
+        // アルバム：2列（2枚/頁は1列）で順に並べる
+        const cols = ppp === 2 ? 1 : 2;
+        const rows = Math.ceil(ppp / cols);
+        const grid = document.createElement('div');
+        grid.className = 'pdf-album';
+        grid.style.gridTemplateColumns = `repeat(${cols},1fr)`;
+        grid.style.gridTemplateRows = `repeat(${rows},1fr)`;
+        page.forEach((pair, idx) => {
+          const gn = pi * ppp + idx + 1;
+          const img = pair.before ? `<img class="pdf-photo-img" src="${pair.before}" crossorigin="anonymous">` : `<div class="pdf-photo-empty">（写真なし）</div>`;
+          const item = document.createElement('div');
+          item.className = 'pdf-album-item';
+          item.innerHTML = `
+            <div class="pdf-pair-label">No.${gn}　${pair.caption||''}</div>
+            ${img}
+            <div class="pdf-comment">${pair.beforeComment||''}</div>`;
+          grid.appendChild(item);
+        });
+        pageDiv.appendChild(grid);
+      } else
       page.forEach((pair, idx) => {
         const gn = pi * ppp + idx + 1;
         const bImg = pair.before ? `<img class="pdf-photo-img" src="${pair.before}" crossorigin="anonymous">` : `<div class="pdf-photo-empty">（写真なし）</div>`;
@@ -738,7 +819,8 @@ document.getElementById('xlsBtn').onclick = async () => {
 
   try {
     const title = r.title || '検査写真報告書';
-    const ppp = parseInt(r.layout || '3');           // 1頁あたりの件数（PDFと同じ設定）
+    const album = isAlbum(r);
+    const ppp = parseInt(r.layout || (album ? '6' : '3')); // 1頁あたりの件数（PDFと同じ設定）
     const pairs = r.pairs;
     const L = labelsOf(r);
 
@@ -746,7 +828,7 @@ document.getElementById('xlsBtn').onclick = async () => {
     const COL_W = 14;                                 // 列幅（文字数）×6列
     const COL_PX = COL_W * 7 + 5;                     // ≒ピクセル換算
     const BOX_PX = COL_PX * 3;                        // 写真枠の幅（3列分）
-    const PHOTO_PT = { 3: 165, 2: 250, 1: 420 }[ppp] || 165; // 写真行の高さ(pt)
+    const PHOTO_PT = (album ? { 6: 165, 4: 250, 2: 420 } : { 3: 165, 2: 250, 1: 420 })[ppp] || 165; // 写真行の高さ(pt)
     const PHOTO_PX = PHOTO_PT * 96 / 72;
     const PAD = 6;                                    // 枠内の余白(px)
 
@@ -782,8 +864,53 @@ document.getElementById('xlsBtn').onclick = async () => {
     ['A1','B1','C1','D1','E1','F1'].forEach(a => { ws.getCell(a).border = { bottom: { style: 'medium', color: { argb: 'FF333333' } } }; });
     ws.getRow(2).height = 8;
 
-    // ---- 写真ペアごとのブロック（5行） ----
+    // 写真1枚を指定セル範囲（3列分）に収めて配置
+    const placePhoto = async (data, cellAddr, colStart, rP) => {
+      const cell = ws.getCell(cellAddr);
+      cell.border = border;
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      if (!data) { cell.value = '（写真なし）'; cell.font = { ...font, color: { argb: 'FFAAAAAA' } }; return; }
+      const size = await loadImageSize(data);
+      if (!size) { cell.value = '（画像読込エラー）'; cell.font = { ...font, color: { argb: 'FFAAAAAA' } }; return; }
+      const scale = Math.min((BOX_PX - PAD * 2) / size.w, (PHOTO_PX - PAD * 2) / size.h);
+      const iw = size.w * scale, ih = size.h * scale;
+      const offX = (BOX_PX - iw) / 2, offY = (PHOTO_PX - ih) / 2;
+      const imgId = wb.addImage({ base64: data, extension: 'jpeg' });
+      ws.addImage(imgId, {
+        tl: { col: colStart + offX / COL_PX, row: (rP - 1) + offY / PHOTO_PX },
+        ext: { width: iw, height: ih },
+        editAs: 'oneCell'
+      });
+    };
+
     let row = 3;
+    if (album) {
+      // ---- アルバム：左右に1枚ずつ、順に埋める（4行ブロック） ----
+      for (let i = 0; i < pairs.length; i += 2) {
+        const rL = row, rP = row + 1, rC = row + 2, rS = row + 3;
+        const slots = [[pairs[i], `A`, `C`, 0], [pairs[i + 1], `D`, `F`, 3]];
+        for (const [p, c1, c2, colStart] of slots) {
+          ws.mergeCells(`${c1}${rL}:${c2}${rL}`);
+          ws.mergeCells(`${c1}${rP}:${c2}${rP}`);
+          ws.mergeCells(`${c1}${rC}:${c2}${rC}`);
+          const lc = ws.getCell(`${c1}${rL}`), cc = ws.getCell(`${c1}${rC}`), pc = ws.getCell(`${c1}${rP}`);
+          if (!p) { continue; } // 奇数枚の最後は右を空けておく
+          const n = pairs.indexOf(p) + 1;
+          lc.value = `No.${n}　${p.caption || ''}`;
+          lc.font = { ...font, bold: true }; lc.fill = fillGray; lc.alignment = { vertical: 'middle' }; lc.border = border;
+          await placePhoto(p.before, `${c1}${rP}`, colStart, rP);
+          cc.value = p.beforeComment || '';
+          cc.font = font; cc.alignment = { vertical: 'top', wrapText: true }; cc.border = border;
+        }
+        ws.getRow(rL).height = 18;
+        ws.getRow(rP).height = PHOTO_PT;
+        ws.getRow(rC).height = 32;
+        ws.getRow(rS).height = 10;
+        if ((i + 2) % ppp === 0 && i + 2 < pairs.length) ws.getRow(rS).addPageBreak();
+        row += 4;
+      }
+    } else
+    // ---- 写真ペアごとのブロック（5行） ----
     for (let i = 0; i < pairs.length; i++) {
       const p = pairs[i];
       const rL = row, rB = row + 1, rP = row + 2, rC = row + 3, rS = row + 4;
@@ -810,22 +937,7 @@ document.getElementById('xlsBtn').onclick = async () => {
       ws.mergeCells(`A${rP}:C${rP}`); ws.mergeCells(`D${rP}:F${rP}`);
       ws.getRow(rP).height = PHOTO_PT;
       for (const [side, cellAddr, colStart] of [['before', `A${rP}`, 0], ['after', `D${rP}`, 3]]) {
-        const cell = ws.getCell(cellAddr);
-        cell.border = border;
-        cell.alignment = { vertical: 'middle', horizontal: 'center' };
-        const data = p[side];
-        if (!data) { cell.value = '（写真なし）'; cell.font = { ...font, color: { argb: 'FFAAAAAA' } }; continue; }
-        const size = await loadImageSize(data);
-        if (!size) { cell.value = '（画像読込エラー）'; cell.font = { ...font, color: { argb: 'FFAAAAAA' } }; continue; }
-        const scale = Math.min((BOX_PX - PAD * 2) / size.w, (PHOTO_PX - PAD * 2) / size.h);
-        const iw = size.w * scale, ih = size.h * scale;
-        const offX = (BOX_PX - iw) / 2, offY = (PHOTO_PX - ih) / 2;
-        const imgId = wb.addImage({ base64: data, extension: 'jpeg' });
-        ws.addImage(imgId, {
-          tl: { col: colStart + offX / COL_PX, row: (rP - 1) + offY / PHOTO_PX },
-          ext: { width: iw, height: ih },
-          editAs: 'oneCell'
-        });
+        await placePhoto(p[side], cellAddr, colStart, rP);
       }
 
       // 4) コメント行
@@ -842,7 +954,7 @@ document.getElementById('xlsBtn').onclick = async () => {
       row += 5;
     }
     if (pairs.length === 0) {
-      ws.getCell('A3').value = '（写真ペアがありません）';
+      ws.getCell('A3').value = album ? '（写真がありません）' : '（写真ペアがありません）';
       ws.getCell('A3').font = { ...font, color: { argb: 'FFAAAAAA' } };
     }
 
