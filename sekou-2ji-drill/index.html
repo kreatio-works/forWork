@@ -511,15 +511,30 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 
 /* ================= 音声読み上げ（例文の暗記用） ================= */
-let spCur=null;
+/* 収録済みMP3（AI音声・audio/フォルダ）を優先し、読めないときは端末の音声合成にフォールバック */
+let spCur=null,spAudio=null;
 function jaVoice(){const vs=speechSynthesis.getVoices();return vs.find(v=>v.lang==='ja-JP')||vs.find(v=>v.lang&&v.lang.indexOf('ja')===0)||null;}
-function speakStop(){spCur=null;if('speechSynthesis' in window){try{speechSynthesis.cancel();}catch(e){}}document.querySelectorAll('[data-sp]').forEach(b=>{if(b.dataset.label)b.textContent=b.dataset.label;});}
+function speakStop(){spCur=null;if(spAudio){try{spAudio.pause();}catch(e){}spAudio=null;}if('speechSynthesis' in window){try{speechSynthesis.cancel();}catch(e){}}document.querySelectorAll('[data-sp]').forEach(b=>{if(b.dataset.label)b.textContent=b.dataset.label;});}
 function speak(id,texts){
-  if(!('speechSynthesis' in window)){toast('この端末は読み上げに対応していません');return;}
   if(spCur===id){speakStop();return;}
   speakStop();spCur=id;
   const btn=document.querySelector(`[data-sp="${id}"]`);if(btn)btn.textContent='■ 停止';
   const rate=store.spRate||1;
+  const files=(id==='all'?['s0','s1','s2','m0','m1']:[id]).map(f=>`audio/${es.theme}_${f}.mp3`);
+  let fi=0,fell=false;
+  const fall=()=>{if(fell||spCur!==id)return;fell=true;spAudio=null;speakSynth(id,texts,rate);};
+  const playNext=()=>{
+    if(spCur!==id)return;
+    if(fi>=files.length){speakStop();return;}
+    const a=new Audio(files[fi++]);spAudio=a;
+    a.onended=playNext;
+    a.onerror=fall;
+    a.play().then(()=>{a.playbackRate=rate;}).catch(fall);
+  };
+  playNext();
+}
+function speakSynth(id,texts,rate){
+  if(!('speechSynthesis' in window)){toast('この端末は読み上げに対応していません');speakStop();return;}
   /* iOSは長文で途切れるため文単位に分割して順に読む */
   const list=[];texts.forEach(t=>{(String(t).match(/[^。]+。?/g)||[]).forEach(s=>list.push(s));});
   const next=()=>{
@@ -821,7 +836,7 @@ function renderEssay(){
   html+=`</div><div class="sheet"><h2>2．合理的な方法と良い影響（2セット）</h2><div class="hint">1．の③と同じ内容は不可。「良い影響」は${esc(th.name.replace(/（.*/,''))}以外の面で。</div>`;
   d.m.forEach((s,i)=>{html+=`<div class="setbox"><h3>セット${i+1}</h3><label class="f">${esc(th.m1)}${ta('h'+i,s.h,'')}</label><label class="f">${esc(th.m2)}${ta('e'+i,s.e,'')}</label></div>`;});
   html+=`</div><div class="sheet"><h2>セルフチェック</h2><ul class="chk" id="chk"></ul></div>
-  <div class="sheet"><button class="btn wide" id="ex" style="margin-top:0">${es.showEx?'例文を隠す':'例文（新築・建築）を見る'}</button>${es.showEx?`<div class="filters" style="margin:10px 0 0"><button class="chip" data-sp="all">▶ 通しで読み上げ</button>${[[0.85,'ゆっくり'],[1,'ふつう'],[1.2,'はやい']].map(([r,l])=>`<button class="chip ${(store.spRate||1)===r?'on':''}" data-rate="${r}">${l}</button>`).join('')}</div>`+ex.sets.map((s,i)=>`<div class="ex"><b>セット${i+1}｜項目${s.a}｜①${esc(s.k)}</b> <button class="chip" data-sp="s${i}">▶ 読み上げ</button><br>②${esc(s.y)}<br>③${esc(s.t)}</div>`).join('')+ex.m.map((s,i)=>`<div class="ex"><b>2-${i+1}</b> <button class="chip" data-sp="m${i}">▶ 読み上げ</button><br>方法：${esc(s.h)}<br>良い影響：${esc(s.e)}</div>`).join('')+`<div class="hint">例文は令和7年度の新築工事計画を前提に作成。丸写しではなく、自分の言葉と数値に置き換えて使う。読み上げは端末内蔵の音声合成を使用（マナーモードでは鳴らないことがあります）。</div>`:''}</div>
+  <div class="sheet"><button class="btn wide" id="ex" style="margin-top:0">${es.showEx?'例文を隠す':'例文（新築・建築）を見る'}</button>${es.showEx?`<div class="filters" style="margin:10px 0 0"><button class="chip" data-sp="all">▶ 通しで読み上げ</button>${[[0.85,'ゆっくり'],[1,'ふつう'],[1.2,'はやい']].map(([r,l])=>`<button class="chip ${(store.spRate||1)===r?'on':''}" data-rate="${r}">${l}</button>`).join('')}</div>`+ex.sets.map((s,i)=>`<div class="ex"><b>セット${i+1}｜項目${s.a}｜①${esc(s.k)}</b> <button class="chip" data-sp="s${i}">▶ 読み上げ</button><br>②${esc(s.y)}<br>③${esc(s.t)}</div>`).join('')+ex.m.map((s,i)=>`<div class="ex"><b>2-${i+1}</b> <button class="chip" data-sp="m${i}">▶ 読み上げ</button><br>方法：${esc(s.h)}<br>良い影響：${esc(s.e)}</div>`).join('')+`<div class="hint">例文は令和7年度の新築工事計画を前提に作成。丸写しではなく、自分の言葉と数値に置き換えて使う。読み上げはAI音声（収録済みMP3）を使用。オフライン等で再生できないときは端末内蔵の音声合成に切り替わります（マナーモードでは鳴らないことがあります）。</div>`:''}</div>
   <div class="sheet"><h2>書き方のコツ</h2><ul class="chk">${ESSAY_TIPS.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
   <button class="btn wide" id="back">テーマ選択へ</button>`;
   app.innerHTML=html;
