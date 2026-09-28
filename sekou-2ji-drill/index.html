@@ -787,7 +787,7 @@ function renderEssay(){
   if(!es.theme)return renderEssayMenu();
   const th=ESSAY_THEMES[es.theme];const d=essayData(es.theme);const ex=ESSAY_EX[es.theme];
   const ta=(id,v,ph)=>`<textarea class="s" data-e="${id}" placeholder="${esc(ph)}">${esc(v)}</textarea><div class="cnt" data-c="${id}"></div>`;
-  let html=`<div class="meta"><span>問題1 経験記述</span><span>${esc(th.name)}${th.last?'（昨年出題）':''}</span></div>
+  let html=`<div class="meta"><button class="chip" id="back2" style="white-space:nowrap">← テーマ選択</button><span>${esc(th.name)}${th.last?'（昨年出題）':''}</span></div>
   <div class="sheet"><button class="btn" style="font-size:13px;padding:6px 12px" id="plan">${es.showPlan?'工事計画を隠す':'工事計画（令和7年度 新築）を見る'}</button>${es.showPlan?`<div class="ex" style="white-space:pre-wrap">${esc(ESSAY_PLAN)}</div>`:''}</div>`;
   html+=`<div class="sheet"><h2>1．遅延防止等に関する記述（3セット）</h2><div class="hint">項目A：a 材料／b 工事用機械・器具・設備／c 作業員。①工種名は同一でも可、②③はすべて異なる内容。</div>`;
   d.sets.forEach((s,i)=>{html+=`<div class="setbox"><h3>セット${i+1}</h3>
@@ -807,7 +807,9 @@ function renderEssay(){
   upd();
   document.getElementById('plan').onclick=()=>{es.showPlan=!es.showPlan;renderEssay();};
   document.getElementById('ex').onclick=()=>{es.showEx=!es.showEx;renderEssay();};
-  document.getElementById('back').onclick=()=>{es.theme=null;renderEssay();};
+  const goBack=()=>{es.theme=null;renderEssay();};
+  document.getElementById('back').onclick=goBack;
+  document.getElementById('back2').onclick=goBack;
 }
 function essayCheck(){
   const d=essayData(es.theme);const ul=document.getElementById('chk');if(!ul)return;const r=[];
