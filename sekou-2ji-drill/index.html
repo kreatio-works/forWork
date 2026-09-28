@@ -510,11 +510,34 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 
+/* ================= 音声読み上げ（例文の暗記用） ================= */
+let spCur=null;
+function jaVoice(){const vs=speechSynthesis.getVoices();return vs.find(v=>v.lang==='ja-JP')||vs.find(v=>v.lang&&v.lang.indexOf('ja')===0)||null;}
+function speakStop(){spCur=null;if('speechSynthesis' in window){try{speechSynthesis.cancel();}catch(e){}}document.querySelectorAll('[data-sp]').forEach(b=>{if(b.dataset.label)b.textContent=b.dataset.label;});}
+function speak(id,texts){
+  if(!('speechSynthesis' in window)){toast('この端末は読み上げに対応していません');return;}
+  if(spCur===id){speakStop();return;}
+  speakStop();spCur=id;
+  const btn=document.querySelector(`[data-sp="${id}"]`);if(btn)btn.textContent='■ 停止';
+  const rate=store.spRate||1;
+  /* iOSは長文で途切れるため文単位に分割して順に読む */
+  const list=[];texts.forEach(t=>{(String(t).match(/[^。]+。?/g)||[]).forEach(s=>list.push(s));});
+  const next=()=>{
+    if(spCur!==id)return;
+    if(!list.length){speakStop();return;}
+    const u=new SpeechSynthesisUtterance(list.shift());
+    u.lang='ja-JP';u.rate=rate;const v=jaVoice();if(v)u.voice=v;
+    u.onend=next;u.onerror=()=>{if(spCur===id)speakStop();};
+    speechSynthesis.speak(u);
+  };next();
+}
+if('speechSynthesis' in window)speechSynthesis.getVoices();/* iOSの音声リスト先読み */
+
 /* ================= 画面切替 ================= */
 const app=document.getElementById('app');
 let tab='law';
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));render();});
-function render(){({law:renderLaw,sched:renderSched,term:renderTerm,sekou:renderSekou,essay:renderEssay,stats:renderStats,add:renderAdd})[tab]();window.scrollTo(0,0);}
+function render(){speakStop();({law:renderLaw,sched:renderSched,term:renderTerm,sekou:renderSekou,essay:renderEssay,stats:renderStats,add:renderAdd})[tab]();window.scrollTo(0,0);}
 
 /* カウントダウン */
 (function(){const d=Math.ceil((new Date(2026,10,8)-new Date().setHours(0,0,0,0))/86400000);document.getElementById('days').textContent=d>=0?d:0;})();
@@ -798,16 +821,24 @@ function renderEssay(){
   html+=`</div><div class="sheet"><h2>2．合理的な方法と良い影響（2セット）</h2><div class="hint">1．の③と同じ内容は不可。「良い影響」は${esc(th.name.replace(/（.*/,''))}以外の面で。</div>`;
   d.m.forEach((s,i)=>{html+=`<div class="setbox"><h3>セット${i+1}</h3><label class="f">${esc(th.m1)}${ta('h'+i,s.h,'')}</label><label class="f">${esc(th.m2)}${ta('e'+i,s.e,'')}</label></div>`;});
   html+=`</div><div class="sheet"><h2>セルフチェック</h2><ul class="chk" id="chk"></ul></div>
-  <div class="sheet"><button class="btn wide" id="ex" style="margin-top:0">${es.showEx?'例文を隠す':'例文（新築・建築）を見る'}</button>${es.showEx?ex.sets.map((s,i)=>`<div class="ex"><b>セット${i+1}｜項目${s.a}｜①${esc(s.k)}</b><br>②${esc(s.y)}<br>③${esc(s.t)}</div>`).join('')+ex.m.map((s,i)=>`<div class="ex"><b>2-${i+1}</b><br>方法：${esc(s.h)}<br>良い影響：${esc(s.e)}</div>`).join('')+`<div class="hint">例文は令和7年度の新築工事計画を前提に作成。丸写しではなく、自分の言葉と数値に置き換えて使う。</div>`:''}</div>
+  <div class="sheet"><button class="btn wide" id="ex" style="margin-top:0">${es.showEx?'例文を隠す':'例文（新築・建築）を見る'}</button>${es.showEx?`<div class="filters" style="margin:10px 0 0"><button class="chip" data-sp="all">▶ 通しで読み上げ</button>${[[0.85,'ゆっくり'],[1,'ふつう'],[1.2,'はやい']].map(([r,l])=>`<button class="chip ${(store.spRate||1)===r?'on':''}" data-rate="${r}">${l}</button>`).join('')}</div>`+ex.sets.map((s,i)=>`<div class="ex"><b>セット${i+1}｜項目${s.a}｜①${esc(s.k)}</b> <button class="chip" data-sp="s${i}">▶ 読み上げ</button><br>②${esc(s.y)}<br>③${esc(s.t)}</div>`).join('')+ex.m.map((s,i)=>`<div class="ex"><b>2-${i+1}</b> <button class="chip" data-sp="m${i}">▶ 読み上げ</button><br>方法：${esc(s.h)}<br>良い影響：${esc(s.e)}</div>`).join('')+`<div class="hint">例文は令和7年度の新築工事計画を前提に作成。丸写しではなく、自分の言葉と数値に置き換えて使う。読み上げは端末内蔵の音声合成を使用（マナーモードでは鳴らないことがあります）。</div>`:''}</div>
   <div class="sheet"><h2>書き方のコツ</h2><ul class="chk">${ESSAY_TIPS.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
   <button class="btn wide" id="back">テーマ選択へ</button>`;
   app.innerHTML=html;
   const upd=()=>{app.querySelectorAll('[data-c]').forEach(c=>{const id=c.dataset.c;const v=app.querySelector(`[data-e="${id}"]`).value;const n=v.length;c.textContent=n+'字';c.classList.toggle('over',n>110);});essayCheck();};
   app.querySelectorAll('[data-e]').forEach(el=>el.oninput=()=>{const id=el.dataset.e;const t=id[0],i=+id.slice(1);if(t==='a')d.sets[i].a=el.value;else if(t==='k')d.sets[i].k=el.value;else if(t==='y')d.sets[i].y=el.value;else if(t==='t')d.sets[i].t=el.value;else if(t==='h')d.m[i].h=el.value;else if(t==='e')d.m[i].e=el.value;save();upd();});
   upd();
-  document.getElementById('plan').onclick=()=>{es.showPlan=!es.showPlan;renderEssay();};
-  document.getElementById('ex').onclick=()=>{es.showEx=!es.showEx;renderEssay();};
-  const goBack=()=>{es.theme=null;renderEssay();};
+  document.getElementById('plan').onclick=()=>{speakStop();es.showPlan=!es.showPlan;renderEssay();};
+  document.getElementById('ex').onclick=()=>{speakStop();es.showEx=!es.showEx;renderEssay();};
+  if(es.showEx){
+    const spT={};
+    ex.sets.forEach((s,i)=>{spT['s'+i]=[`セット${i+1}、項目${s.a}。工種名、${s.k}。`,s.y,`対策。${s.t}`];});
+    ex.m.forEach((s,i)=>{spT['m'+i]=[`2の${i+1}。方法。${s.h}`,`良い影響。${s.e}`];});
+    spT.all=[].concat(...ex.sets.map((s,i)=>spT['s'+i]),...ex.m.map((s,i)=>spT['m'+i]));
+    app.querySelectorAll('[data-sp]').forEach(b=>{b.dataset.label=b.textContent;b.onclick=()=>speak(b.dataset.sp,spT[b.dataset.sp]);});
+    app.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{speakStop();store.spRate=+b.dataset.rate;save();renderEssay();});
+  }
+  const goBack=()=>{speakStop();es.theme=null;renderEssay();};
   document.getElementById('back').onclick=goBack;
   document.getElementById('back2').onclick=goBack;
 }
